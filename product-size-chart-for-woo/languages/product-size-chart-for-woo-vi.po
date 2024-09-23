@@ -1,0 +1,483 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Product Size Chart for WooCommerce\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-18 07:06+0000\n"
+"PO-Revision-Date: 2024-05-10 09:56+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.2; wp-6.0.3\n"
+"X-Domain: product-size-chart-for-woo"
+
+#. Description of the plugin
+msgid ""
+"A plugin helps you to customize and design the size chart of specific "
+"products or categories."
+msgstr ""
+"Plugin giúp bạn chỉnh sửa và thiết kế bảng kích thước cho sản phẩm hoặc danh "
+"mục sản phẩm."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:268
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:288
+msgid "Add"
+msgstr "Thêm"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:51
+msgid "Add Item"
+msgstr "Thêm Mục"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:49
+msgid "Add New"
+msgstr "Thêm Mới"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:175
+msgid "After add to cart"
+msgstr "Sau nút thêm vào giỏ hàng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:50
+msgid "All Size Charts"
+msgstr "Tất Cả Bảng Kích Thước"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:129
+msgid "Assign"
+msgstr "Chỉ định"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:172
+msgid "Before add to cart"
+msgstr "Trước nút thêm vào giỏ hàng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:589
+msgid "Border"
+msgstr "Viền"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:674
+msgid "Border color"
+msgstr "Màu viền"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:291
+msgid "Button color"
+msgstr "Màu nút"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:255
+msgid "Button type"
+msgstr "Kiểu nút"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:733
+msgid "Categories"
+msgstr "Danh mục"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:141
+msgid "Chest : "
+msgstr "Lồng ngực :"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:151
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:166
+msgid "Chest: "
+msgstr "Lồng ngực:"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:278
+msgid "Columns"
+msgstr "Cột"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:1071
+msgid "Copied"
+msgstr "Đã sao chép"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:334
+msgid "Custom CSS"
+msgstr "CSS Tùy chỉnh"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:622
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:662
+msgid "Dashed"
+msgstr "Nét đứt"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:272
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:291
+msgid "Delete"
+msgstr "Xóa"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:121
+msgid "Design"
+msgstr "Thiết kế"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:627
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:667
+msgid "Dotted"
+msgstr "Chấm"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:112
+msgid "Duplicate"
+msgstr "Nhân bản"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:148
+msgid "Enable"
+msgstr "Kích hoạt"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:316
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:359
+msgid "Enter text.."
+msgstr "Nhập văn bản..."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:536
+msgid "Even columns background"
+msgstr "Nền cột chẵn"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:548
+msgid "Even columns text"
+msgstr "Nội dung cột chẵn"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:482
+msgid "Even row background"
+msgstr "Nền hàng chẵn"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:494
+msgid "Even row text"
+msgstr "Nội dung hàng chẵn"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:186
+msgid ""
+"For example, if your foot length is 25.5 cm, you should choose the size 8."
+msgstr "Ví dụ, nếu bàn chân dài 25.5 cm, bạn nên chọn cỡ 8."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:139
+msgid "General settings"
+msgstr "Cài đặt chung"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:432
+msgid "Header background"
+msgstr "Nền tiêu đề"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:253
+msgid "Hide all"
+msgstr "Ẩn tất cả"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:246
+msgid "Hide on size chart"
+msgstr "Ẩn trên bảng kích thước"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:174
+msgid "Hips : "
+msgstr "Hông:"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:211
+msgid "Horizontal"
+msgstr "Ngang"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:609
+msgid "Horizontal border style"
+msgstr "Kiểu viền ngang"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:594
+msgid "Horizontal width"
+msgstr "Độ rộng ngang"
+
+#. Author URI of the plugin
+msgid "http://villatheme.com"
+msgstr "http://villatheme.com"
+
+#. URI of the plugin
+msgid "https://villatheme.com/extensions/woo-product-size-chart/"
+msgstr "https://villatheme.com/extensions/woo-product-size-chart/"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:264
+msgid "Icon"
+msgstr "Biểu tượng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:252
+msgid "Image"
+msgstr "Ảnh"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:415
+msgid "Import CSV"
+msgstr "Nhập CSV"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:338
+msgid "Insert custom css here..."
+msgstr "Chèn CSS tùy chỉnh tại đây..."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:284
+msgid "Label for size chart on front end"
+msgstr "Nhãn cho bảng kích thước hiển thị"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:222
+msgid "Left"
+msgstr "Trái"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:176
+msgid "Measure around the fullest part of your body at the top of your leg."
+msgstr "Đo phần lớn nhất cơ thể tại đầu chân."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:143
+msgid ""
+"Measure around the fullest part, place the tape close under the arms and "
+"make sure the tape is flat across the back."
+msgstr ""
+"Đo phần lớn nhất, đặt thước đo gần phần dưới cánh tay và vòng thước đo ra "
+"sau lưng, giữ thước phẳng khi đo."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:158
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:172
+msgid "Measure around your natural waistline, keeping the tape a bit loose."
+msgstr "Đo xung quanh đường hông tự nhiên, giữ thước hơi lỏng."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:153
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:168
+msgid "Measure under your arms, around the fullest part of the your chest."
+msgstr "Đo phần dưới cánh tay, xung quanh phần lớn nhất của lồng ngực."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:136
+msgid "Measure your body as follows to choose the size that suits you best:"
+msgstr "Đo các chỉ số cơ thể như sau để chọn kích cỡ phù hợp nhất: "
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:184
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:193
+msgid "Measure your foot length carefully."
+msgstr "Đo chiều dài bàn chân bạn."
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:108
+msgid "Men's Shoes Size Chart"
+msgstr "Bảng size giày nam"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:105
+msgid "Men's T-shirts Size Chart"
+msgstr "Bảng size áo thun nam"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:194
+msgid "Multi size charts"
+msgstr "Nhiều bảng kích thước"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:250
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:187
+msgid "None"
+msgstr "Không có"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:563
+msgid "Odd columns background"
+msgstr "Nền cột lẻ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:575
+msgid "Odd columns text"
+msgstr "Nội dung cột lẻ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:509
+msgid "Odd row background"
+msgstr "Nền hàng lẻ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:521
+msgid "Odd row text"
+msgstr "Nội dung hàng lẻ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:406
+msgid "OK"
+msgstr "OK"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:194
+msgid "Please choose the correct size according to your foot length"
+msgstr "Vui lòng chọn kích thước phù hợp với chiều dài bàn chân"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:185
+msgid ""
+"Please choose the correct size according to your foot length and chinese "
+"size."
+msgstr ""
+"Vui lòng chọn kích thước phù hợp với chiều dài bàn chân theo bảng kích thước "
+"Trung Quốc"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:179
+msgid "Pop-up"
+msgstr "Pop-up"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:225
+msgid "Popup button position in horizontal"
+msgstr "Vị trí nút popup theo chiều ngang"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:248
+msgid "Popup button position in vertical"
+msgstr "Vị trí nút popup theo chiều dọc"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:687
+msgid "PREVIEW"
+msgstr "XEM TRƯỚC"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:390
+msgid "Preview"
+msgstr "Xem trước"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:727
+msgid "Prioritize to display when product has multi size charts"
+msgstr "Ưu tiên hiển thị khi sản phẩm có nhiều bảng kích thước"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:55
+msgid "Product Size Chart"
+msgstr "Product Size Chart"
+
+#. Name of the plugin
+msgid "Product Size Chart for WooCommerce"
+msgstr "Product Size Chart for WooCommerce"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:183
+msgid "Product tab"
+msgstr "Tab sản phẩm"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:700
+msgid "Products"
+msgstr "Sản phẩm"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:173
+msgid "Remove image"
+msgstr "Xóa ảnh"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:420
+msgid "Reset"
+msgstr "Đặt lại"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:218
+msgid "Right"
+msgstr "Phải"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:259
+msgid "Rows"
+msgstr "Hàng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:354
+msgid "Save"
+msgstr "Lưu"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:169
+msgid "Select Image"
+msgstr "Chọn Ảnh"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:216
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:233
+msgid "Select template"
+msgstr "Chọn mẫu"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:76
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:82
+msgid "Settings"
+msgstr "Cài đặt"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:347
+msgid ""
+"Shortcode can be inserted to the content of page or post then converted to "
+"HTML on corresponding\n"
+"                            page or post"
+msgstr ""
+"Mã ngắn (Shortcode) có thể được thêm vào nội dung trang hoặc bài đăng và "
+"chuyển sang HTML trên trang hoặc bài đăng tương ứng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:205
+msgid "Show all size charts for a category or product"
+msgstr "Hiển thị tất cả bảng kích thước cho một danh mục hoặc sản phẩm"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:47
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:48
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:81
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/front-end/front-end.php:57
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/front-end/front-end.php:105
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/front-end/front-end.php:207
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/front-end/front-end.php:224
+msgid "Size Chart"
+msgstr "Size Chart"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:125
+msgid "Size chart image "
+msgstr "Ảnh Bảng kích thước"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:274
+msgid "Size chart label"
+msgstr "Nhãn Bảng kích thước"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:164
+msgid "Size chart type"
+msgstr "Kiểu Bảng kích thước"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:617
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:657
+msgid "Solid"
+msgstr "Nét liền"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:458
+msgid "Style even/odd"
+msgstr "Kiểu chẵn/lẻ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:251
+msgid "Table"
+msgstr "Bảng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:427
+msgid "Table Color"
+msgstr "Màu Bảng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:212
+msgid "Table Template"
+msgstr "Mẫu Bảng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:229
+msgid "Template color"
+msgstr "Màu Mẫu bảng"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:267
+msgid "Text"
+msgstr "Văn bản"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:313
+msgid "Text color"
+msgstr "Màu chữ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:444
+msgid "Text header"
+msgstr "Nội dung tiêu đề"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:207
+msgid "Tools"
+msgstr "Công cụ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:232
+msgid "Vertical"
+msgstr "Dọc"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:649
+msgid "Vertical border style"
+msgstr "Kiểu viền dọc"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:634
+msgid "Vertical width"
+msgstr "Độ rộng dọc"
+
+#. Author of the plugin
+msgid "VillaTheme"
+msgstr "VillaTheme"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:156
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:170
+msgid "Waist: "
+msgstr "Hông:"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/design-new.php:155
+msgid "Width:"
+msgstr "Chiều rộng:"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:107
+msgid "Women's Dress Size Chart"
+msgstr "Biểu đồ kích thước trang phục của phụ nữ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:109
+msgid "Women's Shoes Size Chart"
+msgstr "Bảng size giày nữ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/product-size-chart-for-woo.php:106
+msgid "Women's T-shirts Size Chart"
+msgstr "Bảng size áo thun nữ"
+
+#: D:/Git/villatheme-2019/FREE-VERSION/product-size-chart-for-woo/product-size-chart-for-woo/admin/setting.php:349
+msgid "You can take the shortcode in \"All size charts\" section."
+msgstr ""
+"Bạn có thể lấy mã ngắn (shortcode) ở khu vực \"Tất cả bảng kích thước\"."
