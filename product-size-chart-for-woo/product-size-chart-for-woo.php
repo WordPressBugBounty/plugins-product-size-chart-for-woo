@@ -3,49 +3,78 @@
  * Plugin Name: Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 1.2.6
+ * Version: 2.0.0
  * Author URI: http://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2024 VillaTheme.com. All rights reserved.
  * Text Domain: product-size-chart-for-woo
- * License: GPL v2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires Plugins: woocommerce
- * Tested up to: 6.5
+ * Tested up to: 6.6
  * WC requires at least: 7.0
- * WC tested up to: 8.9
+ * WC tested up to: 9.3
  * Requires PHP: 7.0
  **/
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
 
-define( 'PSCW_SIZE_CHART_VERSION', '1.2.6' );
-define( 'PSCW_SIZE_CHART_MINIUM_WP_VERSION', '5.0' );
-define( 'PSCW_SIZE_CHART_PLUGIN_FILE', __FILE__ );
-define( 'PSCW_SIZE_CHART_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'PSCW_SIZE_CHART_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'PSCW_SIZE_CHART_LANGUAGES', PSCW_SIZE_CHART_PLUGIN_DIR . "languages" . DIRECTORY_SEPARATOR );
+namespace PSCWF;
+
+use PSCWF\Admin\Size_Chart_Product;
+use PSCWF\Inc\Customizer\Customizer;
+use PSCWF\Inc\Enqueue;
+use PSCWF\Inc\Data;
+use PSCWF\Admin\Settings;
+use PSCWF\Admin\Size_Chart;
+use PSCWF\Inc\Frontend\Front_End;
+use PSCWF\Inc\Setup_Wizard;
+use PSCWF\Inc\Short_Code;
+
+defined( 'ABSPATH' ) || exit;
+
+//Compatible with High-Performance order storage (COT)
+add_action( 'before_woocommerce_init', function () {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
 
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+if ( is_plugin_active( 'product-size-chart-for-woocommerce/product-size-chart-for-woocommerce.php' ) ) {
+	return;
+}
 
-if ( ! class_exists( 'PSCW_PRODUCT_SIZE_CHART_F_WOO' ) ) {
-	class PSCW_PRODUCT_SIZE_CHART_F_WOO {
+
+require_once plugin_dir_path( __FILE__ ) . 'autoload.php';
+
+if ( ! class_exists( 'VillaTheme_Require_Environment' ) || ! class_exists( 'VillaTheme_Support' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'support/support.php';
+}
+
+if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
+	class Product_Size_Chart_F {
 		public function __construct() {
+			$this->define();
+
 			register_activation_hook( __FILE__, array( $this, 'install' ) );
-
+			add_action( 'activated_plugin', [ $this, 'after_activated' ] );
 			add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
-			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'settings_link' ) );
+		}
 
-			//compatible with 'High-Performance order storage (COT)'
-			add_action( 'before_woocommerce_init', array( $this, 'before_woocommerce_init' ) );
+		function define() {
+			define( 'PSCW_CONST_F', [
+				'version'     => '2.0.0',
+				'plugin_name' => 'Product Size Chart for WooCommerce',
+				'slug'        => 'pscw',
+				'assets_slug' => 'pscw-',
+				'file'        => __FILE__,
+				'basename'    => plugin_basename( __FILE__ ),
+				'plugin_dir'  => plugin_dir_path( __FILE__ ),
+				'libs_url'    => plugins_url( 'assets/libs/', __FILE__ ),
+				'css_url'     => plugins_url( 'assets/css/', __FILE__ ),
+				'js_url'      => plugins_url( 'assets/js/', __FILE__ ),
+				'img_url'     => plugins_url( 'assets/img/', __FILE__ ),
+			] );
 		}
 
 		function plugins_loaded() {
-			if ( ! class_exists( 'VillaTheme_Require_Environment' ) ) {
-				include_once PSCW_SIZE_CHART_PLUGIN_DIR . 'includes/support.php';
-			}
-
 			$environment = new \VillaTheme_Require_Environment( [
 					'plugin_name'     => 'Product Size Chart for WooCommerce',
 					'php_version'     => '7.0',
@@ -64,185 +93,425 @@ if ( ! class_exists( 'PSCW_PRODUCT_SIZE_CHART_F_WOO' ) ) {
 				return;
 			}
 
-			require_once ( PSCW_SIZE_CHART_PLUGIN_DIR . 'includes/define.php' );
-        }
-		public function before_woocommerce_init() {
-			if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+			$this->init();
+		}
+
+		public function init() {
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'settings_link' ) );
+			$this->load_text_domain();
+			$this->load_classes();
+			$this->migrate_data_from_free_to_pro();
+		}
+
+		public function load_text_domain() {
+			load_plugin_textdomain( 'product-size-chart-for-woo', false, PSCW_CONST_F['basename'] . '/languages' );
+		}
+
+		function load_classes() {
+			require_once PSCW_CONST_F['plugin_dir'] . 'inc/functions.php';
+
+			Enqueue::instance();
+			Setup_Wizard::instance();
+			Settings::instance();
+			Size_Chart::instance();
+			Size_Chart_Product::instance();
+			Short_Code::instance();
+			Front_End::instance();
+			Customizer::instance();
+
+			if ( is_admin() && ! wp_doing_ajax() ) {
+				$this->support();
 			}
+
+
+
+		}
+
+		public function support() {
+			new \VillaTheme_Support(
+				array(
+					'support'    => '',
+					'docs'       => '',
+					'review'     => '',
+					'pro_url'    => '',
+					'css'        => PSCW_CONST_F['css_url'],
+					'image'      => PSCW_CONST_F['img_url'],
+					'slug'       => 'product-size-chart-for-woo',
+					'menu_slug'  => 'edit.php?post_type=pscw-size-chart',
+					'version'    => PSCW_CONST_F['version'],
+					'survey_url' => ''
+				)
+			);
 		}
 
 		public function settings_link( $links ) {
-			array_unshift( $links, '<a href="' . admin_url( 'edit.php?post_type=pscw-size-chart&page=pscw-size-chart-setting' ) . '">' .esc_html__( 'Settings', 'product-size-chart-for-woo' ) . '</a>' );
-			return $links;
+			return array_merge(
+				[
+					sprintf( "<a href='%1s' >%2s</a>", esc_url( admin_url( 'edit.php?post_type=pscw-size-chart&page=pscw-size-chart-setting' ) ),
+						esc_html__( 'Settings', 'product-size-chart-for-woo' ) )
+				],
+				$links );
 		}
+
+        public function after_activated( $plugin ) {
+
+	        $args = array(
+		        'post_type'      => 'product',
+		        'orderby'        => 'asc',
+		        'posts_per_page' => 1,
+				//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+		        'meta_query'     => array(
+			        array(
+				        'key'     => '_product_type',
+				        'value'   => array('simple', 'variation'),
+				        'compare' => 'IN',
+			        ),
+		        ),
+	        );
+
+	        $product_query = new \WP_Query($args);
+	        $productIDs = wp_list_pluck($product_query->posts, 'ID');
+
+
+	        if (empty($productIDs)) {
+
+		        $product_id = wp_insert_post(array(
+			        'post_title'   => esc_html__('Product Size Chart Preview', 'product-size-chart-for-woo'),
+			        'post_type'    => 'product',
+			        'post_status'  => 'publish',
+			        'post_content' => '',
+		        ));
+
+
+		        update_post_meta($product_id, '_regular_price', 0);
+		        update_post_meta($product_id, '_product_type', 'simple');
+		        update_post_meta($product_id, '_price', 0);
+		        update_post_meta($product_id, '_visibility', 'visible');
+	        }
+
+	        $this->migrate_data_from_free_to_pro();
+	        if ( $plugin === plugin_basename( __FILE__ ) ) {
+		        $page = isset( $_GET['page'] ) ? wc_clean( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		        if ( get_option( 'pscw_setup_wizard' ) ) {
+			        if ( $page !== 'pscw-setup' ) {
+				        $url = add_query_arg( [ 'page' => 'pscw-setup' ], admin_url() );
+				        wp_safe_redirect( $url );
+				        exit();
+			        }
+		        }
+	        }
+        }
 
 		public function install() {
-			$data_init = array(
-				'enable'         => '1',
-				'position'       => 'product_tabs',
-				'woo_sc_name'    => '',
-				'btn_horizontal' => 'right',
-				'btn_vertical'   => '50',
-				'multi_sc'       => '0',
-				'button_type'    => 'text',
-				'btn_color'      => '#2185d0',
-				'text_color'     => '#ffffff',
-				'custom_css'     => ''
+			$check_active = get_option( 'woo_sc_setting', array() );
+			if ( ! $check_active ) {
+				$settings = Data::get_instance();
+				$params   = $settings->get_params();
+				update_option( 'woo_sc_setting', $params );
+//				update_option('pscw_setup_wizard', 1, 'no');
+			} else {
+				if ( ! isset( $check_active['pscw_icon'] ) ) {
+					$check_active['pscw_icon'] = 'ruler-icon-2';
+					update_option( 'woo_sc_setting', $check_active );
+				}
+			}
 
+			update_option('pscw_setup_wizard', 1, 'no');
+		}
+
+		public function migrate_data_from_free_to_pro() {
+			$posts = get_posts( array(
+					'post_type'  => 'pscw-size-chart',
+					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					'meta_query' => array(
+						'relation' => 'AND',
+						array(
+							'key'     => 'woo_sc_size_chart_data',
+							'compare' => 'EXISTS',
+						),
+						array(
+							'key'     => 'pscw_data',
+							'compare' => 'NOT EXISTS',
+						),
+						array(
+							'key'     => 'pscw_list_product',
+							'compare' => 'NOT EXISTS',
+						),
+						array(
+							'key'     => 'pscw_interface',
+							'compare' => 'NOT EXISTS',
+						),
+					)
+				)
 			);
-			if ( ! get_option( 'woo_sc_setting', '' ) ) {
-				update_option( 'woo_sc_setting', $data_init );
+
+			foreach ( $posts as $postt ) {
+				$woo_sc_size_chart_data = get_post_meta( $postt->ID, 'woo_sc_size_chart_data', true );
+				$this->migrate_interface( $postt, $woo_sc_size_chart_data );
+				$this->migrate_products( $postt, $woo_sc_size_chart_data );
 			}
-			$this->default_template();
 		}
 
-		/*default template*/
-		public function default_template() {
-			$default_template_option = get_option( 'woo_sc_template' );
-			if ( empty( $default_template_option ) ) {
-				$default_template_posts     = array(
-					'mens_tshirt'   => esc_html__( "Men's T-shirts Size Chart", 'product-size-chart-for-woo' ),
-					'womens_tshirt' => esc_html__( "Women's T-shirts Size Chart", 'product-size-chart-for-woo' ),
-					'womens_dress'  => esc_html__( "Women's Dress Size Chart", 'product-size-chart-for-woo' ),
-					'mens_shoes'    => esc_html__( "Men's Shoes Size Chart", 'product-size-chart-for-woo' ),
-					'womens_shoes'  => esc_html__( "Women's Shoes Size Chart", 'product-size-chart-for-woo' )
-				);
-				$user_id                    = get_current_user_id();
-				$default_template_posts_ids = array();
-				foreach ( $default_template_posts as $default_template_posts_key => $default_template_posts_value ) {
-					$template_content             = $this->template_html_content( $default_template_posts_key );
-					$post_args                    = array(
-						'post_author'  => $user_id,
-						'post_content' => $template_content,
-						'post_type'    => 'pscw-size-chart',
-						'post_status'  => 'publish',
-						'post_title'   => $default_template_posts_value,
-					);
-					$post_id                      = wp_insert_post( $post_args );
-					$default_template_posts_ids[] = $post_id;
-					if ( 0 !== $post_id ) {
-						$this->default_template_table_post_meta( $post_id, $default_template_posts_key );
+		public function migrate_interface( $postt, $woo_sc_size_chart_data ) {
+			$imageElement = [];
+			$textElement  = [];
+			$tableElement = [];
+			$children     = [];
+			if ( isset( $woo_sc_size_chart_data['img_link'] ) && ! empty( $woo_sc_size_chart_data['img_link'] ) ) {
+				$children[] = 'pscw-image-ID_1724316621806';
+
+				$imageElement = [
+					'id'          => 'pscw-image-ID_1724316621806',
+					'type'        => 'image',
+					"parent"      => "pscw-col-ID_1724316618202",
+					"alt"         => "",
+					"borderColor" => "#000000",
+					"borderStyle" => "solid",
+					"borderWidth" => 0,
+					"height"      => 100,
+					"heightUnit"  => "%",
+					"width"       => 100,
+					"widthUnit"   => "%",
+					"src"         => $woo_sc_size_chart_data['img_link'],
+					"padding"     => [
+						0,
+						0,
+						0,
+						0
+					],
+					"margin"      => [
+						0,
+						0,
+						0,
+						0
+					],
+					"objectFit"   => "unset"
+				];
+			}
+
+			if ( ! empty( $postt->post_content ) ) {
+				$children[]  = 'pscw-text-ID_1724316624227';
+				$textElement = [
+					"id"     => "pscw-text-ID_1724316624227",
+					"type"   => "text",
+					"parent" => "pscw-col-ID_1724316618202",
+					"value"  => wp_kses_post( $postt->post_content ),
+					"margin" => [
+						0,
+						0,
+						0,
+						0
+					]
+				];
+			}
+
+			if ( isset( $woo_sc_size_chart_data['table_array'] ) ) {
+				$children[] = 'pscw-table-ID_1724316630077';
+				$columns    = [ "" ];
+				$rows       = [ [ "" ] ];
+				if ( ! empty( $woo_sc_size_chart_data['table_array'] ) ) {
+					$table_array = json_decode( $woo_sc_size_chart_data['table_array'], true );
+					$columns     = $table_array[0];
+					unset( $table_array[0] );
+					$rows = array_values( $table_array );
+				}
+				$tableElement = [
+					'id'                    => "pscw-table-ID_1724316630077",
+					"type"                  => "table",
+					"parent"                => "pscw-col-ID_1724316618202",
+					"columns"               => $columns,
+					"rows"                  => $rows,
+					"headerColumn"          => 'row',
+					"headerBackground"      => isset( $woo_sc_size_chart_data['head_color'] ) ? $woo_sc_size_chart_data['head_color'] : "#ffffff",
+					"textHeader"            => isset( $woo_sc_size_chart_data['text_head_color'] ) ? $woo_sc_size_chart_data['text_head_color'] : "#000000",
+					"headerTextBold"        => false,
+					"headerTextSize"        => 14,
+					"columnsStyle"          => isset( $woo_sc_size_chart_data['woo_sc_cell_style'] ) && $woo_sc_size_chart_data['woo_sc_cell_style'] === 'columns',
+					"evenBackground"        => isset( $woo_sc_size_chart_data['even_rows_color'] ) ? $woo_sc_size_chart_data['even_rows_color'] : "#ffffff",
+					"evenText"              => isset( $woo_sc_size_chart_data['even_rows_text_color'] ) ? $woo_sc_size_chart_data['even_rows_text_color'] : "#494949",
+					"oddBackground"         => isset( $woo_sc_size_chart_data['odd_rows_color'] ) ? $woo_sc_size_chart_data['odd_rows_color'] : "#ffffff",
+					"oddText"               => isset( $woo_sc_size_chart_data['odd_rows_text_color'] ) ? $woo_sc_size_chart_data['odd_rows_text_color'] : "#494949",
+					"borderColor"           => isset( $woo_sc_size_chart_data['border_color'] ) ? $woo_sc_size_chart_data['border_color'] : "#9D9D9D",
+					"cellTextSize"          => 14,
+					"horizontalBorderWidth" => isset( $woo_sc_size_chart_data['horizontal_width'] ) ? $woo_sc_size_chart_data['horizontal_width'] : 1,
+					"horizontalBorderStyle" => isset( $woo_sc_size_chart_data['horizontal_border_style'] ) ? $woo_sc_size_chart_data['horizontal_border_style'] : "solid",
+					"verticalBorderWidth"   => isset( $woo_sc_size_chart_data['vertical_width'] ) ? $woo_sc_size_chart_data['vertical_width'] : 1,
+					"verticalBorderStyle"   => isset( $woo_sc_size_chart_data['vertical_border_style'] ) ? $woo_sc_size_chart_data['vertical_border_style'] : "solid",
+					"margin"                => [
+						0,
+						0,
+						0,
+						0
+					],
+					"borderRadius"          => ( isset( $woo_sc_size_chart_data['table_template'] ) && $woo_sc_size_chart_data['table_template'] === 'table_template_v1' ) ? [
+						20,
+						20,
+						20,
+						20
+					] : [
+						0,
+						0,
+						0,
+						0
+					]
+				];
+			}
+
+
+			$pscw_interface = array(
+				'layout'       => [
+					'type'     => "container",
+					'children' => [
+						'pscw-row-ID_1724316618201'
+					]
+				],
+				'elementsById' => [
+					'pscw-col-ID_1724316618202' => [
+						'id'       => 'pscw-col-ID_1724316618202',
+						'class'    => 'pscw-col-l-12',
+						'type'     => 'column',
+						'parent'   => 'pscw-row-ID_1724316618201',
+						'children' => $children,
+						'settings' => [
+							'class' => 'pscw-customize-col-12',
+						],
+					],
+					"pscw-row-ID_1724316618201" => [
+						"children" => [
+							"pscw-col-ID_1724316618202"
+						],
+						"id"       => "pscw-row-ID_1724316618201",
+						"type"     => "row"
+					]
+				]
+			);
+
+			if ( ! empty( $imageElement ) ) {
+				$pscw_interface['elementsById'][ $imageElement['id'] ] = $imageElement;
+			}
+
+			if ( ! empty( $textElement ) ) {
+				$pscw_interface['elementsById'][ $textElement['id'] ] = $textElement;
+			}
+
+			if ( ! empty( $tableElement ) ) {
+				$pscw_interface['elementsById'][ $tableElement['id'] ] = $tableElement;
+			}
+
+			update_post_meta( $postt->ID, 'pscw_interface', $pscw_interface );
+		}
+
+		public function migrate_products( $postt, $woo_sc_size_chart_data ) {
+
+			$pscw_data = array
+			(
+				'assign'          => 'none',
+				'allow_countries' => array(),
+				'condition'       => array(),
+			);
+
+
+			if ( isset( $woo_sc_size_chart_data['categories'] ) && isset( $woo_sc_size_chart_data['search_product'] ) ) {
+				if ( ! empty( $woo_sc_size_chart_data['categories'] ) && ! empty( $woo_sc_size_chart_data['search_product'] ) ) {
+					$new_list_product = [];
+					if ( ( is_array( $woo_sc_size_chart_data['categories'] ) && count( $woo_sc_size_chart_data['categories'] ) && ( is_array( $woo_sc_size_chart_data['search_product'] ) && count( $woo_sc_size_chart_data['search_product'] ) ) ) ) {
+						$pscw_data['assign'] = 'product_cat';
+
+
+						foreach ( $woo_sc_size_chart_data['categories'] as $cat_id ) {
+							$get_term                 = get_term_by( 'id', $cat_id, 'product_cat' );
+							$new_list_product         = $new_list_product + wc_get_products( array(
+									'category' => [ $cat_id ],
+									'return'   => 'ids'
+								) );
+							$pscw_data['condition'][] = $get_term->slug;
+						}
+						foreach ( $new_list_product as $product_id ) {
+							$pscw_sizecharts = get_post_meta( $product_id, 'pscw_sizecharts', true );
+							if ( empty( get_post_meta( $product_id, 'pscw_mode', true ) ) ) {
+								update_post_meta( $product_id, 'pscw_mode', 'global' );
+							}
+							if ( empty( $pscw_sizecharts ) ) {
+								update_post_meta( $product_id, 'pscw_sizecharts', [ $postt->ID ] );
+							} else {
+								$pscw_sizecharts[] = $postt->ID;
+								update_post_meta( $product_id, 'pscw_sizecharts', $pscw_sizecharts );
+							}
+						}
+
+						update_post_meta( $postt->ID, 'pscw_data', $pscw_data );
+						update_post_meta( $postt->ID, 'pscw_list_product', $new_list_product );
+
+						foreach ( $woo_sc_size_chart_data['search_product'] as $search_product_id ) {
+							if ( ! in_array( $search_product_id, $woo_sc_size_chart_data['categories'] ) ) {
+								$pscw_override = get_post_meta( $search_product_id, 'pscw_override', true );
+								if ( empty( $pscw_override ) ) {
+									update_post_meta( $search_product_id, 'pscw_override', [ $postt->ID ] );
+								} else {
+									$pscw_override[] = $postt->ID;
+									update_post_meta( $search_product_id, 'pscw_override', $pscw_override );
+								}
+								if ( empty( get_post_meta( $product_id, 'pscw_mode', true ) ) ) {
+									update_post_meta( $product_id, 'pscw_mode', 'override' );
+								}
+							}
+						}
+
 					}
+
+				} else if ( ! empty( $woo_sc_size_chart_data['categories'] ) && empty( $woo_sc_size_chart_data['search_product'] ) ) {
+					$new_list_product = [];
+					if ( is_array( $woo_sc_size_chart_data['categories'] ) && count( $woo_sc_size_chart_data['categories'] ) ) {
+						$pscw_data['assign'] = 'product_cat';
+
+						foreach ( $woo_sc_size_chart_data['categories'] as $cat_id ) {
+							$get_term                 = get_term_by( 'id', $cat_id, 'product_cat' );
+							$new_list_product         = $new_list_product + wc_get_products( array(
+									'category' => $get_term->slug,
+									'return'   => 'ids'
+								) );
+							$pscw_data['condition'][] = $get_term->slug;
+						}
+						foreach ( $new_list_product as $product_id ) {
+							$pscw_sizecharts = get_post_meta( $product_id, 'pscw_sizecharts', true );
+							if ( empty( get_post_meta( $product_id, 'pscw_mode', true ) ) ) {
+								update_post_meta( $product_id, 'pscw_mode', 'global' );
+							}
+							if ( empty( $pscw_sizecharts ) ) {
+								update_post_meta( $product_id, 'pscw_sizecharts', [ $postt->ID ] );
+							} else {
+								$pscw_sizecharts[] = $postt->ID;
+								update_post_meta( $product_id, 'pscw_sizecharts', $pscw_sizecharts );
+							}
+						}
+
+						update_post_meta( $postt->ID, 'pscw_data', $pscw_data );
+						update_post_meta( $postt->ID, 'pscw_list_product', $new_list_product );
+					}
+				} else if ( empty( $woo_sc_size_chart_data['categories'] ) && ! empty( $woo_sc_size_chart_data['search_product'] ) ) {
+					$pscw_data['assign']    = 'products';
+					$pscw_data['condition'] = $woo_sc_size_chart_data['search_product'];
+					foreach ( $woo_sc_size_chart_data['search_product'] as $product_id ) {
+						$pscw_sizecharts = get_post_meta( $product_id, 'pscw_sizecharts', true );
+						if ( empty( get_post_meta( $product_id, 'pscw_mode', true ) ) ) {
+							update_post_meta( $product_id, 'pscw_mode', 'global' );
+						}
+						if ( empty( $pscw_sizecharts ) ) {
+							update_post_meta( $product_id, 'pscw_sizecharts', [ $postt->ID ] );
+						} else {
+							$pscw_sizecharts[] = $postt->ID;
+							update_post_meta( $product_id, 'pscw_sizecharts', $pscw_sizecharts );
+						}
+					}
+					update_post_meta( $postt->ID, 'pscw_data', $pscw_data );
+					update_post_meta( $postt->ID, 'pscw_list_product', $woo_sc_size_chart_data['search_product'] );
+				} else {
+					update_post_meta( $postt->ID, 'pscw_data', $pscw_data );
+					update_post_meta( $postt->ID, 'pscw_list_product', [] );
 				}
-				update_option( 'woo_sc_template', 'default_template' );
 			}
-		}
-
-		public function template_html_content( $template ) {
-			ob_start();
-			?>
-            <div class="woo_sc_template_content">
-				<?php esc_html_e( 'Measure your body as follows to choose the size that suits you best:', 'product-size-chart-for-woo' );
-				switch ( $template ) {
-					case "mens_tshirt":
-						?>
-                        <div>
-                            <strong><?php esc_html_e( 'Chest : ', 'product-size-chart-for-woo' ); ?></strong>
-                            <div>
-								<?php esc_html_e( 'Measure around the fullest part, place the tape close under the arms and make sure the tape is flat across the back.', 'product-size-chart-for-woo' ); ?>
-                            </div>
-                        </div>
-						<?php
-						break;
-					case "womens_tshirt":
-						?>
-                        <div>
-                            <strong><?php esc_html_e( 'Chest: ', 'product-size-chart-for-woo' ); ?></strong>
-                            <div>
-								<?php esc_html_e( 'Measure under your arms, around the fullest part of the your chest.', 'product-size-chart-for-woo' ); ?>
-                            </div>
-
-                            <strong><?php esc_html_e( 'Waist: ', 'product-size-chart-for-woo' ); ?></strong>
-                            <div>
-								<?php esc_html_e( 'Measure around your natural waistline, keeping the tape a bit loose.', 'product-size-chart-for-woo' ); ?>
-                            </div>
-                        </div>
-						<?php
-						break;
-					case "womens_dress":
-						?>
-                        <div>
-                            <strong><?php esc_html_e( 'Chest: ', 'product-size-chart-for-woo' ); ?></strong>
-                            <div>
-								<?php esc_html_e( 'Measure under your arms, around the fullest part of the your chest.', 'product-size-chart-for-woo' ); ?>
-                            </div>
-                            <strong><?php esc_html_e( 'Waist: ', 'product-size-chart-for-woo' ); ?></strong>
-                            <div>
-								<?php esc_html_e( 'Measure around your natural waistline, keeping the tape a bit loose.', 'product-size-chart-for-woo' ); ?>
-                            </div>
-                            <strong><?php esc_html_e( 'Hips : ', 'product-size-chart-for-woo' ); ?></strong>
-                            <div>
-								<?php esc_html_e( 'Measure around the fullest part of your body at the top of your leg.', 'product-size-chart-for-woo' ); ?>
-                            </div>
-                        </div>
-						<?php
-						break;
-					case "mens_shoes":
-						?>
-                        <div>
-							<?php esc_html_e( 'Measure your foot length carefully.', 'product-size-chart-for-woo' ); ?>
-							<?php esc_html_e( 'Please choose the correct size according to your foot length and chinese size.', 'product-size-chart-for-woo' ); ?>
-							<?php esc_html_e( 'For example, if your foot length is 25.5 cm, you should choose the size 8.', 'product-size-chart-for-woo' ); ?>
-                        </div>
-						<?php
-						break;
-					case "womens_shoes":
-						?>
-                        <div>
-							<?php esc_html_e( 'Measure your foot length carefully.', 'product-size-chart-for-woo' ); ?>
-							<?php esc_html_e( 'Please choose the correct size according to your foot length', 'product-size-chart-for-woo' ); ?>
-                        </div>
-						<?php
-						break;
-				}
-				?>
-            </div>
-			<?php
-			return ob_get_clean();
-		}
-
-		public function default_template_table_post_meta( $post_id, $template ) {
-			$meta_box_data = [
-				'categories'              => "",
-				'img_link'                => "",
-				'template'                => "",
-				'head_color'              => "#2185d0",
-				'text_head_color'         => "#ffffff",
-				'even_rows_color'         => "#cceafc",
-				'even_rows_text_color'    => "#000000",
-				'odd_rows_color'          => "#ffffff",
-				'odd_rows_text_color'     => "#000000",
-				'horizontal_width'        => "1",
-				'vertical_width'          => "1",
-				'horizontal_border_style' => "solid",
-				'vertical_border_style'   => "solid",
-				'border_color'            => "#cccccc",
-				'table_array'             => "",
-				'search_product'          => "",
-				'hide'                    => "none",
-				'img_width'               => ""
-			];
-			switch ( $template ) {
-				case 'mens_tshirt':
-					$meta_box_data['table_array'] = '[["SIZE","INCHES","CM"],["XXXS","30-32","76-81"],["XXS","32-34","81-86"],["XS","34-36","86-91"],["S","36-38","91-96"],["M","38-40","96-101"],["L","40-42","101-106"],["XL","42-44","106-111"],["XXL","44-46","111-116"],["XXXL","46-48","116-121"]]';
-					break;
-				case 'womens_tshirt':
-					$meta_box_data['table_array'] = '[["UK SIZE","BUST","BUST","WAIST","WAIST","HIPS","HIPS"],["","INCHES","CM","INCHES","CM","INCHES","CM"],["4","31","78","24","60","33","83.5"],["6","32","80.5","25","62.5","34","86"],["8","33","83","26","65","35","88.5"],["10","35","88","28","70","37","93.5"],["12","37","93","30","75","39","98.5"],["14","39","98","31","80","41","103.5"],["16","41","103","33","85","43","08.5"],["18","44","110.5","36","92.5","46","116"]]';
-					break;
-				case 'womens_dress':
-					$meta_box_data['table_array'] = '[["UK SIZE","BUST","BUST","WAIST","WAIST","HIPS","HIPS"],["","INCHES","CM","INCHES","CM","INCHES","CM"],["4","31","78","24","60","33","83.5"],["6","32","80.5","25","62.5","34","86"],["8","33","83","26","65","35","88.5"],["10","35","88","28","70","37","93.5"],["12","37","93","30","75","39","98.5"],["14","39","98","31","80","41","103.5"],["16","41","103","33","85","43","108.5"],["18","44","110.5","36","92.5","46","116"]]';
-					break;
-				case 'mens_shoes':
-					$meta_box_data['table_array'] = '[["Heel To Toe (CM)","23","23.5","24","24.5","25","25.5","26","26.5","27","27.5","28","28.5","29","29.5","30"],["US","5","5.5","6","6.5","7","8","8.5","9.5","10","11","12","12.5","13","14","15"],["Chinese Size","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"]]';
-					break;
-				case 'womens_shoes':
-					$meta_box_data['table_array'] = '[["Heel To Toe (CM)","22","22.5","23","23.5","24","24.5","25","25.5","26","26.5","27","27.5","28"],["US","4.5","5","6","6.5","7.5","8.5","9","9.5","10","10.5","12","13","14"],["EU","34","35","36","37","38","39","40","41","42","43","44","45","46"]]';
-					break;
-			}
-			update_post_meta( $post_id, 'woo_sc_size_chart_data', $meta_box_data );
 		}
 	}
 
-	new PSCW_PRODUCT_SIZE_CHART_F_WOO();
+	new Product_Size_Chart_F();
 }

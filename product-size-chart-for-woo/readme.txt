@@ -4,8 +4,8 @@ Donate link: http://www.villatheme.com/donate
 Tags: woocommerce, Size chart, woocommerce size chart,product size chart,product size chart for woo
 Requires at least: 5.0
 Requires PHP: 7.0
-Tested up to: 6.5
-WC tested up to: 8.9
+Tested up to: 6.6
+WC tested up to: 9.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -185,6 +185,9 @@ And much more things are waiting for you discover
 4. Create size chart table
 
 == Changelog ==
+/**2024.09.24 - 2.0.0**/
+- Update: Update size chart 2.0.0
+
 /**2024.06.17 - 1.2.6**/
 – Fixed: Do not display size chart for products in assigned categories
 
