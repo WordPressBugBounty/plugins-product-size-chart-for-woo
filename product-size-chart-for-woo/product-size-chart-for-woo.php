@@ -3,7 +3,7 @@
  * Plugin Name: Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 2.0.0
+ * Version: 2.0.1
  * Author URI: http://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2024 VillaTheme.com. All rights reserved.
@@ -60,7 +60,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 		function define() {
 			define( 'PSCW_CONST_F', [
-				'version'     => '2.0.0',
+				'version'     => '2.0.1',
 				'plugin_name' => 'Product Size Chart for WooCommerce',
 				'slug'        => 'pscw',
 				'assets_slug' => 'pscw-',
@@ -253,41 +253,10 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 		}
 
 		public function migrate_interface( $postt, $woo_sc_size_chart_data ) {
-			$imageElement = [];
 			$textElement  = [];
+			$imageElement = [];
 			$tableElement = [];
 			$children     = [];
-			if ( isset( $woo_sc_size_chart_data['img_link'] ) && ! empty( $woo_sc_size_chart_data['img_link'] ) ) {
-				$children[] = 'pscw-image-ID_1724316621806';
-
-				$imageElement = [
-					'id'          => 'pscw-image-ID_1724316621806',
-					'type'        => 'image',
-					"parent"      => "pscw-col-ID_1724316618202",
-					"alt"         => "",
-					"borderColor" => "#000000",
-					"borderStyle" => "solid",
-					"borderWidth" => 0,
-					"height"      => 100,
-					"heightUnit"  => "%",
-					"width"       => 100,
-					"widthUnit"   => "%",
-					"src"         => $woo_sc_size_chart_data['img_link'],
-					"padding"     => [
-						0,
-						0,
-						0,
-						0
-					],
-					"margin"      => [
-						0,
-						0,
-						0,
-						0
-					],
-					"objectFit"   => "unset"
-				];
-			}
 
 			if ( ! empty( $postt->post_content ) ) {
 				$children[]  = 'pscw-text-ID_1724316624227';
@@ -302,6 +271,38 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 						0,
 						0
 					]
+				];
+			}
+
+			if ( isset( $woo_sc_size_chart_data['img_link'] ) && ! empty( $woo_sc_size_chart_data['img_link'] ) ) {
+				$children[] = 'pscw-image-ID_1724316621806';
+
+				$imageElement = [
+					'id'          => 'pscw-image-ID_1724316621806',
+					'type'        => 'image',
+					"parent"      => "pscw-col-ID_1724316618202",
+					"alt"         => "",
+					"borderColor" => "#000000",
+					"borderStyle" => "solid",
+					"borderWidth" => 0,
+					"height"      => 100,
+					"heightUnit"  => "%",
+					"width"       => isset( $woo_sc_size_chart_data['img_width'] ) ? $woo_sc_size_chart_data['img_width'] : 100,
+					"widthUnit"   => "%",
+					"src"         => $woo_sc_size_chart_data['img_link'],
+					"padding"     => [
+						0,
+						0,
+						0,
+						0
+					],
+					"margin"      => [
+						10,
+						0,
+						10,
+						0
+					],
+					"objectFit"   => "unset"
 				];
 			}
 
@@ -386,12 +387,12 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 				]
 			);
 
-			if ( ! empty( $imageElement ) ) {
-				$pscw_interface['elementsById'][ $imageElement['id'] ] = $imageElement;
-			}
-
 			if ( ! empty( $textElement ) ) {
 				$pscw_interface['elementsById'][ $textElement['id'] ] = $textElement;
+			}
+
+			if ( ! empty( $imageElement ) ) {
+				$pscw_interface['elementsById'][ $imageElement['id'] ] = $imageElement;
 			}
 
 			if ( ! empty( $tableElement ) ) {

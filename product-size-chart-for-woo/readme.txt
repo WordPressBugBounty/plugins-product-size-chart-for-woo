@@ -25,7 +25,7 @@ WooCommerce Size Chart helps you to customize and design the size chart of speci
 [youtube https://www.youtube.com/watch?v=hYSDsXcwnK4]
 
 ### Important Notice:
-- Plugin works based on WooCommerce 5.x plugin.
+- Plugin works based on WooCommerce 7.x plugin.
 - It is released on WordPress.org and you can use plugin as free to build themes for sale.
 
 ### PRODUCT SIZE CHART FOR WOO FEATURES
@@ -185,8 +185,12 @@ And much more things are waiting for you discover
 4. Create size chart table
 
 == Changelog ==
-/**2024.09.24 - 2.0.0**/
-- Update: Update size chart 2.0.0
+/**2024.09.26 – 2.0.1**/
+– Fixed: Set image size chart center
+- Fixed: Clear size chart in product when remove a size chart
+
+/**2024.09.24 – 2.0.0**/
+– Update: Update size chart 2.0.0
 
 /**2024.06.17 - 1.2.6**/
 – Fixed: Do not display size chart for products in assigned categories

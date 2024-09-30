@@ -12,6 +12,7 @@ class Size_Chart {
 		add_action( 'add_meta_boxes', array( $this, 'pscw_meta_box' ) );
 		add_action( 'save_post', array( $this, 'pscw_save_data_meta_box' ) );
 		add_action( 'post_action_pscw_duplicate', array( $this, 'pscw_duplicate' ) );
+		add_action( 'before_delete_post', array( $this, 'pscw_before_delete_size_chart'), 99, 2 );
 		add_filter( 'post_row_actions', array( $this, 'post_add_action' ), 20, 2 );
 		add_filter( 'manage_pscw-size-chart_posts_columns', array( $this, 'custom_post_columns' ) );
 		add_action( 'manage_pscw-size-chart_posts_custom_column', array( $this, 'show_custom_columns' ) );
@@ -324,6 +325,52 @@ class Size_Chart {
 				update_post_meta( $new_id, 'pscw_interface', $dub_interface );
 				wp_safe_redirect( admin_url( "post.php?post={$new_id}&action=edit" ) );
 				exit;
+			}
+		}
+	}
+
+	public function pscw_before_delete_size_chart( $postid, $post ) {
+		if ( 'pscw-size-chart' !== $post->post_type ) {
+			$list_product     = get_post_meta( $postid, 'pscw_list_product', true );
+			foreach ( $list_product as $pd ) {
+				$size_charts = get_post_meta( $pd, 'pscw_sizecharts', true );
+				$key = array_search( $postid, $size_charts );
+				if ($key !== false) {
+					unset($size_charts[$key]);
+					$size_charts = array_values($size_charts);
+					update_post_meta( $pd, 'pscw_sizecharts', $size_charts );
+				}
+			}
+
+			$args = array(
+				'post_type'      => 'product',
+				'post_status'    => 'publish',
+				//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'meta_query'     => array(
+					array(
+						'key'     => 'pscw_override',
+						'value'   => '"' . $postid . '"',
+						'compare' => 'LIKE',
+					),
+				),
+				'fields'         => 'ids',
+			);
+
+			$query = new \WP_Query( $args );
+
+
+			if ( $query->have_posts() ) {
+				$product_ids = $query->posts;
+				foreach ( $product_ids as $pid ) {
+					$size_charts_ov = get_post_meta( $pid, 'pscw_override', true );
+					$key = array_search( $postid, $size_charts_ov );
+					if ($key !== false) {
+						unset($size_charts_ov[$key]);
+						$size_charts_ov = array_values($size_charts_ov);
+						update_post_meta( $pid, 'pscw_override', $size_charts_ov );
+					}
+				}
+
 			}
 		}
 	}

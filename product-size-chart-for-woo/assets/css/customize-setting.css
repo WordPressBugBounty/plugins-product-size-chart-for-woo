@@ -501,7 +501,7 @@
 }
 
 /*Button Upload*/
-.pscw-customize-btn-upload-container button {
+.pscw-customize-btn-upload-container div {
   padding: 0.78571429em 1.5em;
   color: #fff;
   background: #21BA45;
@@ -510,6 +510,7 @@
   border-radius: 0.28571429rem;
   box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
   cursor: pointer;
+  text-align: center;
 }
 
 /*Component Panel*/

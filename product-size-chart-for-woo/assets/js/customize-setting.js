@@ -344,7 +344,7 @@ jQuery(document).ready( function ( $ ) {
 
         createBtnUpload() {
             let container = $( `<div class="pscw-customize-btn-upload-container"></div>` );
-            let button = $( `<button type="button">${this.value}</button>` );
+            let button = $( `<div type="button">${this.value}</div>` );
             let input = $( `<input type="file" hidden>` );
 
             container.append( input );

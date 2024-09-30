@@ -84,7 +84,7 @@ class Enqueue {
 	public function register_admin_scripts() {
 
 		//*************************************//
-		$admin_styles = [ 'settings', 'size-chart', 'setup-wizard' ];
+		$admin_styles = [ 'settings', 'size-chart', 'product', 'setup-wizard' ];
 
 		foreach ( $admin_styles as $style ) {
 			wp_register_style( $this->slug . $style, PSCW_CONST_F['css_url'] . $style . $this->suffix . '.css', '', PSCW_CONST_F['version'] );
@@ -95,6 +95,7 @@ class Enqueue {
 			'settings'       => [ 'jquery' ],
 			'size-chart'     => [ 'jquery' ],
 			'all-size-chart' => [ 'jquery' ],
+			'product'        => [ 'jquery' ],
 			'setup-wizard'   => [ 'jquery' ],
 		];
 
@@ -167,6 +168,16 @@ class Enqueue {
 					'all-size-chart'
 				];
 				break;
+			case 'product':
+				$enqueue_styles  = [
+					'select2',
+					'product'
+				];
+				$enqueue_scripts = [
+					'select2',
+					'product'
+				];
+				break;
 			case 'dashboard_page_pscw-setup':
 				$enqueue_styles  = [ 'button', 'header', 'transition', 'dropdown', 'segment', 'step', 'checkbox', 'setup-wizard' ];
 				$enqueue_scripts  = [ 'dropdown', 'transition', 'checkbox', 'setup-wizard' ];
@@ -187,6 +198,7 @@ class Enqueue {
 			'nonce'   => wp_create_nonce( 'pscw_nonce' ),
 		);
 		wp_localize_script( $this->slug . 'size-chart', 'VicPscwParams', $params );
+		wp_localize_script( $this->slug . 'product', 'VicPscwParams', $params );
 		wp_localize_script( $this->slug . 'setup-wizard', 'VicPscwParams', $params );
 
 	}

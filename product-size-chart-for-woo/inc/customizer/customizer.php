@@ -300,7 +300,7 @@ class Customizer {
 		wp_localize_script( 'pscw-customize-setting', 'VicPscwParams', array(
 			'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
 			'nonce'            => wp_create_nonce( 'pscw_nonce' ),
-			'data'             => wp_json_encode( $interface ),
+			'data'             => wp_json_encode( $interface , JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ),
 			'placeholderImage' => wc_placeholder_img_src( 'full' ),
 			'sizeCharts'       => $size_chart_ids,
 			'currentSizeChart' => $current_sc_id,

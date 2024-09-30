@@ -48,7 +48,34 @@ class Size_Chart_Product {
         <div id="pscw_options" class="panel wc-metaboxes-wrapper">
             <div class="woocommerce_variable_attributes wc-metabox-content">
                 <div class="wc-metabox data">
-                    <a class="vi-ui button" target="_blank" href="https://1.envato.market/DzJ12">Upgrade This Feature</a>
+                    <a href="<?php echo esc_url( admin_url() . "/edit.php?post_type=pscw-size-chart" ); ?>"
+                       target="_blank"><?php esc_html_e( 'Manage Size Charts', 'product-size-chart-for-woo' ); ?></a>
+					<?php
+					woocommerce_wp_radio( array(
+						'id'          => 'pscw_mode',
+						'name'        => 'pscw_mode',
+						'label'       => esc_html__( 'Product Size Chart Mode', 'product-size-chart-for-woo' ),
+						'description' => '',
+						'desc_tip'    => false,
+						'options'     => array(
+							'global'   => esc_html__( 'Global', 'product-size-chart-for-woo' ),
+							'disable'  => esc_html__( 'Disable', 'product-size-chart-for-woo' ),
+							'override' => esc_html__( 'Override', 'product-size-chart-for-woo' ),
+						),
+						'value'       => ! empty( $pscw_mode ) ? sanitize_text_field( $pscw_mode ) : 'global',
+					) );
+
+					woocommerce_wp_select( array(
+						'id'                => 'pscw_override',
+						'name'              => 'pscw_override[]',
+						'label'             => '',
+						'desc_tip'          => false,
+						'description'       => '',
+						'options'           => ! empty( $pscw_override_size_charts ) ? wc_clean( wp_unslash( $pscw_override_size_charts ) ) : array(),
+						'custom_attributes' => array( 'multiple' => 'multiple' ),
+						'value'             => ! empty( $pscw_override ) ? wc_clean( wp_unslash( $pscw_override ) ) : array()
+					) );
+					?>
                 </div>
             </div>
         </div>
