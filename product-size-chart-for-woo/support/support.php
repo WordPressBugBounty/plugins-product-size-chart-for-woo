@@ -294,7 +294,7 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 			if ( wp_verify_nonce( $_villatheme_nonce, 'villatheme_'.$this->data['slug'] . '_wp_reviewed' ) ) {
 				set_transient( 'villatheme_'.$this->data['slug'] . $this->data['version'] . '_hide_notices', 1, 2592000 );
 				update_option( 'villatheme_'.$this->data['slug'] . '_wp_reviewed', 1 );
-				wp_safe_redirect( $this->data['review'] );
+				wp_safe_redirect( esc_url_raw($this->data['review']) );
 				exit();
 			}
 		}
@@ -403,12 +403,12 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 
 			if ( wp_verify_nonce( $_villatheme_nonce, 'villatheme_hide_toolbar' ) ) {
 				update_option( 'villatheme_hide_admin_toolbar', time() );
-				wp_safe_redirect( esc_url(esc_url_raw( remove_query_arg( array( '_villatheme_nonce' ) ) )) );
+				wp_safe_redirect( (esc_url_raw( remove_query_arg( array( '_villatheme_nonce' ) ) )) );
 				exit();
 			}
 			if ( wp_verify_nonce( $_villatheme_nonce, 'villatheme_show_toolbar' ) ) {
 				delete_option( 'villatheme_hide_admin_toolbar' );
-				wp_safe_redirect( esc_url(esc_url_raw( remove_query_arg( array( '_villatheme_nonce' ) ) )) );
+				wp_safe_redirect( (esc_url_raw( remove_query_arg( array( '_villatheme_nonce' ) ) )) );
 				exit();
 			}
 			$hide_notice = isset( $_GET['villatheme-hide-notice'] ) ? sanitize_text_field( wp_unslash( $_GET['villatheme-hide-notice'] ) ) : '';

@@ -6,11 +6,12 @@ defined( 'ABSPATH' ) || exit;
 
 class Short_Code {
 	protected static $instance = null;
-	protected $suffix = WP_DEBUG ? '' : '.min';
+	protected $suffix = '';
 	protected $setting;
 
 	private function __construct() {
 		$this->setting = Data::get_instance();
+		$this->suffix = WP_DEBUG ? '' : '.min';
 		if ( $this->setting->get_params( 'enable' ) === "1" ) {
 			add_shortcode( 'PSCW_SIZE_CHART', [ $this, 'short_code_content' ] );
 		}

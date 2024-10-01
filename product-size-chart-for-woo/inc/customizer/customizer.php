@@ -10,11 +10,11 @@ defined( 'ABSPATH' ) || exit;
 
 class Customizer {
 	protected static $instance = null;
-	protected $suffix = WP_DEBUG ? '' : '.min';
+	protected $suffix = '';
 	protected $setting;
 
 	private function __construct() {
-
+		$this->suffix = WP_DEBUG ? '' : '.min';
 		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_REQUEST['pscw_id'] ) ) {
 			//phpcs:ignore WordPress.Security.NonceVerification.Recommended

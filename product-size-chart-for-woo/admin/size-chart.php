@@ -123,12 +123,12 @@ class Size_Chart {
 						<?php endif; ?>
                     </td>
                 </tr>
-                <tr>
-                    <th><?php esc_html_e( 'Select countries to show', 'product-size-chart-for-woo' ); ?></th>
+                <!--<tr>
+                    <th><?php /*esc_html_e( 'Select countries to show', 'product-size-chart-for-woo' ); */?></th>
                     <td>
                         <a class="vi-ui pink button" target="_blank" href="https://1.envato.market/DzJ12">Upgrade This Feature</a>
                     </td>
-                </tr>
+                </tr>-->
                 <tr>
                     <th><?php esc_html_e( 'Assign', 'product-size-chart-for-woo' ); ?></th>
                     <td>

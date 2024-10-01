@@ -185,6 +185,10 @@ And much more things are waiting for you discover
 4. Create size chart table
 
 == Changelog ==
+/**2024.10.01 – 2.0.2**/
+- Updated: Update support file
+- Fixed: Default foot image link
+
 /**2024.09.26 – 2.0.1**/
 – Fixed: Set image size chart center
 - Fixed: Clear size chart in product when remove a size chart

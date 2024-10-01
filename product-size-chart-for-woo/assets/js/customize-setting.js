@@ -35,6 +35,8 @@ jQuery(document).ready( function ( $ ) {
         }
 
         render() {
+            /* Hide upgrade button*/
+            if (this.type === 'upgrade') return '';
             let element = $(`<li id="customize-control-${this.id || ''}" class="customize-control customize-control-text"></li>`);
 
             if (this.label) {
@@ -226,9 +228,9 @@ jQuery(document).ready( function ( $ ) {
                                     <div class="pscw-customize-row-list-one pscw-customize-row-list-cols" data-cols="12">
                                     <div></div>
                                     </div>
-                                    <a target="_blank" href="https://1.envato.market/DzJ12" class="pscw-customize-customize-upgrade" >
+                                   <!-- <a target="_blank" href="https://1.envato.market/DzJ12" class="pscw-customize-customize-upgrade" >
                                     Upgrade This Feature
-                                    </a>
+                                    </a>-->
                                     </div>
                                    ` );
         }

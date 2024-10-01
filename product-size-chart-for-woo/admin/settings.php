@@ -230,9 +230,9 @@ class Settings {
 									<?php esc_html_e( 'Size chart Icon', 'product-size-chart-for-woo' ) ?>
                                 </div>
                             </th>
-                            <td>
+                           <!-- <td>
                                 <a class="vi-ui button" target="_blank" href="https://1.envato.market/DzJ12">Upgrade This Feature</a>
-                            </td>
+                            </td>-->
                         </tr>
                         <tr class="woo_sc_btn_color" style="display: none">
                             <th>

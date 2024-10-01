@@ -3,7 +3,7 @@
  * Plugin Name: Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author URI: http://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2024 VillaTheme.com. All rights reserved.
@@ -37,7 +37,7 @@ add_action( 'before_woocommerce_init', function () {
 } );
 
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-if ( is_plugin_active( 'product-size-chart-for-woocommerce/product-size-chart-for-woocommerce.php' ) ) {
+if ( is_plugin_active( 'woocommerce-product-size-chart/woocommerce-product-size-chart.php' ) ) {
 	return;
 }
 
@@ -60,7 +60,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 		function define() {
 			define( 'PSCW_CONST_F', [
-				'version'     => '2.0.1',
+				'version'     => '2.0.2',
 				'plugin_name' => 'Product Size Chart for WooCommerce',
 				'slug'        => 'pscw',
 				'assets_slug' => 'pscw-',
@@ -208,15 +208,13 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 				$settings = Data::get_instance();
 				$params   = $settings->get_params();
 				update_option( 'woo_sc_setting', $params );
-//				update_option('pscw_setup_wizard', 1, 'no');
+				update_option('pscw_setup_wizard', 1, 'no');
 			} else {
 				if ( ! isset( $check_active['pscw_icon'] ) ) {
 					$check_active['pscw_icon'] = 'ruler-icon-2';
 					update_option( 'woo_sc_setting', $check_active );
 				}
 			}
-
-			update_option('pscw_setup_wizard', 1, 'no');
 		}
 
 		public function migrate_data_from_free_to_pro() {
