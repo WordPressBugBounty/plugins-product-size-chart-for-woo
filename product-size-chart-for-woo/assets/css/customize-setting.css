@@ -615,3 +615,12 @@
 }
 
 /*# sourceMappingURL=customize-setting.css.map */
+
+.pscw-disabled {
+  background-color: #d3d3d3;
+  color: #a9a9a9;
+  border: 1px solid #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}

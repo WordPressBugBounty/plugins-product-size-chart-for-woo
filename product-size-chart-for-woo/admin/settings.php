@@ -134,11 +134,11 @@ class Settings {
                                     <option value="pop-up" <?php selected( 'pop-up' == $get_option['position'] ); ?> ><?php esc_html_e( 'Pop-up', 'product-size-chart-for-woo' ) ?></option>
                                     <option value="product_tabs" <?php selected( 'product_tabs' == $get_option['position'] ); ?>><?php esc_html_e( 'Product tab', 'product-size-chart-for-woo' ) ?></option>
                                     <option value="none" <?php selected( 'none' === $get_option['position'] ); ?>><?php esc_html_e( 'None', 'product-size-chart-for-woo' ) ?></option>
-                                    <option value="before_atc_after_variations" disabled><?php esc_html_e( 'Before add to cart after variations (Premium)', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="top_des" disabled><?php esc_html_e( 'Top description (Premium)', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="bottom_des" disabled><?php esc_html_e( 'Bottom description (Premium)', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="after_title" disabled><?php esc_html_e( 'After title (Premium)', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="after_meta" disabled><?php esc_html_e( 'After the meta (Premium)', 'product-size-chart-for-woo' ); ?></option>
+                                    <!--<option value="before_atc_after_variations" disabled><?php /*esc_html_e( 'Before add to cart after variations (Premium)', 'product-size-chart-for-woo' ); */?></option>
+                                    <option value="top_des" disabled><?php /*esc_html_e( 'Top description (Premium)', 'product-size-chart-for-woo' ); */?></option>
+                                    <option value="bottom_des" disabled><?php /*esc_html_e( 'Bottom description (Premium)', 'product-size-chart-for-woo' ); */?></option>
+                                    <option value="after_title" disabled><?php /*esc_html_e( 'After title (Premium)', 'product-size-chart-for-woo' ); */?></option>
+                                    <option value="after_meta" disabled><?php /*esc_html_e( 'After the meta (Premium)', 'product-size-chart-for-woo' ); */?></option>-->
                                 </select>
                             </td>
                         </tr>
@@ -193,7 +193,7 @@ class Settings {
                                 </div>
                             </td>
                         </tr>
-                        <tr class="woo_sc_btn_type" style="display: none">
+                        <tr class="woo_sc_btn_type">
                             <th>
                                 <div>
                                     <label><?php esc_html_e( 'Button type', 'product-size-chart-for-woo' ); ?></label>
@@ -205,7 +205,7 @@ class Settings {
                                     <option value="icon" <?php selected( "icon" === $get_option['button_type'] ); ?>>
 										<?php esc_html_e( 'Icon', 'product-size-chart-for-woo' ); ?></option>
                                     <option value="text" <?php selected( "text" === $get_option['button_type'] ); ?>><?php esc_html_e( 'Text', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="icon_text" disabled><?php esc_attr_e( 'Icon & Text (Premium)', 'product-size-chart-for-woo' ); ?></option>
+                                    <!--<option value="icon_text" disabled><?php /*esc_attr_e( 'Icon & Text (Premium)', 'product-size-chart-for-woo' ); */?></option>-->
                                 </select>
                             </td>
                         </tr>

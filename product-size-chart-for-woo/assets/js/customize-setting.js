@@ -570,7 +570,6 @@ jQuery(document).ready( function ( $ ) {
             this.handleTextEditor();
             this.handleTable();
             this.handleOpenEditPanel();
-
             $( ".customize-section-back" ).on( "click", {self: this}, this.sectionBack );
 
             $( "#save" ).on( "click", this.save.bind(this) );
@@ -669,6 +668,7 @@ jQuery(document).ready( function ( $ ) {
         },
 
         load() {
+
             const _this = this;
             const urlObj = new URL( window.location.href );
             const searchParams = new URLSearchParams(urlObj.search);
@@ -701,18 +701,6 @@ jQuery(document).ready( function ( $ ) {
                             <span class="dashicons dashicons-text"></span>
                             ${i18n.text}
                         </div>
-                        <a target="_blank" href="https://1.envato.market/DzJ12" class="pscw-customize-component-panel-item" data-component="tab">
-                            <span class="dashicons dashicons-table-row-after"></span>
-                            ${i18n.tab} (Premium)
-                        </a>
-                        <a target="_blank" href="https://1.envato.market/DzJ12" class="pscw-customize-component-panel-item" data-component="accordion">
-                            <span class="dashicons dashicons-menu-alt3"></span>
-                            ${i18n.accordion} (Premium)
-                        </a>
-                        <a target="_blank" href="https://1.envato.market/DzJ12" class="pscw-customize-component-panel-item" data-component="divider">
-                            <span class="dashicons dashicons-image-flip-vertical"></span>
-                            ${i18n.divider} (Premium)
-                        </a>
                     </div>
                 </li>
             </ul>
@@ -770,6 +758,9 @@ jQuery(document).ready( function ( $ ) {
             $( document.body ).on( "click", ".pscw-customize-component-panel-item",{self:this}, this.addComponent );
 
             this.handleSortAble();
+
+            /*Check component quota, disabled if over quota */
+            this.changeComponentStatus();
         },
 
 
@@ -1318,8 +1309,8 @@ jQuery(document).ready( function ( $ ) {
                             value: 'row',
                             choices: {
                                 row: i18n.row_header,
-                                column: i18n.column_header + ' (Premium)',
-                                both: i18n.both_header + ' (Premium)',
+                                // column: i18n.column_header + ' (Premium)',
+                                // both: i18n.both_header + ' (Premium)',
                             },
                             id: 'pscw-table-header',
                             onInput: function (e) {
@@ -1837,14 +1828,12 @@ jQuery(document).ready( function ( $ ) {
                     id = `pscw-${type}-${pscwGenerateID()}`,
                     parentId = $( _this.selectedCol ).attr( "id" ),
                     subData = [];
-
                 for (const elementsSaveKey in elementsSave) {
                     let typeSaveKey = elementsSave[elementsSaveKey].type;
                     if ( type === typeSaveKey ) {
                         return;
                     }
                 }
-
                 let data =  {
                     image: {
                         alt: "",
@@ -1895,6 +1884,7 @@ jQuery(document).ready( function ( $ ) {
                 }
 
                 elementsSave[id] = Object.assign( {}, {id, type, parent: parentId,}, data[type] );
+                ViPscw.CustomizeSettings.changeComponentStatus();
                 if ( subData.length > 0 ) {
                     data[type].subData = subData;
                 }
@@ -1904,13 +1894,11 @@ jQuery(document).ready( function ( $ ) {
                          <div class="pscw-customize-component-action pscw-customize-component-action__edit">&#9998;</div>
                          <div class="pscw-customize-component-action pscw-customize-component-action__remove">&#x2715;</div>
                     </div>`;
-
                 $( _this.selectedCol ).find( ".pscw-customize-list-component" ).append( html );
                 _this.transmitData( "addComponent", Object.assign( {}, {id, type, parent: parentId,}, data[type] ) );
                 elementsSave[parentId].children.push(id);
                 _this.selectedCol.removeClass( "selected" );
                 _this.selectedCol = null;
-
                 $(document.body).removeClass( "outer-section-open" );
                 $( "#pscw-customize-component-panel" ).removeClass("open");
             }
@@ -1965,6 +1953,7 @@ jQuery(document).ready( function ( $ ) {
                 removeEle.remove();
                 delete elementsSave[id];
             }
+            ViPscw.CustomizeSettings.changeComponentStatus();
         },
 
         openEditComponent(e) {
@@ -2004,8 +1993,20 @@ jQuery(document).ready( function ( $ ) {
                     api.section("pscw_customizer_image").expanded(true);
                     break;
             }
-        }
+        },
 
+        changeComponentStatus() {
+            const typesExist = Object.values(elementsSave).map(item => item.type);
+            $('.pscw-customize-component-panel-item').each( function() {
+                const type = $(this).data('component');
+                if ( typesExist.includes(type) ) {
+                    $(this).addClass('pscw-disabled');
+                }else {
+                    $(this).removeClass('pscw-disabled');
+                }
+            })
+
+        }
     }
 
     ViPscw.CustomizeSettings.init();

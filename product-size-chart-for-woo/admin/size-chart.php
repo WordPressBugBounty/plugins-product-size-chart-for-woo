@@ -76,11 +76,11 @@ class Size_Chart {
 			'all'                => esc_html__( 'All Products', 'product-size-chart-for-woo' ),
 			'products'           => esc_html__( 'Products', 'product-size-chart-for-woo' ),
 			'product_cat'        => esc_html__( 'Product Categories', 'product-size-chart-for-woo' ),
-			'combined'           => esc_html__( 'Combined (Premium)', 'product-size-chart-for-woo' ),
+			/*'combined'           => esc_html__( 'Combined (Premium)', 'product-size-chart-for-woo' ),
 			'product_type'       => esc_html__( 'Product Type (Premium)', 'product-size-chart-for-woo' ),
 			'product_visibility' => esc_html__( 'Product Visibility (Premium)', 'product-size-chart-for-woo' ),
 			'product_tag'        => esc_html__( 'Product Tags (Premium)', 'product-size-chart-for-woo' ),
-			'shipping_class'     => esc_html__( 'Product Shipping Class (Premium)', 'product-size-chart-for-woo' ),
+			'shipping_class'     => esc_html__( 'Product Shipping Class (Premium)', 'product-size-chart-for-woo' ),*/
 		);
 		$random_product  = wc_get_products( array(
 			'type'    => array( 'simple', 'variation' ),

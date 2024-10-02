@@ -8,7 +8,7 @@ class Enqueue {
 	protected static $instance = null;
 	protected static $setting;
 	protected $slug;
-	protected $suffix = WP_DEBUG ? '' : '.min';
+	protected $suffix = '';
 
 	protected $lib_styles = [
 		'button',
@@ -53,6 +53,7 @@ class Enqueue {
 	private function __construct() {
 		$this->slug    = PSCW_CONST_F['assets_slug'];
 		self::$setting = Data::get_instance();
+		$this->suffix  = WP_DEBUG ? '' : '.min';
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'client_enqueue_scripts' ) );
 	}

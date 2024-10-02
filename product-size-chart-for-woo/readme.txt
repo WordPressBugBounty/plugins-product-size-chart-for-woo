@@ -19,10 +19,10 @@ If you own an online fashion store, for example, you must be wondering how produ
 
 WooCommerce Size Chart helps you to customize and design the size chart of specific products or categories, you can choose the available templates of the size chart. WooCommerce Size Chart will create conveniences for customers when shopping in your WooCommerce Store and boost your sales.
 
-[Documents](https://docs.villatheme.com/product-size-chart-for-woocommerce "Documents") | [Facebook group](https://www.facebook.com/groups/villatheme "VillaTheme")
+[Documents](https://docs.villatheme.com/woocommerce-product-size-chart "Documents") | [Facebook group](https://www.facebook.com/groups/villatheme "VillaTheme")
 
 ###How to install and use the plugin
-[youtube https://www.youtube.com/watch?v=hYSDsXcwnK4]
+[youtube https://www.youtube.com/watch?v=wQgDRLkLm-0]
 
 ### Important Notice:
 - Plugin works based on WooCommerce 7.x plugin.
@@ -68,12 +68,12 @@ And much more things are waiting for you discover
 
 ### Documentation
 
-- [Getting Started](https://docs.villatheme.com/product-size-chart-for-woocommerce/)
+- [Getting Started](https://docs.villatheme.com/woocommerce-product-size-chart/)
 
 ### Plugin Links
 
 - [Project Page](https://villatheme.com)
-- [Documentation](https://docs.villatheme.com/product-size-chart-for-woocommerce/)
+- [Documentation](https://docs.villatheme.com/woocommerce-product-size-chart/)
 - [Report Bugs/Issues](https://villatheme.com/supports)
 
 ### MAY BE YOU NEED
@@ -185,7 +185,10 @@ And much more things are waiting for you discover
 4. Create size chart table
 
 == Changelog ==
-/**2024.10.01 – 2.0.2**/
+/**2024.10.2 – 2.0.3**/
+- Fixed: Fixed minor issues to enhance overall stability
+
+/**2024.10.1 – 2.0.2**/
 - Updated: Update support file
 - Fixed: Default foot image link
 

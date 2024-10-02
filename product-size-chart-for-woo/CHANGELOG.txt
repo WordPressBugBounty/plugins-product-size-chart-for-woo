@@ -1,4 +1,7 @@
-/**2024.10.01 – 2.0.2**/
+/**2024.10.2 – 2.0.3**/
+- Fixed: Fixed minor issues to enhance overall stability
+
+/**2024.10.1 – 2.0.2**/
 - Updated: Update support file
 - Fixed: Default foot image link
 
@@ -13,10 +16,10 @@
 – Fixed: Do not display size chart for products in assigned categories
 
 /**2024.06.12 - 1.2.5**/
-– Fixed: Get size chart ID to show before, after button add to cart and before Tabs section
+– Fixed: Get size chart ID to
+/**2024.06.11 - 1.2.4**/show before, after button add to cart and before Tabs section
 - Fixed: Render inline css in product tab
 
-/**2024.06.11 - 1.2.4**/
 – Fixed: Show tab when product does not have size chart
 - Fixed: Error displaying options in design size chart page
 
