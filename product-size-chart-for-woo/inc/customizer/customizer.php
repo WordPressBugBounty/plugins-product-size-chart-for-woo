@@ -233,7 +233,7 @@ class Customizer {
 
 		$args          = array(
 			'currentScId' => $current_sc_id,
-			'shortCode'   => do_shortcode( '[PSCW_SIZE_CHART id=' . $current_sc_id . ']' ),
+			'shortCode'   => do_shortcode( '[PSCW_SIZE_CHART id="' . $current_sc_id . '" signature="pscw_signature" ]' ),
 			'position'    => $this->setting->get_params( 'position' ),
 		);
 

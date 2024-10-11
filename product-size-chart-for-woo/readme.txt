@@ -185,6 +185,11 @@ And much more things are waiting for you discover
 4. Create size chart table
 
 == Changelog ==
+/**2024.10.11 – 2.0.4**/
+- Fixed: Fixed issue with customize
+- Added: Link to pro
+- Updated: Compatible with WP 6.6 and WC 9.3
+
 /**2024.10.2 – 2.0.3**/
 - Fixed: Fixed minor issues to enhance overall stability
 

@@ -64,11 +64,11 @@ class Setup_Wizard {
                             <option value="pop-up"><?php esc_html_e( 'Pop-up', 'product-size-chart-for-woo' ) ?></option>
                             <option value="product_tabs" selected><?php esc_html_e( 'Product tab', 'product-size-chart-for-woo' ) ?></option>
                             <option value="none" ><?php esc_html_e( 'None', 'product-size-chart-for-woo' ) ?></option>
-                            <!--<option value="before_atc_after_variations" disabled><?php /*esc_html_e( 'Before add to cart after variations (Premium)', 'product-size-chart-for-woo' ); */?></option>
-                            <option value="top_des" disabled><?php /*esc_html_e( 'Top description (Premium)', 'product-size-chart-for-woo' ); */?></option>
-                            <option value="bottom_des" disabled><?php /*esc_html_e( 'Bottom description (Premium)', 'product-size-chart-for-woo' ); */?></option>
-                            <option value="after_title" disabled><?php /*esc_html_e( 'After title (Premium)', 'product-size-chart-for-woo' ); */?></option>
-                            <option value="after_meta" disabled><?php /*esc_html_e( 'After the meta (Premium)', 'product-size-chart-for-woo' ); */?></option>-->
+                           <option value="before_atc_after_variations" disabled><?php esc_html_e( 'Before add to cart after variations (Premium)', 'product-size-chart-for-woo' ); ?></option>
+                            <option value="top_des" disabled><?php esc_html_e( 'Top description (Premium)', 'product-size-chart-for-woo' ); ?></option>
+                            <option value="bottom_des" disabled><?php esc_html_e( 'Bottom description (Premium)', 'product-size-chart-for-woo' ); ?></option>
+                            <option value="after_title" disabled><?php esc_html_e( 'After title (Premium)', 'product-size-chart-for-woo' ); ?></option>
+                            <option value="after_meta" disabled><?php esc_html_e( 'After the meta (Premium)', 'product-size-chart-for-woo' ); ?></option>
                         </select>
 
                         <div class="vi-ui primary button"

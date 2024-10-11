@@ -22,10 +22,13 @@ class Short_Code {
 	}
 
 	public function short_code_content( $atts ) {
-		$atts = shortcode_atts( array( 'id' => '' ), $atts );
+		$atts = shortcode_atts( array( 'id' => '', 'signature' => '' ), $atts );
 		if ( ! $atts['id'] ) {
 			return '';
 		}
+
+		/* To determine size chart from customize */
+		$signature = isset( $atts['signature'] ) ? esc_attr($atts['signature']) : '';
 
 		$allowed_html = wp_kses_allowed_html( 'post' );
 
@@ -56,7 +59,7 @@ class Short_Code {
 			$html .= $this->pscw_render_interface( $child_id, $interface['elementsById'] );
 		}
 		ob_start();
-		echo is_customize_preview() ? '<div class="pscw-container pscw-customizing" id="pscw-container">' : '<div class="pscw-container" id="pscw-container">';
+		echo is_customize_preview() ? '<div class="pscw-container pscw-customizing '. $signature .' " id="pscw-container">' : '<div class="pscw-container" id="pscw-container">';
 		echo wp_kses( $html, $allowed_html );
 		echo is_customize_preview() ? '<ul id="pscw-preview-table-menu">
                 <li data-action="add-row-below">' . esc_html__( 'Add row below', 'product-size-chart-for-woo' ) . '</li>

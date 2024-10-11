@@ -49,12 +49,26 @@ class Front_End {
 			'fields'      => 'ids'
 		) );
 
+        $product_cate = get_the_terms( $product_id, 'product_cat');
+        if ( $product_cate ) {
+            $product_cate = array_map(function($term) {
+                return $term->slug;
+            }, $product_cate);
+        }else {
+            $product_cate = [];
+        }
+
 		$size_chart_all = [];
 		foreach ( $size_charts as $sc_id ) {
 			$pscw_data = get_post_meta( $sc_id, 'pscw_data', true );
 			if ( isset( $pscw_data['assign'] ) && $pscw_data['assign'] === 'all' ) {
 				$size_chart_all[] = $sc_id;
-			}
+			}elseif ( isset($pscw_data['assign']) && $pscw_data['assign'] === 'product_cat') {
+                if ( !empty( $pscw_data['condition']) && array_intersect( $product_cate, $pscw_data['condition'])) {
+                    $size_chart_all[] = $sc_id;
+                }
+            }
+
 		}
 
 		$size_chart_id       = get_post_meta( $product_id, 'pscw_sizecharts', true );
@@ -63,7 +77,6 @@ class Front_End {
 		$product_sc_mode     = get_post_meta( $product_id, 'pscw_mode', true );
 		$product_sc_override = get_post_meta( $product_id, 'pscw_override', true );
 		$size_chart_id       = $product_sc_mode === 'override' ? array_values( $product_sc_override ) : $size_chart_id;
-
 
 		if ( $update_option_editing ) {
             if ( is_array( $size_chart_id ) && count( $size_chart_id ) ) {
@@ -81,7 +94,9 @@ class Front_End {
 
 	public function handle_sc_show_popup() {
 		$position = $this->get_params( 'position' );
-		if ( $position === 'before_add_to_cart' || $position === 'before_atc_after_variations' || $position === 'after_add_to_cart' || $position === 'pop-up' || $position === 'after_title' || $position === 'after_meta' ) {
+		/* Exception for none position */
+		$exception = $position === 'none' ?? false;
+		if ( $exception || $position === 'before_add_to_cart' || $position === 'before_atc_after_variations' || $position === 'after_add_to_cart' || $position === 'pop-up' || $position === 'after_title' || $position === 'after_meta' ) {
 			add_action( 'wp_footer', array( $this, 'pscw_size_chart_popup' ) );
 		}
 	}
@@ -186,6 +201,10 @@ class Front_End {
 		$product_id     = get_the_ID();
 		list( $product_sc_mode, $size_chart_id ) = $this->pscw_helper_show_size_chart( $product_id, true );
 		if ( ! is_customize_preview() ) {
+			/* Only display for customize*/
+			$position = $this->get_params( 'position' );
+			if ($position === 'none') return;
+
 			if ( ! ( ( ! empty( $size_chart_id ) && $product_sc_mode !== 'disable' ) ) ) {
 				return;
 			}

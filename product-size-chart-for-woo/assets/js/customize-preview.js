@@ -8,7 +8,7 @@ jQuery(document).ready( function ( $ ) {
 
     api.preview.bind( "pscw_change_value", function ( val ) {
 
-        const scContainer = $( "#pscw-container" );
+        const scContainer = $( ".pscw_signature#pscw-container" );
         const renderComponent = ( data ) => {
             let html = [];
             switch ( data?.type ) {
@@ -64,7 +64,7 @@ jQuery(document).ready( function ( $ ) {
             return html.join("");
         };
 
-        const element = $(`#${val.data.id}` );
+        const element = $(`.pscw_signature #${val.data.id}` );
         switch ( val.action ) {
             case 'addRow':
                 scContainer.append( renderComponent( val.data ) );
@@ -74,7 +74,7 @@ jQuery(document).ready( function ( $ ) {
                 element.remove();
                 break;
             case 'updateRow':
-                let targetElement = $(`#${val.data.targetId}`),
+                let targetElement = $(`.pscw_signature #${val.data.targetId}`),
                     movedElement = element;
                 switch ( val.data.func ) {
                     case 'after':
@@ -92,7 +92,7 @@ jQuery(document).ready( function ( $ ) {
                 $(`#${val.data.parent}`).append( renderComponent( val.data ) );
                 if ( val.data.type === 'table' ) {
                     ViPscw.CustomizePreview.inputTableChange();
-                    ViPscw.CustomizePreview.handelSelectTable( `#${val.data.id}` );
+                    ViPscw.CustomizePreview.handelSelectTable( `.pscw_signature #${val.data.id}` );
                 }
                 break;
             case 'editComponent':
@@ -401,6 +401,7 @@ jQuery(document).ready( function ( $ ) {
                         case 'before_add_to_cart':
                         case 'after_add_to_cart':
                         case 'pop-up':
+                        case 'none': /* For the case using shortcode */
                             $( "#woo_sc_modal .woo_sc_scroll_content").append( ViPscwCusParams.shortCode );
                             $( "#woo_sc_modal" ).show();
                             $( document.body ).css( {overflow: 'hidden'} );
@@ -423,7 +424,7 @@ jQuery(document).ready( function ( $ ) {
 
                 if ( ! $( e.target ).closest( 'table' ).length ) {
                     $ ('.pscw-selected' ).removeClass( 'pscw-selected' );
-                    $( '#pscw-preview-table-menu' ).hide();
+                    $( '.pscw_signature #pscw-preview-table-menu' ).hide();
                 }
 
                 _this.clearCustomizingEditing();
@@ -436,7 +437,7 @@ jQuery(document).ready( function ( $ ) {
 
         handelSelectTable( selector ) {
             const _this = this;
-            let previewTableMenu = $( '#pscw-preview-table-menu' );
+            let previewTableMenu = $( '.pscw_signature #pscw-preview-table-menu' );
             $( document.body ).find( `${selector}` ).on( "click", 'td, th', function (e) {
                 e.preventDefault();
                 $( 'td.pscw-selected, th.pscw-selected' ).removeClass( "pscw-selected" );
@@ -616,7 +617,7 @@ jQuery(document).ready( function ( $ ) {
                             break;
                     }
                     api.preview.send( "pscw-input-table-change", true );
-                    $( '#pscw-preview-table-menu' ).hide();
+                    $( '.pscw_signature #pscw-preview-table-menu' ).hide();
                     $( 'td.pscw-selected, th.pscw-selected' ).removeClass( "pscw-selected" );
             });
             
@@ -624,7 +625,7 @@ jQuery(document).ready( function ( $ ) {
 
         loadCss( elementIds ) {
             for ( const eleId in elementIds ) {
-                let element = $( `#${eleId}` );
+                let element = $( `.pscw_signature #${eleId}` );
                 switch ( elementIds[eleId].type ) {
                     case 'table':
                         this.changeHeaderBackground( element, elementIds[eleId] );
@@ -661,7 +662,7 @@ jQuery(document).ready( function ( $ ) {
         },
 
         inputTableChange() {
-            $( "#pscw-container" ).find( "table input" ).on( "input", function () {
+            $( ".pscw_signature#pscw-container" ).find( "table input" ).on( "input", function () {
                 let value = $( this ).val();
                 $( this ).css( {'width': ( value.length + 1) + 'ch'} );
                 api.preview.send( "pscw-input-table-change", true );

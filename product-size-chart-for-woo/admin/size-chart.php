@@ -76,14 +76,14 @@ class Size_Chart {
 			'all'                => esc_html__( 'All Products', 'product-size-chart-for-woo' ),
 			'products'           => esc_html__( 'Products', 'product-size-chart-for-woo' ),
 			'product_cat'        => esc_html__( 'Product Categories', 'product-size-chart-for-woo' ),
-			/*'combined'           => esc_html__( 'Combined (Premium)', 'product-size-chart-for-woo' ),
+			'combined'           => esc_html__( 'Combined (Premium)', 'product-size-chart-for-woo' ),
 			'product_type'       => esc_html__( 'Product Type (Premium)', 'product-size-chart-for-woo' ),
 			'product_visibility' => esc_html__( 'Product Visibility (Premium)', 'product-size-chart-for-woo' ),
 			'product_tag'        => esc_html__( 'Product Tags (Premium)', 'product-size-chart-for-woo' ),
-			'shipping_class'     => esc_html__( 'Product Shipping Class (Premium)', 'product-size-chart-for-woo' ),*/
+			'shipping_class'     => esc_html__( 'Product Shipping Class (Premium)', 'product-size-chart-for-woo' ),
 		);
 		$random_product  = wc_get_products( array(
-			'type'    => array( 'simple', 'variation' ),
+			'type'    => array( 'simple', 'variable' ),
 			'orderby' => 'rand',
 			'return'  => 'ids',
 			'limit'   => 1
@@ -123,12 +123,12 @@ class Size_Chart {
 						<?php endif; ?>
                     </td>
                 </tr>
-                <!--<tr>
-                    <th><?php /*esc_html_e( 'Select countries to show', 'product-size-chart-for-woo' ); */?></th>
+                <tr>
+                    <th><?php esc_html_e( 'Select countries to show', 'product-size-chart-for-woo' ); ?></th>
                     <td>
-                        <a class="vi-ui pink button" target="_blank" href="https://1.envato.market/DzJ12">Upgrade This Feature</a>
+                        <a class="vi-ui pink button" target="_blank" href="https://1.envato.market/zN1kJe">Upgrade This Feature</a>
                     </td>
-                </tr>-->
+                </tr>
                 <tr>
                     <th><?php esc_html_e( 'Assign', 'product-size-chart-for-woo' ); ?></th>
                     <td>

@@ -3,7 +3,7 @@
  * Plugin Name: Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 2.0.3
+ * Version: 2.0.4
  * Author URI: http://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2024 VillaTheme.com. All rights reserved.
@@ -60,7 +60,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 		function define() {
 			define( 'PSCW_CONST_F', [
-				'version'     => '2.0.3',
+				'version'     => '2.0.4',
 				'plugin_name' => 'Product Size Chart for WooCommerce',
 				'slug'        => 'pscw',
 				'assets_slug' => 'pscw-',

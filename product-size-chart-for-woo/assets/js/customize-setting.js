@@ -36,7 +36,6 @@ jQuery(document).ready( function ( $ ) {
 
         render() {
             /* Hide upgrade button*/
-            if (this.type === 'upgrade') return '';
             let element = $(`<li id="customize-control-${this.id || ''}" class="customize-control customize-control-text"></li>`);
 
             if (this.label) {
@@ -108,7 +107,7 @@ jQuery(document).ready( function ( $ ) {
         }
 
         createUpgrade() {
-            return $(`<a target="_blank" href="https://1.envato.market/DzJ12" class="pscw-customize-customize-upgrade">
+            return $(`<a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-customize-upgrade">
                                     Upgrade This Feature
                      </a>`);
         }
@@ -228,9 +227,9 @@ jQuery(document).ready( function ( $ ) {
                                     <div class="pscw-customize-row-list-one pscw-customize-row-list-cols" data-cols="12">
                                     <div></div>
                                     </div>
-                                   <!-- <a target="_blank" href="https://1.envato.market/DzJ12" class="pscw-customize-customize-upgrade" >
+                                   <a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-customize-upgrade" >
                                     Upgrade This Feature
-                                    </a>-->
+                                    </a>
                                     </div>
                                    ` );
         }
@@ -701,6 +700,18 @@ jQuery(document).ready( function ( $ ) {
                             <span class="dashicons dashicons-text"></span>
                             ${i18n.text}
                         </div>
+                        <a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-component-panel-item" data-component="tab">
+                            <span class="dashicons dashicons-table-row-after"></span>
+                            ${i18n.tab} (Premium)
+                        </a>
+                        <a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-component-panel-item" data-component="accordion">
+                            <span class="dashicons dashicons-menu-alt3"></span>
+                            ${i18n.accordion} (Premium)
+                        </a>
+                        <a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-component-panel-item" data-component="divider">
+                            <span class="dashicons dashicons-image-flip-vertical"></span>
+                            ${i18n.divider} (Premium)
+                        </a>
                     </div>
                 </li>
             </ul>
@@ -1309,8 +1320,8 @@ jQuery(document).ready( function ( $ ) {
                             value: 'row',
                             choices: {
                                 row: i18n.row_header,
-                                // column: i18n.column_header + ' (Premium)',
-                                // both: i18n.both_header + ' (Premium)',
+                                column: i18n.column_header + ' (Premium)',
+                                both: i18n.both_header + ' (Premium)',
                             },
                             id: 'pscw-table-header',
                             onInput: function (e) {
