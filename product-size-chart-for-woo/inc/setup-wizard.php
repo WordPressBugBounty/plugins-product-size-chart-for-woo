@@ -117,7 +117,7 @@ class Setup_Wizard {
 			$this->default_template( $selected_size_charts );
 
 			$random_product      = wc_get_products( array(
-				'type'    => array( 'simple', 'variation' ),
+				'type'    => array( 'simple', 'variable' ),
 				'orderby' => 'rand',
 				'return'  => 'ids',
 				'limit'   => 1

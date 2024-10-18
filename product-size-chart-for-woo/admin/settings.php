@@ -202,10 +202,10 @@ class Settings {
                             <td>
                                 <select name="woo_sc_button_type" class="vi-ui fluid dropdown selection setting_field"
                                         id="woo_sc_type_btn">
+                                    <option value="text" <?php selected( "text" === $get_option['button_type'] ); ?>><?php esc_html_e( 'Text', 'product-size-chart-for-woo' ); ?></option>
                                     <option value="icon" <?php selected( "icon" === $get_option['button_type'] ); ?>>
 										<?php esc_html_e( 'Icon', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="text" <?php selected( "text" === $get_option['button_type'] ); ?>><?php esc_html_e( 'Text', 'product-size-chart-for-woo' ); ?></option>
-                                    <!--<option value="icon_text" disabled><?php /*esc_attr_e( 'Icon & Text (Premium)', 'product-size-chart-for-woo' ); */?></option>-->
+                                    <option value="icon_text"><?php esc_attr_e( 'Icon & Text', 'product-size-chart-for-woo' ); ?></option>
                                 </select>
                             </td>
                         </tr>
@@ -226,11 +226,8 @@ class Settings {
                         </tr>
                         <tr class="woo_sc_sc_icon" style="display: none">
                             <th>
-                                <div>
-									<?php esc_html_e( 'Size chart Icon', 'product-size-chart-for-woo' ) ?>
-                                </div>
                             </th>
-                           <td>
+                           <td colspan="2">
                                 <a class="vi-ui button" target="_blank" href="https://1.envato.market/zN1kJe">Upgrade This Feature</a>
                            </td>
                         </tr>

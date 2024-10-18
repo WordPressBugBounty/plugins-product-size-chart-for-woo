@@ -7,6 +7,11 @@ defined( 'ABSPATH' ) || exit;
 class I18n {
 	public static function init() {
 		return array(
+			'select_country'             => esc_html__( 'Select countries to show', 'product-size-chart-for-woo' ),
+			'search_product'             => esc_html__( 'Select products', 'product-size-chart-for-woo' ),
+			'search_product_cat'         => esc_html__( 'Select product categories', 'product-size-chart-for-woo' ),
+			'size_chart_title'           => esc_html__( 'Size chart title', 'product-size-chart-for-woo' ),
+			'assign'                     => esc_html__( 'Assign', 'product-size-chart-for-woo' ),
 			'click_items_below'          => esc_html__( 'Click on items below to add row', 'product-size-chart-for-woo' ),
 			'new_item'                   => esc_html__( 'New Item', 'product-size-chart-for-woo' ),
 			'top'                        => esc_html__( 'Top', 'product-size-chart-for-woo' ),

@@ -3,7 +3,7 @@
  * Plugin Name: Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 2.0.4
+ * Version: 2.0.5
  * Author URI: http://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2024 VillaTheme.com. All rights reserved.
@@ -60,7 +60,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 		function define() {
 			define( 'PSCW_CONST_F', [
-				'version'     => '2.0.4',
+				'version'     => '2.0.5',
 				'plugin_name' => 'Product Size Chart for WooCommerce',
 				'slug'        => 'pscw',
 				'assets_slug' => 'pscw-',
@@ -123,8 +123,6 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 				$this->support();
 			}
 
-
-
 		}
 
 		public function support() {
@@ -154,24 +152,14 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 		}
 
         public function after_activated( $plugin ) {
-
 	        $args = array(
 		        'post_type'      => 'product',
 		        'orderby'        => 'asc',
 		        'posts_per_page' => 1,
-				//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-		        'meta_query'     => array(
-			        array(
-				        'key'     => '_product_type',
-				        'value'   => array('simple', 'variation'),
-				        'compare' => 'IN',
-			        ),
-		        ),
 	        );
 
 	        $product_query = new \WP_Query($args);
 	        $productIDs = wp_list_pluck($product_query->posts, 'ID');
-
 
 	        if (empty($productIDs)) {
 
@@ -200,6 +188,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 			        }
 		        }
 	        }
+
         }
 
 		public function install() {
@@ -220,6 +209,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 		public function migrate_data_from_free_to_pro() {
 			$posts = get_posts( array(
 					'post_type'  => 'pscw-size-chart',
+					'numberposts' => - 1,
 					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					'meta_query' => array(
 						'relation' => 'AND',
@@ -245,159 +235,9 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 			foreach ( $posts as $postt ) {
 				$woo_sc_size_chart_data = get_post_meta( $postt->ID, 'woo_sc_size_chart_data', true );
-				$this->migrate_interface( $postt, $woo_sc_size_chart_data );
+				pscw_migrate_size_chart_data( $postt, $woo_sc_size_chart_data );
 				$this->migrate_products( $postt, $woo_sc_size_chart_data );
 			}
-		}
-
-		public function migrate_interface( $postt, $woo_sc_size_chart_data ) {
-			$textElement  = [];
-			$imageElement = [];
-			$tableElement = [];
-			$children     = [];
-
-			if ( ! empty( $postt->post_content ) ) {
-				$children[]  = 'pscw-text-ID_1724316624227';
-				$textElement = [
-					"id"     => "pscw-text-ID_1724316624227",
-					"type"   => "text",
-					"parent" => "pscw-col-ID_1724316618202",
-					"value"  => wp_kses_post( $postt->post_content ),
-					"margin" => [
-						0,
-						0,
-						0,
-						0
-					]
-				];
-			}
-
-			if ( isset( $woo_sc_size_chart_data['img_link'] ) && ! empty( $woo_sc_size_chart_data['img_link'] ) ) {
-				$children[] = 'pscw-image-ID_1724316621806';
-
-				$imageElement = [
-					'id'          => 'pscw-image-ID_1724316621806',
-					'type'        => 'image',
-					"parent"      => "pscw-col-ID_1724316618202",
-					"alt"         => "",
-					"borderColor" => "#000000",
-					"borderStyle" => "solid",
-					"borderWidth" => 0,
-					"height"      => 100,
-					"heightUnit"  => "%",
-					"width"       => isset( $woo_sc_size_chart_data['img_width'] ) ? $woo_sc_size_chart_data['img_width'] : 100,
-					"widthUnit"   => "%",
-					"src"         => $woo_sc_size_chart_data['img_link'],
-					"padding"     => [
-						0,
-						0,
-						0,
-						0
-					],
-					"margin"      => [
-						10,
-						0,
-						10,
-						0
-					],
-					"objectFit"   => "unset"
-				];
-			}
-
-			if ( isset( $woo_sc_size_chart_data['table_array'] ) ) {
-				$children[] = 'pscw-table-ID_1724316630077';
-				$columns    = [ "" ];
-				$rows       = [ [ "" ] ];
-				if ( ! empty( $woo_sc_size_chart_data['table_array'] ) ) {
-					$table_array = json_decode( $woo_sc_size_chart_data['table_array'], true );
-					$columns     = $table_array[0];
-					unset( $table_array[0] );
-					$rows = array_values( $table_array );
-				}
-				$tableElement = [
-					'id'                    => "pscw-table-ID_1724316630077",
-					"type"                  => "table",
-					"parent"                => "pscw-col-ID_1724316618202",
-					"columns"               => $columns,
-					"rows"                  => $rows,
-					"headerColumn"          => 'row',
-					"headerBackground"      => isset( $woo_sc_size_chart_data['head_color'] ) ? $woo_sc_size_chart_data['head_color'] : "#ffffff",
-					"textHeader"            => isset( $woo_sc_size_chart_data['text_head_color'] ) ? $woo_sc_size_chart_data['text_head_color'] : "#000000",
-					"headerTextBold"        => false,
-					"headerTextSize"        => 14,
-					"columnsStyle"          => isset( $woo_sc_size_chart_data['woo_sc_cell_style'] ) && $woo_sc_size_chart_data['woo_sc_cell_style'] === 'columns',
-					"evenBackground"        => isset( $woo_sc_size_chart_data['even_rows_color'] ) ? $woo_sc_size_chart_data['even_rows_color'] : "#ffffff",
-					"evenText"              => isset( $woo_sc_size_chart_data['even_rows_text_color'] ) ? $woo_sc_size_chart_data['even_rows_text_color'] : "#494949",
-					"oddBackground"         => isset( $woo_sc_size_chart_data['odd_rows_color'] ) ? $woo_sc_size_chart_data['odd_rows_color'] : "#ffffff",
-					"oddText"               => isset( $woo_sc_size_chart_data['odd_rows_text_color'] ) ? $woo_sc_size_chart_data['odd_rows_text_color'] : "#494949",
-					"borderColor"           => isset( $woo_sc_size_chart_data['border_color'] ) ? $woo_sc_size_chart_data['border_color'] : "#9D9D9D",
-					"cellTextSize"          => 14,
-					"horizontalBorderWidth" => isset( $woo_sc_size_chart_data['horizontal_width'] ) ? $woo_sc_size_chart_data['horizontal_width'] : 1,
-					"horizontalBorderStyle" => isset( $woo_sc_size_chart_data['horizontal_border_style'] ) ? $woo_sc_size_chart_data['horizontal_border_style'] : "solid",
-					"verticalBorderWidth"   => isset( $woo_sc_size_chart_data['vertical_width'] ) ? $woo_sc_size_chart_data['vertical_width'] : 1,
-					"verticalBorderStyle"   => isset( $woo_sc_size_chart_data['vertical_border_style'] ) ? $woo_sc_size_chart_data['vertical_border_style'] : "solid",
-					"margin"                => [
-						0,
-						0,
-						0,
-						0
-					],
-					"borderRadius"          => ( isset( $woo_sc_size_chart_data['table_template'] ) && $woo_sc_size_chart_data['table_template'] === 'table_template_v1' ) ? [
-						20,
-						20,
-						20,
-						20
-					] : [
-						0,
-						0,
-						0,
-						0
-					]
-				];
-			}
-
-
-			$pscw_interface = array(
-				'layout'       => [
-					'type'     => "container",
-					'children' => [
-						'pscw-row-ID_1724316618201'
-					]
-				],
-				'elementsById' => [
-					'pscw-col-ID_1724316618202' => [
-						'id'       => 'pscw-col-ID_1724316618202',
-						'class'    => 'pscw-col-l-12',
-						'type'     => 'column',
-						'parent'   => 'pscw-row-ID_1724316618201',
-						'children' => $children,
-						'settings' => [
-							'class' => 'pscw-customize-col-12',
-						],
-					],
-					"pscw-row-ID_1724316618201" => [
-						"children" => [
-							"pscw-col-ID_1724316618202"
-						],
-						"id"       => "pscw-row-ID_1724316618201",
-						"type"     => "row"
-					]
-				]
-			);
-
-			if ( ! empty( $textElement ) ) {
-				$pscw_interface['elementsById'][ $textElement['id'] ] = $textElement;
-			}
-
-			if ( ! empty( $imageElement ) ) {
-				$pscw_interface['elementsById'][ $imageElement['id'] ] = $imageElement;
-			}
-
-			if ( ! empty( $tableElement ) ) {
-				$pscw_interface['elementsById'][ $tableElement['id'] ] = $tableElement;
-			}
-
-			update_post_meta( $postt->ID, 'pscw_interface', $pscw_interface );
 		}
 
 		public function migrate_products( $postt, $woo_sc_size_chart_data ) {

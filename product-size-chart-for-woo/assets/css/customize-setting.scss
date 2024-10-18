@@ -553,6 +553,10 @@
     label {
       vertical-align: unset;
     }
+    & a {
+      text-decoration: none;
+      cursor: pointer;
+    }
   }
 }
 /*Template Color*/
@@ -575,6 +579,10 @@
 
 /*Button Upload*/
 .pscw-customize-btn-upload-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+
   div {
     padding: .78571429em 1.5em;
     color: #fff;
@@ -589,7 +597,6 @@
 }
 
 /*Component Panel*/
-
 .pscw-customize-component-panel {
   &-title {
     height: 46px;
@@ -728,4 +735,23 @@
       border-top-left-radius: 4px;
     }
   }
+}
+
+/* Addition */
+.pscw-disabled {
+  background-color: #d3d3d3;
+  color: #a9a9a9;
+  border: 1px solid #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+a[title^="Premium"] {
+  filter: blur(1px);
+}
+
+/* External */
+.select2-dropdown.select2-dropdown--below {
+  z-index: 999999 !important;
 }

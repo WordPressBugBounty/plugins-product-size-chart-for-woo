@@ -14,6 +14,7 @@ jQuery( document ).ready( function( $ ) {
                 label.show();
                 scIcon.hide();
                 break;
+            case 'icon_text':
             case 'icon':
                 label.hide();
                 scIcon.show();

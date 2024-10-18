@@ -164,6 +164,7 @@ class Enqueue {
 				$enqueue_styles  = [
 					'input',
 					'icon',
+					'size-chart'
 				];
 				$enqueue_scripts = [
 					'all-size-chart'
@@ -201,6 +202,7 @@ class Enqueue {
 		wp_localize_script( $this->slug . 'size-chart', 'VicPscwParams', $params );
 		wp_localize_script( $this->slug . 'product', 'VicPscwParams', $params );
 		wp_localize_script( $this->slug . 'setup-wizard', 'VicPscwParams', $params );
+		wp_localize_script( $this->slug . 'all-size-chart', 'VicPscwParams', $params );
 
 	}
 
