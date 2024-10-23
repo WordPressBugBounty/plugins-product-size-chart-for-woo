@@ -100,7 +100,6 @@ class Size_Chart {
 				wp_safe_redirect( $url );
 			}
 		}
-		exit;
 	}
 
 	public function default_size_chart_interface() {
@@ -148,7 +147,7 @@ class Size_Chart {
 	}
 	public function get_random_product() {
 		$random_product = wc_get_products( array(
-			'type'    => array( 'simple', 'variation' ),
+			'type'    => array( 'simple', 'variable' ),
 			'status'  => 'publish',
 			'catalog_visibility'=> 'visible',
 			'orderby' => 'rand',

@@ -311,7 +311,7 @@ jQuery(document).ready( function ( $ ) {
 
     api.preview.bind( "pscw-scan-data-table", function ( val ) {
         let tables = {};
-        $( ".woo_sc_table100" ).each( function (){
+        $( ".pscw_signature .woo_sc_table100" ).each( function (){
             let tableId = $(this).attr("id");
             let tableColumns = [],
                 tableRows = [];
@@ -447,7 +447,7 @@ jQuery(document).ready( function ( $ ) {
 
             } );
 
-            $( document.body ).find( "table.woo_sc_view_table" ).on( "contextmenu", 'td, th', function (e) {
+            $( document.body ).find( ".pscw_signature table.woo_sc_view_table" ).on( "contextmenu", 'td, th', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
                 $( 'td.pscw-selected, th.pscw-selected' ).removeClass( "pscw-selected" );

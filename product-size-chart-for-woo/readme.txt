@@ -185,6 +185,9 @@ And much more things are waiting for you discover
 4. Create size chart table
 
 == Changelog ==
+/**2024.10.23 – 2.0.6**/
+- Fixed: Blank site when create new post
+
 /**2024.10.18 – 2.0.5**/
 - Added: Go to design from size chart list
 - Added: Edit size chart title and assign in Customize
