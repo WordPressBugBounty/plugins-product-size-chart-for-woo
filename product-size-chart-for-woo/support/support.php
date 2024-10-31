@@ -7,23 +7,24 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 
 	/**
 	 * Class VillaTheme_Support
-	 * 1.1.12
+	 * 1.1.13
 	 */
 	class VillaTheme_Support {
 		protected $plugin_base_name;
 		protected $ads_data;
-		protected $version = '1.1.12';
+		protected $version = '1.1.13';
 		protected $data = [];
 
 		public function __construct( $data ) {
 			$this->data               = array();
-			$this->data['support']    = $data['support'];
-			$this->data['docs']       = $data['docs'];
-			$this->data['review']     = $data['review'];
-			$this->data['css_url']    = $data['css'];
-			$this->data['images_url'] = $data['image'];
-			$this->data['slug']       = $data['slug'];
-			$this->data['menu_slug']  = $data['menu_slug'];
+			$this->data['support']    = $data['support']??'';
+			$this->data['docs']       = $data['docs']??'';
+			$this->data['review']     = $data['review']??'';
+			$this->data['css_url']    = $data['css']??'';
+			$this->data['images_url'] = $data['image']??'';
+			$this->data['slug']       = $data['slug']??'';
+			$this->data['deactivate_id']       = $data['deactivate_id']??'';
+			$this->data['menu_slug']  = $data['menu_slug']??'';
 			$this->data['version']    = isset( $data['version'] ) ? $data['version'] : '1.0.0';
 			$this->data['pro_url']    = isset( $data['pro_url'] ) ? $data['pro_url'] : '';
 			$this->data['survey_url'] = isset( $data['survey_url'] ) ? $data['survey_url'] : '';
@@ -194,7 +195,7 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 					$ads   = '';
 					if ( ! $feeds ) {
 						$request_data = $this->wp_remote_get();
-						if ( $request_data['status'] === 'success' ) {
+						if ( isset($request_data['status']) && $request_data['status'] === 'success' ) {
 							$ads = $request_data['data'];
 						}
 						set_transient( 'villatheme_ads', $ads, DAY_IN_SECONDS );
@@ -447,11 +448,11 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
             <div class="villatheme-dashboard updated">
                 <div class="villatheme-content">
 					<?php
-					if ( $this->ads_data['heading'] ) { ?>
+					if ( !empty($this->ads_data['heading']) ) { ?>
                         <h3><?php echo esc_html( $this->ads_data['heading'] ) ?></h3>
 						<?php
 					}
-					if ( $this->ads_data['description'] ) { ?>
+					if ( !empty($this->ads_data['description'] )) { ?>
                         <p><?php echo esc_html( $this->ads_data['description'] ) ?></p>
 						<?php
 					}
@@ -469,7 +470,7 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 						) ), 'hide_notices', '_villatheme_nonce' ) ); ?>"
                            class="button"><?php echo esc_html( 'Thanks, later.' ) ?></a>
 						<?php
-						if ( $this->ads_data['link'] ) { ?>
+						if ( !empty($this->ads_data['link']) ) { ?>
                             <a target="_blank" href="<?php echo esc_url( $this->ads_data['link'] ); ?>"
                                class="button button-primary"><?php echo esc_html( 'Get Your Gift' ) ?></a>
 							<?php
@@ -495,7 +496,7 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 			$called = get_transient( 'villatheme_called' );
 			if ( ! $data && ! $called ) {
 				$request_data = $this->wp_remote_get( true );
-				if ( $request_data['status'] === 'success' ) {
+				if ( isset($request_data['status']) && $request_data['status'] === 'success' ) {
 					$data = json_decode( $request_data['data'], true );
 				}
 				set_transient( 'villatheme_notices', $data, DAY_IN_SECONDS );
@@ -627,7 +628,7 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 				}
 				wp_add_inline_script( 'villatheme-support', "(function ($) {
                     $(function () {
-                        $(document).on('click', '#the-list a#deactivate-". esc_html($this->data['slug']) ."', function (e) {
+                        $(document).on('click', '#the-list a#deactivate-". esc_html($this->data['deactivate_id']?:$this->data['slug']) ."', function (e) {
                             e.preventDefault();
                             ViDeactivate.modal.addClass('modal-active');
                             ViDeactivate.deactivateLink = $(this).attr('href');
@@ -713,7 +714,7 @@ if ( ! class_exists( 'VillaTheme_Support' ) ) {
 			if ( ! $feeds ) {
 				try {
 					$request_data = $this->wp_remote_get( false );
-					if ( $request_data['status'] === 'success' ) {
+					if ( isset($request_data['status']) && $request_data['status'] === 'success' ) {
 						$ads = $request_data['data'];
 					}
 					set_transient( 'villatheme_ads', $ads, DAY_IN_SECONDS );
@@ -955,7 +956,7 @@ if ( ! class_exists( 'VillaTheme_Require_Environment' ) ) {
 						continue;
 					}
 
-					switch ( $status['status'] ) {
+					switch ( $status['status']??'' ) {
 
 						case 'install':
 
@@ -968,7 +969,7 @@ if ( ! class_exists( 'VillaTheme_Require_Environment' ) ) {
 
 						default:
 
-							if ( ! is_plugin_active( $status['file'] ) ) {
+							if (!empty($status['file']) && ! is_plugin_active( $status['file']) ) {
 								$msg = sprintf('%s is installed and activated.', esc_html( $require_plugin_name ));
 								if (current_user_can( 'activate_plugin', $status['file'] ) ) {
 									$activate_url = add_query_arg(

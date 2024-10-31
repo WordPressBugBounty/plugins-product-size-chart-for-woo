@@ -642,4 +642,8 @@ a[title^=Premium] {
   z-index: 999999 !important;
 }
 
+.mce-container.mce-panel.mce-floatpanel.mce-menu.mce-menu-align {
+  z-index: 999999 !important;
+}
+
 /*# sourceMappingURL=customize-setting.css.map */

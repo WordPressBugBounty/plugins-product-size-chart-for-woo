@@ -185,6 +185,9 @@ And much more things are waiting for you discover
 4. Create size chart table
 
 == Changelog ==
+/**2024.10.31* – 2.0.7**/
+- Updated: Update support file
+
 /**2024.10.23 – 2.0.6**/
 - Fixed: Blank site when create new post
 

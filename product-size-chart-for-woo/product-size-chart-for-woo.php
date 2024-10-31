@@ -3,7 +3,7 @@
  * Plugin Name: Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 2.0.6
+ * Version: 2.0.7
  * Author URI: http://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2024 VillaTheme.com. All rights reserved.
@@ -60,7 +60,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 		function define() {
 			define( 'PSCW_CONST_F', [
-				'version'     => '2.0.6',
+				'version'     => '2.0.7',
 				'plugin_name' => 'Product Size Chart for WooCommerce',
 				'slug'        => 'pscw',
 				'assets_slug' => 'pscw-',
@@ -122,22 +122,21 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 			if ( is_admin() && ! wp_doing_ajax() ) {
 				$this->support();
 			}
-
 		}
 
 		public function support() {
 			new \VillaTheme_Support(
 				array(
-					'support'    => '',
-					'docs'       => '',
-					'review'     => '',
-					'pro_url'    => '',
+					'support'    => 'https://wordpress.org/support/plugin/product-size-chart-for-woo/',
+					'docs'       => 'https://docs.villatheme.com/?item=woocommerce-product-size-chart',
+					'review'     => 'https://wordpress.org/support/plugin/product-size-chart-for-woo/reviews/?rate=5#rate-response',
+					'pro_url'    => 'https://1.envato.market/zN1kJe',
 					'css'        => PSCW_CONST_F['css_url'],
 					'image'      => PSCW_CONST_F['img_url'],
 					'slug'       => 'product-size-chart-for-woo',
 					'menu_slug'  => 'edit.php?post_type=pscw-size-chart',
 					'version'    => PSCW_CONST_F['version'],
-					'survey_url' => ''
+					'survey_url' => 'https://script.google.com/macros/s/AKfycbyu3hbv83J-U0p0RxhdqaTBKXlE2A7Vja6BC2XmaYq8bXymI4VDeDA2sFYgjTH-c3yXfw/exec'
 				)
 			);
 		}

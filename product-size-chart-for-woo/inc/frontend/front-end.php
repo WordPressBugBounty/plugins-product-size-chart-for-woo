@@ -163,7 +163,7 @@ class Front_End {
 			if ( 'product_tabs' === $this->get_params( 'position' ) ) {
 				$tabs['size_chart_tab'] = array(
 					'title'    => esc_html( $title ),
-					'priority' => 50,
+					'priority' => apply_filters('woo_sc_size_chart_tab_priority', 50),
 				);
 			}
 		} else {
@@ -171,7 +171,7 @@ class Front_End {
 				if ( 'product_tabs' === $this->get_params( 'position' ) ) {
 					$tabs['size_chart_tab'] = array(
 						'title'    => esc_html( $title ),
-						'priority' => 50,
+						'priority' => apply_filters('woo_sc_size_chart_tab_priority', 50),
 						'callback' => function () use ( $size_charts_allow_countries ) {
 							$this->custom_product_tabs_content( $size_charts_allow_countries );
 						}
