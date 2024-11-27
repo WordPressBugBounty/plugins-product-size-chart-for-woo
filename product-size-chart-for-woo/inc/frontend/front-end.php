@@ -59,6 +59,8 @@ class Front_End {
         }
 
 		$size_chart_all = [];
+		
+
 		foreach ( $size_charts as $sc_id ) {
 			$pscw_data = get_post_meta( $sc_id, 'pscw_data', true );
 			if ( isset( $pscw_data['assign'] ) && $pscw_data['assign'] === 'all' ) {
@@ -70,7 +72,7 @@ class Front_End {
             }
 
 		}
-
+        
 		$size_chart_id       = get_post_meta( $product_id, 'pscw_sizecharts', true );
 		$size_chart_id       = empty( $size_chart_id ) ? [] : array_values( $size_chart_id );
 		$size_chart_id       = array_merge( $size_chart_id, $size_chart_all );
@@ -158,7 +160,6 @@ class Front_End {
 			$title = esc_html__( 'Size Chart', 'product-size-chart-for-woo' );
 		}
         list( $product_sc_mode, $size_charts_allow_countries ) = $this->pscw_helper_show_size_chart( $product->get_id(), true );
-
 		if ( is_customize_preview() ) {
 			if ( 'product_tabs' === $this->get_params( 'position' ) ) {
 				$tabs['size_chart_tab'] = array(

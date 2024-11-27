@@ -3,15 +3,15 @@
  * Plugin Name: Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 2.0.7
+ * Version: 2.0.8
  * Author URI: http://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2024 VillaTheme.com. All rights reserved.
  * Text Domain: product-size-chart-for-woo
  * Requires Plugins: woocommerce
- * Tested up to: 6.6
+ * Tested up to: 6.7
  * WC requires at least: 7.0
- * WC tested up to: 9.3
+ * WC tested up to: 9.4
  * Requires PHP: 7.0
  **/
 
@@ -56,11 +56,12 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 			register_activation_hook( __FILE__, array( $this, 'install' ) );
 			add_action( 'activated_plugin', [ $this, 'after_activated' ] );
 			add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+			add_action( 'init', array( $this, 'load_text_domain' ) );
 		}
 
 		function define() {
 			define( 'PSCW_CONST_F', [
-				'version'     => '2.0.7',
+				'version'     => '2.0.8',
 				'plugin_name' => 'Product Size Chart for WooCommerce',
 				'slug'        => 'pscw',
 				'assets_slug' => 'pscw-',
@@ -82,9 +83,12 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 					'wc_version'      => '7.0',
 					'require_plugins' => [
 						[
-							'slug' => 'woocommerce',
-							'name' => 'WooCommerce',
+							'slug'    => 'woocommerce',
+							'name'    => 'WooCommerce',
+							'file'    => 'woocommerce/woocommerce.php',
+							'version' => '7.0',
 						],
+
 					]
 				]
 			);
@@ -98,7 +102,6 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 		public function init() {
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'settings_link' ) );
-			$this->load_text_domain();
 			$this->load_classes();
 			$this->migrate_data_from_free_to_pro();
 		}
@@ -150,45 +153,45 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 				$links );
 		}
 
-        public function after_activated( $plugin ) {
-	        $args = array(
-		        'post_type'      => 'product',
-		        'orderby'        => 'asc',
-		        'posts_per_page' => 1,
-	        );
+		public function after_activated( $plugin ) {
+			$args = array(
+				'post_type'      => 'product',
+				'orderby'        => 'asc',
+				'posts_per_page' => 1,
+			);
 
-	        $product_query = new \WP_Query($args);
-	        $productIDs = wp_list_pluck($product_query->posts, 'ID');
+			$product_query = new \WP_Query( $args );
+			$productIDs    = wp_list_pluck( $product_query->posts, 'ID' );
 
-	        if (empty($productIDs)) {
+			if ( empty( $productIDs ) ) {
 
-		        $product_id = wp_insert_post(array(
-			        'post_title'   => esc_html__('Product Size Chart Preview', 'product-size-chart-for-woo'),
-			        'post_type'    => 'product',
-			        'post_status'  => 'publish',
-			        'post_content' => '',
-		        ));
+				$product_id = wp_insert_post( array(
+					'post_title'   => esc_html__( 'Product Size Chart Preview', 'product-size-chart-for-woo' ),
+					'post_type'    => 'product',
+					'post_status'  => 'publish',
+					'post_content' => '',
+				) );
 
 
-		        update_post_meta($product_id, '_regular_price', 0);
-		        update_post_meta($product_id, '_product_type', 'simple');
-		        update_post_meta($product_id, '_price', 0);
-		        update_post_meta($product_id, '_visibility', 'visible');
-	        }
+				update_post_meta( $product_id, '_regular_price', 0 );
+				update_post_meta( $product_id, '_product_type', 'simple' );
+				update_post_meta( $product_id, '_price', 0 );
+				update_post_meta( $product_id, '_visibility', 'visible' );
+			}
 
-	        $this->migrate_data_from_free_to_pro();
-	        if ( $plugin === plugin_basename( __FILE__ ) ) {
-		        $page = isset( $_GET['page'] ) ? wc_clean( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		        if ( get_option( 'pscw_setup_wizard' ) ) {
-			        if ( $page !== 'pscw-setup' ) {
-				        $url = add_query_arg( [ 'page' => 'pscw-setup' ], admin_url() );
-				        wp_safe_redirect( $url );
-				        exit();
-			        }
-		        }
-	        }
+			$this->migrate_data_from_free_to_pro();
+			if ( $plugin === plugin_basename( __FILE__ ) ) {
+				$page = isset( $_GET['page'] ) ? wc_clean( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				if ( get_option( 'pscw_setup_wizard' ) ) {
+					if ( $page !== 'pscw-setup' ) {
+						$url = add_query_arg( [ 'page' => 'pscw-setup' ], admin_url() );
+						wp_safe_redirect( $url );
+						exit();
+					}
+				}
+			}
 
-        }
+		}
 
 		public function install() {
 			$check_active = get_option( 'woo_sc_setting', array() );
@@ -196,7 +199,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 				$settings = Data::get_instance();
 				$params   = $settings->get_params();
 				update_option( 'woo_sc_setting', $params );
-				update_option('pscw_setup_wizard', 1, 'no');
+				update_option( 'pscw_setup_wizard', 1, 'no' );
 			} else {
 				if ( ! isset( $check_active['pscw_icon'] ) ) {
 					$check_active['pscw_icon'] = 'ruler-icon-2';
@@ -207,10 +210,10 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 		public function migrate_data_from_free_to_pro() {
 			$posts = get_posts( array(
-					'post_type'  => 'pscw-size-chart',
+					'post_type'   => 'pscw-size-chart',
 					'numberposts' => - 1,
 					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-					'meta_query' => array(
+					'meta_query'  => array(
 						'relation' => 'AND',
 						array(
 							'key'     => 'woo_sc_size_chart_data',

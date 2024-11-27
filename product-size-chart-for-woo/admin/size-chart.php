@@ -96,7 +96,7 @@ class Size_Chart {
 				update_post_meta( $post_id, 'pscw_interface', $this->default_size_chart_interface() );
 
 				$random_product = $this->get_random_product();
-				$url            = admin_url( 'customize.php' ) . '?url=' . rawurlencode( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $post_id . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
+				$url            = admin_url( 'customize.php' ) . '?url=' . esc_url( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $post_id . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
 				wp_safe_redirect( $url );
 			}
 		}
@@ -247,7 +247,7 @@ class Size_Chart {
                     <td>
 						<?php if ( $post_id->post_status !== 'auto-draft' ) : ?>
 							<?php
-							$url = admin_url( 'customize.php' ) . '?url=' . rawurlencode( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $post_id->ID . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
+							$url = admin_url( 'customize.php' ) . '?url=' . esc_url( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $post_id->ID . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
 							?>
                             <a target="_blank"
                                href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Go to design', 'product-size-chart-for-woo' ) ?></a>
@@ -479,7 +479,7 @@ class Size_Chart {
 			if ( $sc_id ) {
 				$random_product = $this->get_random_product();
 
-				$url = admin_url( 'customize.php' ) . '?url=' . rawurlencode( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $sc_id . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
+				$url = admin_url( 'customize.php' ) . '?url=' . esc_url( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $sc_id . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
 
 				wp_safe_redirect( $url );
 
