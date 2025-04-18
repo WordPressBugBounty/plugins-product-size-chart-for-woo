@@ -1,3 +1,6 @@
+/**2025.04.18* – 2.0.9**/
+- Updated: Compatible with WP 6.8 and WC 9.8
+
 /**2024.11.27* – 2.0.8**/
 - Fixed: Link to size chart customize
 - Fixed: Translation loading triggered too early

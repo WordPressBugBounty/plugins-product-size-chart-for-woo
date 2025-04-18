@@ -110,6 +110,9 @@ class Front_End {
 				return;
 			}
 		}
+        if (!is_product()){
+            return;
+        }
 		?>
         <div class="woo_sc_frontend_btn">
             <div id="woo_sc_show_popup"

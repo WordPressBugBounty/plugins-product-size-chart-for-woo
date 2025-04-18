@@ -12,12 +12,12 @@ class Setup_Wizard {
 		global $title;
 		$title                              = ''; // Fix PHP Deprecated:  strip_tags(): Passing null to parameter #1 ($string) of type string is deprecated
 		$this->default_template_posts_title = array(
-			'hoodie'       => esc_html__( "Hoodie Size Chart", 'product-size-chart-for-woo' ),
-			'women_shoe'   => esc_html__( "Women's Shoe Size Chart", 'product-size-chart-for-woo' ),
-			'men_shoe'     => esc_html__( "Men's Shoe Size Chart", 'product-size-chart-for-woo' ),
-			'pet_clothing' => esc_html__( "Pet Clothing Size Chart", 'product-size-chart-for-woo' ),
-			'dress'        => esc_html__( "Dress Size Chart", 'product-size-chart-for-woo' ),
-			't_shirt'      => esc_html__( "T-Shirt Size Chart", 'product-size-chart-for-woo' ),
+			'hoodie'       => esc_html( "Hoodie Size Chart"),
+			'women_shoe'   => esc_html( "Women's Shoe Size Chart"),
+			'men_shoe'     => esc_html( "Men's Shoe Size Chart"),
+			'pet_clothing' => esc_html( "Pet Clothing Size Chart"),
+			'dress'        => esc_html( "Dress Size Chart"),
+			't_shirt'      => esc_html( "T-Shirt Size Chart"),
 		);
 		add_action( 'admin_head', [ $this, 'setup_wizard' ] );
 		add_action( 'wp_ajax_pscw_setup_wizard', array( $this, 'pscw_ajax_setup_wizard' ) );
@@ -28,12 +28,13 @@ class Setup_Wizard {
 	}
 
 	public function setup_wizard() {
-		$screen_id = get_current_screen()->id;
-		if ( $screen_id !== 'dashboard_page_pscw-setup' ) {
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+		if ( $page !== 'pscw-setup' ) {
 			return;
 		}
 		delete_option( 'pscw_setup_wizard' );
 		$size_charts = $this->default_template_posts_title;
+
 		?>
         <div class="pscw-setup-wizard-container">
             <div>
@@ -63,8 +64,9 @@ class Setup_Wizard {
                             <option value="after_add_to_cart"><?php esc_html_e( 'After add to cart', 'product-size-chart-for-woo' ); ?></option>
                             <option value="pop-up"><?php esc_html_e( 'Pop-up', 'product-size-chart-for-woo' ) ?></option>
                             <option value="product_tabs" selected><?php esc_html_e( 'Product tab', 'product-size-chart-for-woo' ) ?></option>
-                            <option value="none" ><?php esc_html_e( 'None', 'product-size-chart-for-woo' ) ?></option>
-                           <option value="before_atc_after_variations" disabled><?php esc_html_e( 'Before add to cart after variations (Premium)', 'product-size-chart-for-woo' ); ?></option>
+                            <option value="none"><?php esc_html_e( 'None', 'product-size-chart-for-woo' ) ?></option>
+                            <option value="before_atc_after_variations"
+                                    disabled><?php esc_html_e( 'Before add to cart after variations (Premium)', 'product-size-chart-for-woo' ); ?></option>
                             <option value="top_des" disabled><?php esc_html_e( 'Top description (Premium)', 'product-size-chart-for-woo' ); ?></option>
                             <option value="bottom_des" disabled><?php esc_html_e( 'Bottom description (Premium)', 'product-size-chart-for-woo' ); ?></option>
                             <option value="after_title" disabled><?php esc_html_e( 'After title (Premium)', 'product-size-chart-for-woo' ); ?></option>
@@ -116,13 +118,9 @@ class Setup_Wizard {
 
 			$this->default_template( $selected_size_charts );
 
-			$random_product      = wc_get_products( array(
-				'type'    => array( 'simple', 'variable' ),
-				'orderby' => 'rand',
-				'return'  => 'ids',
-				'limit'   => 1
-			) );
-			$data['productLink'] = get_permalink( $random_product[0] );
+			$all_size_chart_link = admin_url( 'edit.php?post_type=pscw-size-chart' );
+
+			$data['allSizeChartLink'] = $all_size_chart_link;
 			wp_send_json_success( $data );
 		}
 		wp_die();
@@ -130,12 +128,11 @@ class Setup_Wizard {
 
 	public function default_template( $selected_size_charts ) {
 		if ( empty( $default_template_option ) ) {
-			$t_shirt_img = PSCW_CONST_F['img_url'] . 'template/t-shirt.png';
-			$hoodie_img  = PSCW_CONST_F['img_url'] . 'template/hoodie.png';
-			$foot_img    = PSCW_CONST_F['img_url'] . 'template/foot.png';
-			$pet_img     = PSCW_CONST_F['img_url'] . 'template/dog-3.png';
-			$dress_img   = PSCW_CONST_F['img_url'] . 'template/dress.png';
-
+			$t_shirt_img = pscw_upload_template_image_to_media_library( 't-shirt.png' );
+			$hoodie_img  = pscw_upload_template_image_to_media_library( 'hoodie.png' );
+			$foot_img    = pscw_upload_template_image_to_media_library( 'foot.png' );
+			$pet_img     = pscw_upload_template_image_to_media_library( 'dog-3.png' );
+			$dress_img   = pscw_upload_template_image_to_media_library( 'dress.png' );
 
 			$default_template_interface = array(
 				'hoodie'       => '{"layout":{"type":"container","children":["pscw-row-ID_1724125267262"]},"elementsById":{"pscw-col-ID_1724125267263":{"id":"pscw-col-ID_1724125267263","class":"pscw-col-l-12","type":"column","parent":"pscw-row-ID_1724125267262","children":["pscw-image-ID_1724125344627","pscw-table-ID_1726654859042"],"settings":{"class":"pscw-customize-col-12"}},"pscw-row-ID_1724125267262":{"children":["pscw-col-ID_1724125267263"],"id":"pscw-row-ID_1724125267262","type":"row"},"pscw-image-ID_1724125344627":{"id":"pscw-image-ID_1724125344627","type":"image","parent":"pscw-col-ID_1724125267263","alt":"","borderColor":"#000000","borderStyle":"solid","borderWidth":0,"height":350,"heightUnit":"px","width":100,"widthUnit":"%","src":"' . $hoodie_img . '","padding":[0,0,0,0],"margin":[0,0,0,0],"objectFit":"contain"},"pscw-table-ID_1726654859042":{"id":"pscw-table-ID_1726654859042","type":"table","parent":"pscw-col-ID_1724125267263","columns":["SIZE (US)","WIDTH","LENGTH","SLEEVE LENGTH","SIZE TOLERANCE"],"rows":[["S","20.08","27.17","33.50","1.50"],["M","22.05","27.95","34.50","1.50"],["L","24.02","29.13","35.50","1.50"],["XL","25.98","29.92","36.50","1.50"],["2XL","27.99","31.10","37.50","1.50"],["3XL","29.92","31.89","38.50","1.50"],["4XL","31.89","33.07","39.50","1.50"],["5XL","33.86","33.86","40.50","1.50"]],"headerColumn":"row","headerBackground":"#ff801f","textHeader":"#ffffff","headerTextBold":true,"headerTextSize":14,"columnsStyle":false,"evenBackground":"#fff9f4","evenText":"#494949","oddBackground":"#fff2e8","oddText":"#494949","borderColor":"#ff801f","cellTextSize":14,"horizontalBorderWidth":"0","horizontalBorderStyle":"solid","verticalBorderWidth":"0","verticalBorderStyle":"solid","margin":[0,0,0,0],"borderRadius":[0,0,0,0],"tableMaxHeight":535}}}',

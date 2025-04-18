@@ -31,6 +31,16 @@ if ( ! function_exists( 'pscw_search_post' ) ) {
 			'order'     => 'name',
 			's'         => $search_key
 		);
+//		if ( $post_type === 'product' ) {
+//			$args['meta_query'] = [
+//				'relation' => 'OR',
+//				[
+//					'key'     => '_sku',
+//					'value'   => $search_key,
+//					'compare' => 'LIKE'
+//				],
+//			];
+//		}
 		$query  = new \WP_Query ( $args );
 		$result = $query->get_posts();
 		foreach ( $result as $val ) {
@@ -95,26 +105,26 @@ if ( ! function_exists( 'pscw_get_allow_svg' ) ) {
 if ( ! function_exists( 'pscw_get_view_box' ) ) {
 	function pscw_get_view_box( $key ) {
 		$view_box = array(
-			'ruler-icon-2'   => '0 0 71 71.6',
+			'ruler-icon-2' => '0 0 71 71.6',
 		);
 
 		return $view_box[ $key ];
 	}
 }
 
-if ( ! function_exists('pscw_migrate_size_chart_data') ) {
-	function pscw_migrate_size_chart_data($size_chart, $woo_sc_size_chart_data) {
+if ( ! function_exists( 'pscw_migrate_size_chart_data' ) ) {
+	function pscw_migrate_size_chart_data( $size_chart, $woo_sc_size_chart_data ) {
 		$textElement  = [];
 		$imageElement = [];
 		$tableElement = [];
 		$children     = [];
 
-		$row_id = uniqid('pscw-row-ID_');
-		$col_id = uniqid('pscw-col-ID_');
+		$row_id = uniqid( 'pscw-row-ID_' );
+		$col_id = uniqid( 'pscw-col-ID_' );
 
 		/* Text content*/
 		if ( ! empty( $size_chart->post_content ) ) {
-			$text_id = uniqid('pscw-text-ID_');
+			$text_id     = uniqid( 'pscw-text-ID_' );
 			$children[]  = $text_id;
 			$textElement = [
 				"id"     => $text_id,
@@ -131,8 +141,8 @@ if ( ! function_exists('pscw_migrate_size_chart_data') ) {
 		}
 		/* Image */
 		if ( isset( $woo_sc_size_chart_data['img_link'] ) && ! empty( $woo_sc_size_chart_data['img_link'] ) ) {
-			$image_id  = uniqid('pscw-image-ID_');
-			$children[] = $image_id;
+			$image_id     = uniqid( 'pscw-image-ID_' );
+			$children[]   = $image_id;
 			$imageElement = [
 				'id'          => $image_id,
 				'type'        => 'image',
@@ -163,7 +173,7 @@ if ( ! function_exists('pscw_migrate_size_chart_data') ) {
 		}
 		/* Table */
 		if ( isset( $woo_sc_size_chart_data['table_array'] ) ) {
-			$table_id   = uniqid('pscw-table-ID_');
+			$table_id   = uniqid( 'pscw-table-ID_' );
 			$children[] = $table_id;
 			$columns    = [ "" ];
 			$rows       = [ [ "" ] ];
@@ -256,5 +266,83 @@ if ( ! function_exists('pscw_migrate_size_chart_data') ) {
 		}
 
 		update_post_meta( $size_chart->ID, 'pscw_interface', $pscw_interface );
+	}
+}
+
+if ( ! function_exists( 'pscw_upload_template_image_to_media_library' ) ) {
+	function pscw_upload_template_image_to_media_library( $image_name ) {
+		$upload_dir = wp_upload_dir();
+		$source     = PSCW_CONST_F['img_url'] . 'template/' . $image_name;
+		$filename   = $upload_dir['basedir'] . '/' . $image_name;
+
+		// Check if the attachment already exists
+		$existing_attachment = get_posts(array(
+			'post_type'   => 'attachment',
+			'meta_query'  => array(
+				array(
+					'key'     => '_wp_attached_file',
+					'value'   => $upload_dir['subdir'] . '/' . $image_name, // Relative path
+					'compare' => '=',
+				),
+			),
+			'posts_per_page' => 1,
+		));
+
+		// Return the ID if the attachment exists
+		if (!empty($existing_attachment)) {
+			return $existing_attachment[0]->ID;
+		}
+
+		if ( ! file_exists( $filename ) ) {
+			copy( $source, $filename ); // @codingStandardsIgnoreLine.
+		}
+
+		$filetype = wp_check_filetype( basename( $filename ), null );
+
+		$attachment = array(
+			'guid'           => $upload_dir['url'] . '/' . $image_name,
+			'post_mime_type' => $filetype['type'],
+			'post_title'     => 'pscw-' . sanitize_file_name( $image_name ),
+			'post_content'   => '',
+			'post_status'    => 'inherit',
+		);
+
+		$attachment_id = wp_insert_attachment( $attachment, $filename );
+
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		$attach_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+		wp_update_attachment_metadata( $attachment_id, $attach_data );
+
+		return wp_get_attachment_url( $attachment_id );
+	}
+}
+
+if ( !function_exists( 'pscw_default_template_image' ) ) {
+	function pscw_default_template_image() {
+		if ( get_option( 'pscw_default_template_image') ) {
+			return;
+		}
+		$templ_files = array(
+			'boy.png',
+			'boy-kid.png',
+			'cat-1.png',
+			'cat-2.png',
+			'dog-1.png',
+			'dog-2.png',
+			'dog-3.png',
+			'dress.png',
+			'foot.png',
+			'girl.png',
+			'girl-kid.png',
+			'hoodie.png',
+			'men.jpg',
+			't-shirt.png',
+			'women.jpg'
+		);
+		$img_ids = array();
+		foreach ( $templ_files as $templ_file ) {
+			$img_ids[ $templ_file ] = pscw_upload_template_image_to_media_library( $templ_file );
+		}
+		update_option( 'pscw_default_template_image', $img_ids );
 	}
 }
