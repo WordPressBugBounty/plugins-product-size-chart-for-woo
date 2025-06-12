@@ -1,12 +1,16 @@
-/**2025.04.18* – 2.0.9**/
+/**2025.06.12 – 2.1.0**/
+- Fixed: Size chart product categories assignment problem
+- Updated: New design for the Assign options in each size chart.
+
+/**2025.04.18 – 2.0.9**/
 - Updated: Compatible with WP 6.8 and WC 9.8
 
-/**2024.11.27* – 2.0.8**/
+/**2024.11.27 – 2.0.8**/
 - Fixed: Link to size chart customize
 - Fixed: Translation loading triggered too early
 - Updated: Compatible with WP 6.7 and WC 9.4
 
-/**2024.10.31* – 2.0.7**/
+/**2024.10.31 – 2.0.7**/
 - Updated: Update support file
 
 /**2024.10.23 – 2.0.6**/

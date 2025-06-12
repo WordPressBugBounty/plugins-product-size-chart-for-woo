@@ -304,11 +304,11 @@
   column-gap: 12px;
   box-sizing: border-box;
 }
-.pscw-customize-row-list-cols {
+.pscw-customize-row-list-cols, .pscw-customize-row-list .pscw-upgrade-row-list-cols {
   display: flex;
   flex-wrap: nowrap;
   gap: 2px;
-  width: 100%;
+  width: calc(50% - 8px);
   padding: 4px;
   border: 1px solid #dedede;
   border-radius: 4px;
@@ -316,12 +316,43 @@
   cursor: pointer;
   box-sizing: border-box;
 }
-.pscw-customize-row-list-cols div {
+.pscw-customize-row-list-cols div, .pscw-customize-row-list .pscw-upgrade-row-list-cols div {
   height: 32px;
   background: #008EC2;
 }
-.pscw-customize-row-list-cols:hover {
+.pscw-customize-row-list-cols:hover, .pscw-customize-row-list .pscw-upgrade-row-list-cols:hover {
   border: 1px solid #008EC2;
+}
+.pscw-customize-row-list-cols.pscw-upgrade-row-list-cols, .pscw-customize-row-list .pscw-upgrade-row-list-cols.pscw-upgrade-row-list-cols {
+  position: relative;
+  opacity: 0.55;
+}
+.pscw-customize-row-list-cols.pscw-upgrade-row-list-cols .pscw-upgrade-button, .pscw-customize-row-list .pscw-upgrade-row-list-cols.pscw-upgrade-row-list-cols .pscw-upgrade-button {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: unset;
+  word-break: break-word;
+  white-space: break-spaces;
+  line-height: 1;
+  top: 0;
+  left: 0;
+  text-transform: capitalize;
+  color: #50575e;
+}
+.pscw-customize-row-list-cols.pscw-upgrade-row-list-cols:hover, .pscw-customize-row-list .pscw-upgrade-row-list-cols.pscw-upgrade-row-list-cols:hover {
+  border-color: #e7e7e7;
+  opacity: 1;
+}
+.pscw-customize-row-list-cols.pscw-upgrade-row-list-cols:hover div, .pscw-customize-row-list .pscw-upgrade-row-list-cols.pscw-upgrade-row-list-cols:hover div {
+  background: #e7e7e7;
+}
+.pscw-customize-row-list-cols.pscw-upgrade-row-list-cols:hover .pscw-upgrade-button, .pscw-customize-row-list .pscw-upgrade-row-list-cols.pscw-upgrade-row-list-cols:hover .pscw-upgrade-button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background: transparent;
 }
 .pscw-customize-row-list-one div {
   width: 100%;
@@ -335,13 +366,13 @@
 .pscw-customize-row-list-four div {
   width: 25%;
 }
-.pscw-customize-row-list-five div:first-child {
+.pscw-customize-row-list-five div {
   width: 33.33333%;
 }
 .pscw-customize-row-list-five div:last-child {
   width: 66.666667%;
 }
-.pscw-customize-row-list-six div:first-child {
+.pscw-customize-row-list-six div {
   width: 66.666667%;
 }
 .pscw-customize-row-list-six div:last-child {
@@ -507,11 +538,10 @@
 /*Button Upload*/
 .pscw-customize-btn-upload-container {
   display: flex;
-  flex-direction: column;
-  row-gap: 12px;
+  gap: 8px;
 }
-.pscw-customize-btn-upload-container div {
-  padding: 0.78571429em 1.5em;
+.pscw-customize-btn-upload-container div, .pscw-customize-btn-upload-container .pscw-customize-btn-csv-sample-data {
+  padding: 0.78571429em 1em;
   color: #fff;
   background: #21BA45;
   border: none;
@@ -520,9 +550,101 @@
   box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
   cursor: pointer;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pscw-customize-btn-upload-container .pscw-customize-btn-csv-sample-data {
+  width: 40px;
+  color: #fff;
+  background: #fda420;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.pscw-customize-btn-upload-container .pscw-customize-btn-export {
+  flex: 1;
+  color: #fff;
+  background: #DB2828;
+  position: relative;
+  opacity: 0.55;
+}
+.pscw-customize-btn-upload-container .pscw-customize-btn-export:hover {
+  background: #bf7070;
+  opacity: 1;
+}
+.pscw-customize-btn-upload-container .pscw-customize-btn-export:hover span {
+  display: none;
+}
+.pscw-customize-btn-upload-container .pscw-customize-btn-export:hover .pscw-upgrade-button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background: transparent;
+  color: #fff;
+}
+.pscw-customize-btn-upload-container .pscw-customize-btn-export .pscw-upgrade-button {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: unset;
+  word-break: break-word;
+  white-space: break-spaces;
+  line-height: 1;
+  top: 0;
+  left: 0;
+  text-transform: capitalize;
+  color: #fff;
 }
 
 /*Component Panel*/
+.pscw-upgrade-component-panel-item {
+  position: relative;
+  opacity: 0.55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(50% - 8px);
+  padding: 16px 0;
+  border: 1px solid #dedede;
+  border-radius: 4px;
+  background: #fff;
+  color: #50575e;
+  text-decoration: none;
+  cursor: pointer;
+}
+.pscw-upgrade-component-panel-item:hover {
+  border-color: #e7e7e7;
+  opacity: 1;
+  color: #fff;
+}
+.pscw-upgrade-component-panel-item:hover .pscw-upgrade-button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background: transparent;
+  color: #50575e;
+}
+.pscw-upgrade-component-panel-item .pscw-upgrade-button {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: unset;
+  word-break: break-word;
+  white-space: break-spaces;
+  line-height: 1;
+  top: 0;
+  left: 0;
+  text-transform: capitalize;
+  color: #50575e;
+}
+.pscw-upgrade-component-panel-item .dashicons {
+  font-size: 30px;
+  height: 30px;
+  width: 30px;
+}
+
 .pscw-customize-component-panel-title {
   height: 46px;
   padding: 0 15px;

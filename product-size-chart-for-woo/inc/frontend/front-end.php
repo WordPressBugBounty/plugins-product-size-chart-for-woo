@@ -42,56 +42,114 @@ class Front_End {
 	}
 
 	public function pscw_helper_show_size_chart( $product_id, $update_option_editing = false ) {
-		$size_charts    = get_posts( array(
-			'post_type'   => 'pscw-size-chart',
-			'post_status' => 'publish',
-			'numberposts' => - 1,
-			'fields'      => 'ids'
-		) );
+		$product = wc_get_product($product_id);
+		if (!$product){
+			return array( 'disable', [] );
+		}
+		$size_charts_allow=[];
+		$product_sc_mode     = $product->get_meta('pscw_mode')?: 'global';
+		if ($product_sc_mode === 'disable' && !is_customize_preview()){
+			return array( $product_sc_mode, $size_charts_allow );
+		}
+		if ($product_sc_mode === 'override'){
+			$product_sc_override = $product->get_meta('pscw_override')?:[];
+			$size_chart_id       = array_values( $product_sc_override ) ;
+		}else {
+			$size_charts = get_posts( array(
+				'post_type'   => 'pscw-size-chart',
+				'post_status' => 'publish',
+				'numberposts' => - 1,
+				'fields'      => 'ids'
+			) );
 
-        $product_cate = get_the_terms( $product_id, 'product_cat');
-        if ( $product_cate ) {
-            $product_cate = array_map(function($term) {
-                return $term->slug;
-            }, $product_cate);
-        }else {
-            $product_cate = [];
+			$product_cate = wc_get_product_cat_ids( $product_id );
+			if ( ! is_array( $product_cate ) ) {
+				$product_cate = [];
+			}
+			$size_chart_id = [];
+			foreach ( $size_charts as $sc_id ) {
+				$pscw_data = get_post_meta( $sc_id, 'pscw_data', true );
+				if (isset($pscw_data['assign'])){
+					$apply     = self::size_chart_is_available_old($product_id, $product_cate,$pscw_data['assign']??'',$pscw_data['condition'] ?? []);
+				}else{
+					$apply     = self::size_chart_is_available($product_id, $product_cate,$pscw_data);
+				}
+				if ( $apply ) {
+					$size_chart_id[] = $sc_id;
+				}
+			}
+		}
+        if (is_array($size_chart_id) && !empty($size_chart_id)) {
+	        foreach ( $size_chart_id as $pscw_id ) {
+		        if ( ! $pscw_id ) {
+			        continue;
+		        }
+		        $pscw_data_ct = get_post_meta( $pscw_id, 'pscw_data', true );
+		        if ( empty( $pscw_data_ct ) ) {
+			        continue;
+		        }
+		        $size_charts_allow[] = $pscw_id;
+	        }
         }
 
-		$size_chart_all = [];
-		
-
-		foreach ( $size_charts as $sc_id ) {
-			$pscw_data = get_post_meta( $sc_id, 'pscw_data', true );
-			if ( isset( $pscw_data['assign'] ) && $pscw_data['assign'] === 'all' ) {
-				$size_chart_all[] = $sc_id;
-			}elseif ( isset($pscw_data['assign']) && $pscw_data['assign'] === 'product_cat') {
-                if ( !empty( $pscw_data['condition']) && array_intersect( $product_cate, $pscw_data['condition'])) {
-                    $size_chart_all[] = $sc_id;
-                }
-            }
-
+		if ( $update_option_editing && is_customize_preview() ) {
+			$user_id = get_current_user_id();
+			if ( is_array( $size_charts_allow ) && !empty( $size_charts_allow ) ) {
+				update_option( 'pscw_size_charts_editing', $size_charts_allow );
+				$old_sc_editing = get_user_meta( get_current_user_id(), 'pscw_current_editing_sc', true );
+				if (!$old_sc_editing || !in_array($old_sc_editing, $size_charts_allow)){
+					update_user_meta($user_id , 'pscw_current_editing_sc',  $size_charts_allow[0] );
+				}
+			} else {
+				update_option( 'pscw_size_charts_editing', '' );
+				update_user_meta( $user_id, 'pscw_current_editing_sc', '' );
+			}
+			update_user_meta( $user_id, 'pscw_sizechart_mode', '' );
 		}
-        
-		$size_chart_id       = get_post_meta( $product_id, 'pscw_sizecharts', true );
-		$size_chart_id       = empty( $size_chart_id ) ? [] : array_values( $size_chart_id );
-		$size_chart_id       = array_merge( $size_chart_id, $size_chart_all );
-		$product_sc_mode     = get_post_meta( $product_id, 'pscw_mode', true );
-		$product_sc_override = get_post_meta( $product_id, 'pscw_override', true );
-		$size_chart_id       = $product_sc_mode === 'override' ? array_values( $product_sc_override ) : $size_chart_id;
-
-		if ( $update_option_editing ) {
-            if ( is_array( $size_chart_id ) && count( $size_chart_id ) ) {
-	            update_option( 'pscw_size_charts_editing', $size_chart_id );
-	            update_user_meta( get_current_user_id(), 'pscw_current_editing_sc', $size_chart_id[0] );
-            }else {
-	            update_option( 'pscw_size_charts_editing', '' );
-	            update_user_meta( get_current_user_id(), 'pscw_current_editing_sc', '' );
-            }
-			update_user_meta( get_current_user_id(), 'pscw_sizechart_mode', '' );
+		return array( $product_sc_mode, $size_charts_allow );
+	}
+	public static function size_chart_is_available($product_id, $product_cate,$pscw_data){
+		$product = wc_get_product($product_id);
+		if (!$product){
+			return false;
 		}
-
-		return array( $product_sc_mode, $size_chart_id );
+		if (!empty($pscw_data['all_products'] ?? '1')){
+			return true;
+		}
+		if (empty($pscw_data['include_products']) && empty($pscw_data['include_product_cat']) ){
+			return false;
+		}
+		if (!empty($pscw_data['include_products']) && is_array($pscw_data['include_products'])
+		    && !in_array( $product_id, $pscw_data['include_products'] ) ){
+			return false;
+		}
+		if (!empty($pscw_data['include_product_cat']) && is_array($pscw_data['include_product_cat'])
+		    && empty( array_intersect( $product_cate, $pscw_data['include_product_cat'] ) )){
+			return false;
+		}
+		return true;
+	}
+	public static function size_chart_is_available_old($product_id,$product_cate,$assign,$condition){
+		$apply = false;
+		$product = wc_get_product($product_id);
+		if (!$product){
+			return $apply;
+		}
+		if (!is_array($condition)){
+			$condition =[];
+		}
+		switch ( $assign ) {
+			case 'all':
+				$apply = true;
+				break;
+			case 'product_cat':
+				$apply = ! empty( array_intersect( $product_cate, $condition ) );
+				break;
+			case 'products':
+				$apply = in_array( $product_id, $condition );
+				break;
+		}
+		return $apply;
 	}
 
 	public function handle_sc_show_popup() {

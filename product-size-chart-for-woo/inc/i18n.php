@@ -8,6 +8,7 @@ class I18n {
 	public static function init() {
 		return array(
 			'select_country'             => esc_html__( 'Select countries to show', 'product-size-chart-for-woo' ),
+			'all_product'             => esc_html__( 'Apply to all products', 'product-size-chart-for-woo' ),
 			'search_product'             => esc_html__( 'Select products', 'product-size-chart-for-woo' ),
 			'search_product_cat'         => esc_html__( 'Select product categories', 'product-size-chart-for-woo' ),
 			'size_chart_title'           => esc_html__( 'Size chart title', 'product-size-chart-for-woo' ),
@@ -71,6 +72,8 @@ class I18n {
 			'unsupported_component_type' => esc_html__( 'Unsupported component type', 'product-size-chart-for-woo' ),
 			'template_color'             => esc_html__( 'Select Template Color', 'product-size-chart-for-woo' ),
 			'import_csv'                 => esc_html__( 'Import CSV', 'product-size-chart-for-woo' ),
+			'export_csv'                 => esc_html__( 'Export CSV',  'product-size-chart-for-woo'  ),
+			'sample_csv'                 => esc_html__( 'Sample CSV',  'product-size-chart-for-woo'  ),
 			'required_file_csv'          => esc_html__( 'Required file extension is CSV!', 'product-size-chart-for-woo' ),
 			'confirm_replace_csv'        => esc_html__( 'Size chart in CSV file will replace the current table?', 'product-size-chart-for-woo' ),
 			'alert_csv_empty'            => esc_html__( 'Please upload non-empty csv file!', 'product-size-chart-for-woo' ),

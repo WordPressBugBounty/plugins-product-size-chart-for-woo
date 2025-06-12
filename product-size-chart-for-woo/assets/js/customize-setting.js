@@ -17,10 +17,18 @@ jQuery(document).ready( function ( $ ) {
     };
 
     /* Simulate depensOn library but only hide/show */
-    $.fn.showsOn = function(target, desiredValue) {
+    $.fn.showsOn = function(target, desiredValue, prop =false) {
         const $this = $(this);
         $(target).on('change', function() {
-            $this.toggle($(this).val() === desiredValue);
+            if (prop){
+                if ($(this).prop(desiredValue)){
+                    $this.hide();
+                }else {
+                    $this.show();
+                }
+            }else {
+                $this.toggle($(this).val() === desiredValue);
+            }
         });
 
         $(target).trigger('change');
@@ -29,13 +37,19 @@ jQuery(document).ready( function ( $ ) {
     };
 
     const imgUrl = VicPscwParams.imgUrl;
-    const scInterface = JSON.parse( VicPscwParams.interface );
-    const pscwData = {
-        title: VicPscwParams.scTitle,
-        assign: VicPscwParams.assignTag,
-        allow_countries: [],
-        condition: VicPscwParams.assignValues,
-    }
+    const scInterface = JSON.parse( VicPscwParams.interface ),
+    assign_data = JSON.parse(VicPscwParams.assign_data),
+        assign_option = JSON.parse(VicPscwParams.assign_option),
+        assign_option_info = JSON.parse(VicPscwParams.assign_option_info);
+    // const pscwData = {
+    //     title: VicPscwParams.scTitle,
+    //     assign: VicPscwParams.assignTag,
+    //     allow_countries: [],
+    //     condition: VicPscwParams.assignValues,
+    // }
+    const pscwData = $.extend({
+        title: VicPscwParams.scTitle
+    }, assign_data);
     const layoutSave = Object.assign({}, scInterface.layout);
     const elementsSave = Object.assign({}, scInterface.elementsById);
     const api = wp.customize;
@@ -61,6 +75,9 @@ jQuery(document).ready( function ( $ ) {
             if (this.label) {
                 const label = $(`<label for="" class="customize-control-title"></label>`).text(this.label);
                 element.append(label);
+            }
+            if (this.value?.class_wrap) {
+                element.addClass(this.value.class_wrap);
             }
 
             switch (this.type) {
@@ -130,18 +147,33 @@ jQuery(document).ready( function ( $ ) {
         }
 
         createUpgrade() {
-            return $(`<a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-customize-upgrade">
-                                    Upgrade This Feature
-                     </a>`);
+            return VicPscwParams.upgrade_button;
         }
 
         createSearch() {
             let selectBox = $(`<select id="customize-input-${this.id || ''}" multiple class="hidden" ></select>`);
-            if (this.value.assignTag === VicPscwParams.assignTag) {
-                this.value.assignValues.forEach((value) => {
-                    const option = $(`<option selected value="${value[0]}">${value[1]}</option>`);
+            if (this.value?.defaultValues) {
+                this.value.defaultValues.forEach((value) => {
+                    let selected = this.value.assignValues.includes(value[0]) ? 'selected' : '';
+                    let option = $(`<option value="${value[0]}" ${selected}>${value[1]}</option>`);
                     selectBox.append(option);
                 })
+            } else if (this?.value?.assignValues && this.value.assignValues.length) {
+                this.value.assignValues.forEach((value) => {
+                    if (assign_option_info[value]) {
+                        let option = $(`<option value="${value}" selected>${assign_option_info[value]}</option>`);
+                        selectBox.append(option);
+                    }
+                })
+            }
+            if (this.value?.class_el) {
+                selectBox.addClass(this.value.class_el);
+            }
+            if (this.value?.placeholder_select2) {
+                selectBox.attr('data-placeholder_select2', this.value.placeholder_select2);
+            }
+            if (this.value?.type_select2) {
+                selectBox.attr('data-type_select2', this.value.type_select2);
             }
             if (this.onChange){
                 selectBox.on('change', this.onChange);
@@ -265,9 +297,34 @@ jQuery(document).ready( function ( $ ) {
                                     <div class="pscw-customize-row-list-one pscw-customize-row-list-cols" data-cols="12">
                                     <div></div>
                                     </div>
-                                   <a target="_blank" href="https://1.envato.market/zN1kJe" title="Premium feature" >
-                                    <img src="${imgUrl}/layout_pre.jpg" alt="Premium feature">
-                                    </a>
+                                    <div class="pscw-customize-row-list-two pscw-upgrade-row-list-cols">
+                                    ${VicPscwParams.upgrade_button}
+                                    <div></div>
+                                    <div></div>
+                                    </div>
+                                    <div class="pscw-customize-row-list-three pscw-upgrade-row-list-cols">
+                                    ${VicPscwParams.upgrade_button}
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    </div>
+                                    <div class="pscw-customize-row-list-four pscw-upgrade-row-list-cols">
+                                    ${VicPscwParams.upgrade_button}
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    </div>
+                                    <div class="pscw-customize-row-list-five pscw-upgrade-row-list-cols">
+                                    ${VicPscwParams.upgrade_button}
+                                    <div></div>
+                                    <div></div>
+                                    </div>
+                                    <div class="pscw-customize-row-list-six pscw-upgrade-row-list-cols">
+                                    ${VicPscwParams.upgrade_button}
+                                    <div></div>
+                                    <div></div>
+                                    </div>
                                     </div>
                                    ` );
         }
@@ -370,10 +427,7 @@ jQuery(document).ready( function ( $ ) {
                 for (const choicesKey in this.choices) {
                     if ( ( choicesKey === 'column' || choicesKey === 'both' ) ) {
                         container.append( $( `<div class="pscw-customize-radio-item">
-                                                <a target="_blank" href="https://1.envato.market/zN1kJe">
-                                                    <label for="${this.id + '-' + choicesKey}">${this.choices[choicesKey]}</label>
-                                                </a>
-                                               </div>` ) );
+                                               <label>${this.choices[choicesKey]}</label>${VicPscwParams.upgrade_button}</div>` ) );
                     }else {
                         container.append( $( `<div class="pscw-customize-radio-item">
                         <input type="radio" name="${this.id || ''}" id="${this.id + '-' + choicesKey}" value="${choicesKey}" ${ ( choicesKey === this.value ) ? 'checked' : ''}>
@@ -392,14 +446,14 @@ jQuery(document).ready( function ( $ ) {
 
         createBtnUpload() {
             let container = $( `<div class="pscw-customize-btn-upload-container"></div>` );
-            let button = $( `<div class="pscw-customize-btn-import">${this.value}</div>` );
+            let button = $( `<div class="pscw-customize-btn-import">${this.value.import}</div>` );
+            let buttonExportCSV = $(`<div class="pscw-customize-btn-export"><span>${this.value.export}</span>${VicPscwParams.upgrade_button}</div>`);
+            let buttonSampleCSV = $(`<a href="${VicPscwParams.sampleDataLink}" class="pscw-customize-btn-csv-sample-data" title="${this.value.sample}" download><span class="dashicons dashicons-media-spreadsheet"></span></a>`);
             let input = $( `<input type="file" hidden>` );
-            let uploadPre = $(` <a target="_blank" href="https://1.envato.market/zN1kJe" title="Premium feature" >
-                                    <img src="${imgUrl}/upload_pre.jpg" alt="Premium feature">
-                                    </a>`)
             container.append( input );
             container.append( button );
-            container.append( uploadPre );
+            container.append(buttonExportCSV);
+            container.append(buttonSampleCSV);
             button.on( "click", function () {
                 input.trigger( "click" );
             } );
@@ -753,18 +807,21 @@ jQuery(document).ready( function ( $ ) {
                             <span class="dashicons dashicons-text"></span>
                             ${i18n.text}
                         </div>
-                        <a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-component-panel-item" data-component="tab">
+                        <div class="pscw-upgrade-component-panel-item">
                             <span class="dashicons dashicons-table-row-after"></span>
-                            ${i18n.tab} (Premium)
-                        </a>
-                        <a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-component-panel-item" data-component="accordion">
-                            <span class="dashicons dashicons-menu-alt3"></span>
-                            ${i18n.accordion} (Premium)
-                        </a>
-                        <a target="_blank" href="https://1.envato.market/zN1kJe" class="pscw-customize-component-panel-item" data-component="divider">
-                            <span class="dashicons dashicons-image-flip-vertical"></span>
-                            ${i18n.divider} (Premium)
-                        </a>
+                            ${i18n.tab}
+                            ${VicPscwParams.upgrade_button}
+                        </div>
+                        <div class="pscw-upgrade-component-panel-item">
+                            <span class="dashicons dashicons-table-row-after"></span>
+                            ${i18n.accordion}
+                            ${VicPscwParams.upgrade_button}
+                        </div>
+                        <div class="pscw-upgrade-component-panel-item" >
+                            <span class="dashicons dashicons-table-row-after"></span>
+                            ${i18n.divider}
+                            ${VicPscwParams.upgrade_button}
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -815,47 +872,6 @@ jQuery(document).ready( function ( $ ) {
                 type: 'upgrade',
             } );
 
-            let assign = new PscwComponent({
-                label: i18n.assign,
-                type: 'select',
-                id: 'pscw-size-chart-assign',
-                value: VicPscwParams.assignTag,
-                choices: JSON.parse(VicPscwParams.assignOptions),
-                onChange: function(e) {
-                    pscwData.assign = $(this).val();
-                    ViPscw.CustomizeSettings.transmitData('','',true);
-                }
-            })
-
-            let searchProduct = new PscwComponent({
-                label: i18n.search_product,
-                type: 'search',
-                id: 'pscw-size-chart-search-product',
-                value: {
-                    assignTag: 'products',
-                    assignValues: VicPscwParams.assignValues
-                },
-                onChange: function (e) {
-                    pscwData.condition = $(this).val();
-                    ViPscw.CustomizeSettings.transmitData('','',true);
-                }
-            })
-
-            let searchProductCat = new PscwComponent({
-                label: i18n.search_product_cat,
-                type: 'search',
-                id: 'pscw-size-chart-search-product-cat',
-                value: {
-                    assignTag: 'product_cat',
-                    assignValues: VicPscwParams.assignValues
-                },
-                onChange: function(e) {
-                    pscwData.condition = $(this).val();
-                    ViPscw.CustomizeSettings.transmitData('','',true);
-                }
-            })
-
-
             let layoutComponent = new PscwComponent({
                 label: i18n.layout,
                 value: {
@@ -865,14 +881,72 @@ jQuery(document).ready( function ( $ ) {
                 type: 'layout',
             });
 
+            let applyAllProducts = new PscwComponent({
+                label: i18n.all_product,
+                type: 'checkbox',
+                id: 'pscw-asign-all-product',
+                value: assign_data.all_products,
+                onChange: function (e) {
+                    pscwData.all_products = $(this).prop('checked') ? 1 : '';
+                    ViPscw.CustomizeSettings.transmitData('', '', true);
+                },
+            });
+            let assign_el = [];
+            if (Object.keys(assign_option).length) {
+                $.each(assign_option, function (k, v) {
+                    let class_wrap = 'pscw-assign-all-product-class pscw-assign-' + k,
+                        inc_name = 'include_' + k;
+                    let value = {
+                        class_el: 'pscw-option-select2',
+                        class_wrap: class_wrap + ' pscw-assign-include',
+                    };
+                    if (v?.is_pro){
+                        assign_el.push(new PscwComponent({
+                            label: v?.inc_title,
+                            type: 'upgrade',
+                            id: 'pscw-assign-include_' + k,
+                            value: value,
+                        }));
+                    }else {
+                        value['placeholder_select2'] = v?.placeholder;
+                        value['type_select2'] = k;
+                        if (v?.all_data) {
+                            value['defaultValues'] = Object.entries(v.all_data);
+                        }
+                        assign_el.push(new PscwComponent({
+                            label: v?.inc_title,
+                            type: 'search',
+                            id: 'pscw-assign-include_' + k,
+                            value: $.extend({
+                                assignValues: pscwData[inc_name] || []
+                            }, value),
+                            onChange: function (e) {
+                                pscwData[inc_name] = $(this).val();
+                                ViPscw.CustomizeSettings.transmitData('', '', true);
+                            }
+                        }));
+                    }
+                    value['class_wrap'] = class_wrap + ' pscw-assign-exclude';
+                    assign_el.push(new PscwComponent({
+                        label: v?.exc_title,
+                        type: 'upgrade',
+                        id: 'pscw-assign-exclude_' + k,
+                        value: value,
+                    }));
+                });
+            }
+
             const container = $( "#sub-accordion-section-pscw_customizer_design" );
             container.append( selectSizeChart.render() );
             container.append( sizeChartTitle.render() );
-            container.append( selectCountry.render() );
-            container.append( assign.render() );
-            container.append( searchProduct.render() );
-            container.append( searchProductCat.render() );
             container.append( layoutComponent.render() );
+            container.append( selectCountry.render() );
+            container.append(applyAllProducts.render());
+            if (assign_el.length) {
+                for (let assignElElement of assign_el) {
+                    container.append(assignElElement.render());
+                }
+            }
 
             $( document.body ).on( "click", ".pscw-customize-row-list-cols", {self:this,}, this.addRow );
             $( document.body ).on( "click", ".pscw-customize-row-remove", {self:this}, this.removeRow );
@@ -889,56 +963,53 @@ jQuery(document).ready( function ( $ ) {
             this.changeComponentStatus();
 
             /* Hide elements dependent*/
-            $('#customize-input-pscw-size-chart-search-product').select2( {
-                width: '100%',
-                minimumInputLength: 3,
-                placeholder: 'Product name...',
-                allowClear: true,
-                ajax: {
-                    type: 'post',
-                    url: VicPscwParams.ajaxUrl,
-                    data: function (params) {
-                        let query = {
-                            key_search: params.term,
-                            action: 'pscw_search_product',
-                            nonce: VicPscwParams.nonce,
-                        };
-                        return query;
-                    },
-                    processResults: function (data) {
-                        return data ? data : {results: []};
-                    }
+            $('.pscw-option-select2:not(.pscw-option-select2-init)').each(function () {
+                let select = $(this);
+                let close_on_select = false, min_input = 2, placeholder = select.data('placeholder_select2'), action = '', type_select2 = select.data('type_select2');
+                switch (type_select2) {
+                    case 'products':
+                        action = 'pscw_search_product';
+                        break;
                 }
-            })
+                select.addClass('pscw-option-select2-init').select2(select2_params(placeholder, action, close_on_select, min_input));
+            });
 
-            $('#customize-control-pscw-size-chart-search-product').showsOn('#customize-input-pscw-size-chart-assign', 'products');
-
-            const termSearch = ({placeholder, taxonomy})=> {
-                return {
-                    width: '100%',
-                    minimumInputLength: 1,
+            function select2_params(placeholder, action, close_on_select, min_input) {
+                let result = {
+                    closeOnSelect: close_on_select,
                     placeholder: placeholder,
-                    allowClear: true,
-                    ajax: {
-                        type: 'post',
+                    cache: true
+                };
+                if (action) {
+                    result['minimumInputLength'] = min_input;
+                    result['escapeMarkup'] = function (markup) {
+                        return markup;
+                    };
+                    result['ajax'] = {
+                        // url: "admin-ajax.php?action=" + action,
                         url: VicPscwParams.ajaxUrl,
+                        dataType: 'json',
+                        type: "GET",
+                        quietMillis: 50,
+                        delay: 250,
                         data: function (params) {
-                            let query = {
-                                taxonomy: taxonomy,
+                            return {
                                 key_search: params.term,
-                                action: 'pscw_search_term',
+                                action: action,
                                 nonce: VicPscwParams.nonce,
                             };
-                            return query;
                         },
                         processResults: function (data) {
-                            return data ? data : {results: []};
-                        }
-                    }
+                            return {
+                                results: data
+                            };
+                        },
+                        cache: false
+                    };
                 }
+                return result;
             }
-            $('#customize-input-pscw-size-chart-search-product-cat').select2(termSearch({placeholder : 'Product categories...', taxonomy: 'product_cat'}));
-            $('#customize-control-pscw-size-chart-search-product-cat').showsOn('#customize-input-pscw-size-chart-assign', 'product_cat');
+            $('.pscw-assign-all-product-class').showsOn('#customize-input-pscw-asign-all-product', 'checked', true);
         },
 
 
@@ -1487,8 +1558,8 @@ jQuery(document).ready( function ( $ ) {
                             value: 'row',
                             choices: {
                                 row: i18n.row_header,
-                                column: i18n.column_header + ' (Premium)',
-                                both: i18n.both_header + ' (Premium)',
+                                column: i18n.column_header ,
+                                both: i18n.both_header ,
                             },
                             id: 'pscw-table-header',
                             onInput: function (e) {
@@ -1529,7 +1600,11 @@ jQuery(document).ready( function ( $ ) {
 
                         let btnImportCSV = new PscwComponent( {
                             type: 'btnUpload',
-                            value: i18n.import_csv,
+                            value:  {
+                                import: i18n.import_csv,
+                                export: i18n.export_csv,
+                                sample: i18n.sample_csv,
+                            },
                             id: 'pscw-table-import-csv',
                             onChange: function (e) {
                                 let file = this.files[0];
@@ -1896,33 +1971,30 @@ jQuery(document).ready( function ( $ ) {
             const _this = e.data.self, rowId = 'pscw-row-' + pscwGenerateID();
             let html = [],
                 colsId = [],
-                dataCols = $( this ).data("cols").toString().split(","),
-                numberCol = dataCols.length,
+                dataCols = [12],
                 containerId = '',
                 colsData = {};
 
-            for (let i = 0; i < numberCol ; ++i) {
-                let colId = 'pscw-col-' + pscwGenerateID();
-                let colData = {
-                    id: colId,
-                    class: `pscw-col-l-${dataCols[i]}`,
-                    type: "column",
-                    parent: rowId,
-                    children: [],
-                    settings: {
-                        class: `pscw-customize-col-${dataCols[i]}`,
-                    }
+            let colId = 'pscw-col-' + pscwGenerateID();
+            let colData = {
+                id: colId,
+                class: `pscw-col-l-${dataCols[0]}`,
+                type: "column",
+                parent: rowId,
+                children: [],
+                settings: {
+                    class: `pscw-customize-col-${dataCols[0]}`,
                 }
-                elementsSave[ colId ] = colData;
-                colsData[colId] = colData;
+            }
+            elementsSave[ colId ] = colData;
+            colsData[colId] = colData;
 
-                colsId.push( colId );
-                html.push(`<div class="pscw-customize-col pscw-customize-col-${dataCols[i]}" id="${colId}">
+            colsId.push( colId );
+            html.push(`<div class="pscw-customize-col pscw-customize-col-${dataCols[0]}" id="${colId}">
                 <div class="pscw-customize-list-component pscw-connectedSortable">
                 </div>
                 <div class="pscw-customize-open-tab-component">&#65291;</div>
                 </div>`)
-            }
 
             $( ".pscw-customize-container" ).append( `<div class="pscw-customize-row" id="${rowId}"><span class="pscw-customize-row-remove">&#x2715;</span>${html.join("")}</div>` );
             layoutSave.children.push(rowId);

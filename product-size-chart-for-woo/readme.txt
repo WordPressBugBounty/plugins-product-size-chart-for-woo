@@ -5,7 +5,7 @@ Tags: woocommerce, Size chart, woocommerce size chart,product size chart,product
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 6.8
-WC tested up to: 9.8
+WC tested up to: 9.9
 Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -203,6 +203,10 @@ And much more things are waiting for you discover
 4. Size chart on product tab
 
 == Changelog ==
+/**2025.06.12 – 2.1.0**/
+- Fixed: Size chart product categories assignment problem
+- Updated: New design for the Assign options in each size chart.
+
 /**2025.04.18* – 2.0.9**/
 - Updated: Compatible with WP 6.8 and WC 9.8
 

@@ -344,11 +344,11 @@
   column-gap: 12px;
   box-sizing: border-box;
 
-  &-cols {
+  &-cols, .pscw-upgrade-row-list-cols {
     display: flex;
     flex-wrap: nowrap;
     gap: 2px;
-    width: 100%;
+    width:  calc(50% - 8px);
     padding: 4px;
     border: 1px solid #dedede;
     border-radius: 4px;
@@ -362,6 +362,37 @@
     }
     &:hover {
       border: 1px solid #008EC2;
+    }
+    &.pscw-upgrade-row-list-cols{
+      position: relative;
+      opacity: .55;
+      .pscw-upgrade-button{
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: unset;
+        word-break: break-word;
+        white-space: break-spaces;
+        line-height: 1;
+        top: 0;
+        left: 0;
+        text-transform: capitalize;
+        color: #50575e;
+      }
+      &:hover{
+        border-color: #e7e7e7;
+        opacity: 1;
+        div{
+          background: #e7e7e7;
+        }
+        .pscw-upgrade-button{
+          display: flex;
+          align-items: center;
+          text-align: center;
+          background: transparent;
+        }
+      }
     }
   }
 
@@ -386,7 +417,7 @@
     }
   }
   &-five {
-    div:first-child {
+    div {
       width: 33.33333%;
     }
     div:last-child {
@@ -394,7 +425,7 @@
     }
   }
   &-six {
-    div:first-child {
+    div {
       width: 66.666667%;
     }
     div:last-child {
@@ -580,11 +611,10 @@
 /*Button Upload*/
 .pscw-customize-btn-upload-container {
   display: flex;
-  flex-direction: column;
-  row-gap: 12px;
+  gap: 8px;
 
-  div {
-    padding: .78571429em 1.5em;
+  div, .pscw-customize-btn-csv-sample-data {
+    padding: 0.78571429em 1em;
     color: #fff;
     background: #21BA45;
     border: none;
@@ -593,10 +623,102 @@
     box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset;
     cursor: pointer;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pscw-customize-btn-csv-sample-data {
+    width: 40px;
+    color: #fff;
+    background: #fda420;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+  .pscw-customize-btn-export {
+    flex: 1;
+    color: #fff;
+    background: #DB2828;
+    position: relative;
+    opacity: .55;
+
+    &:hover{
+      background: #bf7070;
+      opacity: 1;
+      span{
+        display: none;
+      }
+      .pscw-upgrade-button{
+        display: flex;
+        align-items: center;
+        text-align: center;
+        background: transparent;
+        color: #fff;
+      }
+    }
+    .pscw-upgrade-button{
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: unset;
+      word-break: break-word;
+      white-space: break-spaces;
+      line-height: 1;
+      top: 0;
+      left: 0;
+      text-transform: capitalize;
+      color: #fff;
+    }
   }
 }
 
 /*Component Panel*/
+.pscw-upgrade-component-panel-item {
+  position: relative;
+  opacity: .55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(50% - 8px);
+  padding: 16px 0;
+  border: 1px solid #dedede;
+  border-radius: 4px;
+  background: #fff;
+  color: #50575e;
+  text-decoration: none;
+  cursor: pointer;
+  &:hover{
+    border-color: #e7e7e7;
+    opacity: 1;
+    color: #fff;
+    .pscw-upgrade-button{
+      display: flex;
+      align-items: center;
+      text-align: center;
+      background: transparent;
+      color: #50575e;
+    }
+  }
+  .pscw-upgrade-button{
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: unset;
+    word-break: break-word;
+    white-space: break-spaces;
+    line-height: 1;
+    top: 0;
+    left: 0;
+    text-transform: capitalize;
+    color: #50575e;
+  }
+  .dashicons {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+  }
+}
 .pscw-customize-component-panel {
   &-title {
     height: 46px;
@@ -635,7 +757,6 @@
         scale: 1.2;
       }
     }
-
     .dashicons {
       font-size: 30px;
       height: 30px;

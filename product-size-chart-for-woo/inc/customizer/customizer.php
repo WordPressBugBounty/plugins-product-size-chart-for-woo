@@ -280,41 +280,40 @@ class Customizer {
 		}
 
 		$interface    = get_post_meta( $current_sc_id, 'pscw_interface', true );
+		if (empty( $interface )){
+			$interface = pscw_default_size_chart_interface();
+			update_post_meta( $current_sc_id, 'pscw_interface', $interface );
+		}
 		$pscw_data    = get_post_meta( $current_sc_id, 'pscw_data', true );
-		$list_product = get_post_meta( $current_sc_id, 'pscw_list_product' );
-
-		$pscw_assign        = $pscw_data['assign'] ?? 'none';
-		$pscw_condition     = $pscw_data['condition'] ?? [];
-		$pscw_assign_values = [];
-
-		if ( $pscw_assign != 'none' ) {
-			foreach ( $pscw_condition as $id ) {
-				$value = pscw_get_value_combined( $pscw_assign, $id );
-				if ( count( $value ) === 2 ) {
-					$pscw_assign_values[] = $value;
-				}
+		if ( ! isset( $pscw_data['all_products'] ) && isset( $pscw_data['assign'] ) ) {
+			$pscw_assign               = $pscw_data['assign'] ?? 'none';
+			$condition                 = $pscw_data['condition'] ?? [];
+			$pscw_data['all_products'] = '';
+			switch ( $pscw_assign ) {
+				case 'all':
+					$pscw_data['all_products'] = 1;
+					break;
+				case 'product_cat':
+				case 'products':
+					$pscw_data['include_'.$pscw_assign] = $condition;
+					break;
 			}
 		}
-
-		$assign_options = array(
-			'none'               => esc_html__( 'None', 'product-size-chart-for-woo' ),
-			'all'                => esc_html__( 'All Products', 'product-size-chart-for-woo' ),
-			'products'           => esc_html__( 'Products', 'product-size-chart-for-woo' ),
-			'product_cat'        => esc_html__( 'Product Categories', 'product-size-chart-for-woo' ),
-			'combined'           => esc_html__( 'Combined (Premium)', 'product-size-chart-for-woo' ),
-			'product_type'       => esc_html__( 'Product Type (Premium)', 'product-size-chart-for-woo' ),
-			'product_visibility' => esc_html__( 'Product Visibility (Premium)', 'product-size-chart-for-woo' ),
-			'product_tag'        => esc_html__( 'Product Tags (Premium)', 'product-size-chart-for-woo' ),
-			'shipping_class'     => esc_html__( 'Product Shipping Class (Premium)', 'product-size-chart-for-woo' ),
-		);
-
-		if ( empty( $interface ) ) {
-			wp_register_style( 'pscw-dummy-handle', false, array(), PSCW_CONST_F['version'], false );
-			wp_enqueue_style( 'pscw-dummy-handle' );
-			wp_add_inline_style( 'pscw-dummy-handle', "#accordion-panel-pscw_size_chart_customizer{display:none !important}" );
-
-			return;
+		if (!is_array($pscw_data)){
+			$pscw_data = ['all_products'=> 1];
 		}
+		$pscw_assign_info =[];
+		if (!empty($pscw_data['include_products']) && is_array($pscw_data['include_products'])){
+			foreach ($pscw_data['include_products'] as $i){
+				if (!$i || in_array($i, $pscw_assign_info)){
+					continue;
+				}
+				$pscw_assign_info[$i]=$this->setting::get_item_name($i, 'products');
+			}
+		}
+		ob_start();
+		$this->setting::upgrade_button();
+		$upgrade_button = ob_get_clean();
 		if ( ! class_exists( '_WP_Editors', false ) ) {
 			require ABSPATH . WPINC . '/class-wp-editor.php';
 		}
@@ -340,15 +339,16 @@ class Customizer {
 			'nonce'            => wp_create_nonce( 'pscw_nonce' ),
 			'scTitle'          => $current_sc_title,
 			'interface'        => wp_json_encode( $interface, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ),
-			'listProduct'      => wp_json_encode( $list_product ),
+			'assign_data'      => wp_json_encode( $pscw_data ),
+			'assign_option'      => wp_json_encode( $this->setting::get_assign() ),
+			'assign_option_info'      => wp_json_encode( $pscw_assign_info ),
+			'upgrade_button'      => $upgrade_button,
 			'placeholderImage' => wc_placeholder_img_src( 'full' ),
-			'assignOptions'    => wp_json_encode( $assign_options ),
-			'assignTag'        => $pscw_assign,
-			'assignValues'     => $pscw_assign_values,
 			'sizeCharts'       => $size_chart_ids,
 			'currentSizeChart' => $current_sc_id,
 			'customizeMode'    => $pscw_sizechart_mode,
 			'i18n'             => I18n::init(),
+			'sampleDataLink'     => PSCW_CONST_F['sample_data_url'] . 'sample_data.csv',
 		) );
 
 	}
