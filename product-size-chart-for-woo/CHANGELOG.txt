@@ -1,3 +1,6 @@
+/**2025.09.08 – 2.1.1**/
+- Fixed: Can not scroll in the homepage on customize
+
 /**2025.06.12 – 2.1.0**/
 - Fixed: Size chart product categories assignment problem
 - Updated: New design for the Assign options in each size chart.

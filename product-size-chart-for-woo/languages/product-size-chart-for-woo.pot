@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Product Size Chart for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-10 09:50+0000\n"
+"POT-Creation-Date: 2025-09-05 08:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -15,6 +15,10 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.11; wp-6.6.2\n"
 "X-Domain: product-size-chart-for-woo"
+
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:104
+msgid "\" target=\"_blank\">the “All Size Charts” page</a>."
+msgstr ""
 
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/i18n.php:25
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/customizer/customizer.php:209
@@ -33,12 +37,12 @@ msgstr ""
 msgid "Add Columns"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:129
-msgid "Add Item"
-msgstr ""
-
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:127
 msgid "Add New"
+msgstr ""
+
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:129
+msgid "Add new size chart"
 msgstr ""
 
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/short-code.php:65
@@ -53,17 +57,17 @@ msgstr ""
 msgid "Add your text..."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:131
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:133
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:71
 msgid "After add to cart"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:138
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:140
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:79
 msgid "After the meta - Premium version only"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:137
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:139
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:78
 msgid "After title - Premium version only"
 msgstr ""
@@ -90,12 +94,12 @@ msgstr ""
 msgid "Assign"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:130
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:132
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:70
 msgid "Before add to cart"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:134
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:136
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:75
 msgid "Before add to cart after variations - Premium version only"
 msgstr ""
@@ -124,20 +128,20 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:136
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:138
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:77
 msgid "Bottom description - Premium version only"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:237
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:229
 msgid "Button background color"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:251
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:243
 msgid "Button color"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:196
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:198
 msgid "Button type"
 msgstr ""
 
@@ -181,7 +185,7 @@ msgstr ""
 msgid "Countries"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:264
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:256
 msgid "Custom CSS"
 msgstr ""
 
@@ -221,7 +225,7 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:110
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:112
 msgid "Enable"
 msgstr ""
 
@@ -269,7 +273,7 @@ msgstr ""
 msgid "Finish"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:102
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:100
 msgid "General settings"
 msgstr ""
 
@@ -306,7 +310,7 @@ msgstr ""
 msgid "Hoodie Size Chart"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:159
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:161
 msgid "Horizontal"
 msgstr ""
 
@@ -326,12 +330,12 @@ msgstr ""
 msgid "https://villatheme.com/extensions/woo-product-size-chart/"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:204
-msgid "Icon"
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:207
+msgid "Icon & Text - Premium only"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:205
-msgid "Icon & Text"
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:206
+msgid "Icon - Premium only"
 msgstr ""
 
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/i18n.php:26
@@ -343,11 +347,11 @@ msgstr ""
 msgid "Import CSV"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:268
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:260
 msgid "Insert custom css here..."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:220
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:222
 msgid "Label for size chart on front end"
 msgstr ""
 
@@ -355,7 +359,7 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:167
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:169
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/i18n.php:21
 msgid "Left"
 msgstr ""
@@ -380,7 +384,7 @@ msgstr ""
 msgid "Men's Shoe Size Chart"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:144
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:146
 msgid "Multi size charts"
 msgstr ""
 
@@ -396,7 +400,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:129
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:131
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:300
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:69
 msgid "None"
@@ -452,16 +456,16 @@ msgstr ""
 msgid "Please upload non-empty csv file!"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:132
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:134
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:72
 msgid "Pop-up"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:170
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:172
 msgid "Popup button position in horizontal"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:189
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:191
 msgid "Popup button position in vertical"
 msgstr ""
 
@@ -497,7 +501,7 @@ msgstr ""
 msgid "Product Size Chart Preview"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:133
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:135
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:73
 msgid "Product tab"
 msgstr ""
@@ -539,7 +543,7 @@ msgstr ""
 msgid "Required file extension is CSV!"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:165
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:167
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/i18n.php:19
 msgid "Right"
 msgstr ""
@@ -552,7 +556,7 @@ msgstr ""
 msgid "Sample CSV"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:284
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:272
 msgid "Save"
 msgstr ""
 
@@ -607,19 +611,13 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:277
-msgid ""
-"Shortcode can be inserted to the content of page or post then converted to "
-"HTML on corresponding page or post"
-msgstr ""
-
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:25
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:217
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:219
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:125
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:126
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:59
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/frontend/front-end.php:180
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/frontend/front-end.php:221
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/frontend/front-end.php:194
 msgid "Size Chart"
 msgstr ""
 
@@ -627,15 +625,11 @@ msgstr ""
 msgid "Size chart"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:227
-msgid "Size chart Icon"
-msgstr ""
-
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/i18n.php:78
 msgid "Size chart in CSV file will replace the current table?"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:212
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:214
 msgid "Size chart label"
 msgstr ""
 
@@ -643,7 +637,7 @@ msgstr ""
 msgid "Size chart title"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:123
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:125
 msgid "Size chart type"
 msgstr ""
 
@@ -665,7 +659,7 @@ msgstr ""
 msgid "Table"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:202
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:204
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/i18n.php:28
 msgid "Text"
 msgstr ""
@@ -746,7 +740,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:135
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:137
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/setup-wizard.php:76
 msgid "Top description - Premium version only"
 msgstr ""
@@ -763,7 +757,7 @@ msgstr ""
 msgid "Upload Image"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:177
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:179
 msgid "Vertical"
 msgstr ""
 
@@ -789,7 +783,7 @@ msgid ""
 "version 1.x to 2.x, improving data accuracy and consistency"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:153
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:155
 msgid ""
 "When enabled, all size charts assigned to a product will be shown. If "
 "disabled, only the first size chart appears."
@@ -813,6 +807,8 @@ msgid ""
 "products or categories, enhancing customer convenience and boosting sales."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:278
-msgid "You can take the shortcode in \"All size charts\" section."
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/settings.php:103
+msgid ""
+"You can use the shortcode [PSCW_SIZE_CHART ID=\"\"] to display a size chart "
+"anywhere you want."
 msgstr ""

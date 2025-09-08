@@ -5,7 +5,7 @@ Tags: woocommerce, Size chart, woocommerce size chart,product size chart,product
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 6.8
-WC tested up to: 9.9
+WC tested up to: 10.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,6 +20,9 @@ If you own an online fashion store, for example, you must be wondering how produ
 WooCommerce Size Chart helps you to customize and design the size chart of specific products or categories, you can choose the available templates of the size chart. WooCommerce Size Chart will create conveniences for customers when shopping in your WooCommerce Store and boost your sales.
 
 >[Try demo](https://new2new.com/?item=woocommerce-product-size-chart "Product Size Chart for WooCommerce") | [Documents](https://docs.villatheme.com/?item=woocommerce-product-size-chart "Documents") | [Facebook group](https://www.facebook.com/groups/villatheme "VillaTheme")
+
+###Preview
+[youtube https://youtu.be/TKomj0zVDjc]
 
 ###How to install and use the plugin
 [youtube https://www.youtube.com/watch?v=wQgDRLkLm-0]
@@ -203,6 +206,9 @@ And much more things are waiting for you discover
 4. Size chart on product tab
 
 == Changelog ==
+/**2025.09.08 – 2.1.1**/
+- Fixed: Can not scroll in the homepage on customize
+
 /**2025.06.12 – 2.1.0**/
 - Fixed: Size chart product categories assignment problem
 - Updated: New design for the Assign options in each size chart.

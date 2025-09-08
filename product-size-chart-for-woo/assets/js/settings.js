@@ -2,30 +2,14 @@ jQuery( document ).ready( function( $ ) {
     "use strict";
     /*Setting Field Rules*/
     const label = $('.woo_sc_sc_label'),
-          scPosition = $('#woo_cs_select_position'),
-          scButtonType = $('#woo_sc_type_btn'),
-          scIcon = $('.woo_sc_sc_icon');
+          scPosition = $('#woo_cs_select_position');
 
     $('.dropdown').dropdown();
 
-    const handleShowFieldsBasedOnButtonType = () => {
-        switch ( scButtonType.val() ) {
-            case 'text':
-                label.show();
-                scIcon.hide();
-                break;
-            case 'icon_text':
-            case 'icon':
-                label.hide();
-                scIcon.show();
-                break;
-        }
-    };
     const handleShowFieldsBasedOnSizeChartType = () => {
         const scMulti = $('.woo_sc_multi'),
               scBtnPopupPosition = $('.woo_sc_btn_popup_position'),
               scBtnColor = $('.woo_sc_btn_color'),
-              scGetShortCode = $('.get_short_code'),
               scBtnType = $('.woo_sc_btn_type');
 
         switch ( scPosition.val() ) {
@@ -34,47 +18,35 @@ jQuery( document ).ready( function( $ ) {
                 scMulti.hide();
                 scBtnPopupPosition.hide();
                 scBtnColor.show();
-                scGetShortCode.hide();
                 scBtnType.show();
-                handleShowFieldsBasedOnButtonType();
                 break;
             case 'pop-up':
                 scMulti.hide();
                 scBtnPopupPosition.show();
-                scGetShortCode.hide();
                 scBtnColor.show();
                 scBtnType.show();
-                handleShowFieldsBasedOnButtonType();
                 break;
             case 'product_tabs':
                 scMulti.show();
                 scBtnPopupPosition.hide();
-                scGetShortCode.hide();
                 scBtnType.hide();
                 scBtnColor.hide();
                 label.show();
-                scIcon.hide();
                 break;
             case 'none':
                 scMulti.hide();
                 scBtnPopupPosition.hide();
-                scGetShortCode.show();
                 scBtnType.hide();
                 scBtnColor.hide();
                 label.hide();
-                scIcon.hide();
                 break;
         }
     };
 
-    handleShowFieldsBasedOnButtonType();
     handleShowFieldsBasedOnSizeChartType();
 
     scPosition.on('change', function () {
         handleShowFieldsBasedOnSizeChartType();
-    });
-    scButtonType.on('change', function () {
-        handleShowFieldsBasedOnButtonType();
     });
 
 

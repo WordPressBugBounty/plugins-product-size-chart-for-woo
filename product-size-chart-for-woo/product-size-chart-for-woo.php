@@ -3,7 +3,7 @@
  * Plugin Name: Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 2.1.0
+ * Version: 2.1.1
  * Author URI: http://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2025 VillaTheme.com. All rights reserved.
@@ -11,7 +11,7 @@
  * Requires Plugins: woocommerce
  * Tested up to: 6.8
  * WC requires at least: 7.0
- * WC tested up to: 9.9
+ * WC tested up to: 10.1
  * Requires PHP: 7.0
  **/
 
@@ -42,7 +42,7 @@ if (!defined('PSCW_CONST_F')){
 	$plugin_url = plugins_url( 'assets/', __FILE__ );
 	$plugin_dir = plugin_dir_path( __FILE__ );
 	define( 'PSCW_CONST_F', [
-		'version'     => '2.1.0',
+		'version'     => '2.1.1',
 		'plugin_name' => 'Product Size Chart for WooCommerce',
 		'slug'        => 'pscw',
 		'assets_slug' => 'pscw-',
@@ -90,7 +90,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 			}
 			require_once PSCW_CONST_F['plugin_dir'] . 'inc/functions.php';
 			if ( get_option( 'pscw_setup_wizard' )&&
-			     ( $recent_activate || ( ! empty( $_GET['post_type'] ) && strpos( sanitize_text_field( wp_unslash( $_GET['post_type'] ) ), "pscw" ) === 0 ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			     ( ! empty( $_GET['post_type'] ) && strpos( sanitize_text_field( wp_unslash( $_GET['post_type'] ) ), "pscw" ) === 0 )  ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$url = add_query_arg( [ 'page' => 'pscw-setup' ], admin_url() );
 				wp_safe_redirect( $url );
 				exit();
@@ -166,7 +166,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 			}
 			if (!get_option( 'woo_sc_setting' )){
 				update_option( 'pscw_setup_wizard', 1, 'no' );
-				$this->check_environment( true );
+				$this->check_environment();
 			}else{
 				update_option( 'pscw_maybe_migrate', 1, 'no' );
 			}

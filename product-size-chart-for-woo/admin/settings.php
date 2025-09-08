@@ -72,9 +72,7 @@ class Settings {
 			if ( isset( $_POST['woo_sc_name'] ) ) {
 				$save_option['woo_sc_name'] = sanitize_text_field( wp_unslash( $_POST['woo_sc_name'] ) );
 			}
-			if ( ! empty( $_POST['woo_sc_button_type'] ) ) {
-				$save_option['button_type'] = sanitize_text_field( wp_unslash( $_POST['woo_sc_button_type'] ) );
-			}
+			$save_option['button_type']='text';
 			if ( ! empty( $_POST['woo_sc_btn_color'] ) ) {
 				$save_option['btn_color'] = sanitize_text_field( wp_unslash( $_POST['woo_sc_btn_color'] ) );
 			}
@@ -101,6 +99,10 @@ class Settings {
         <div class="wrap woo_sc_space">
             <h2><?php esc_html_e( 'General settings', 'product-size-chart-for-woo' ) ?></h2>
             <form method="post" class="vi-ui form">
+                <div class="get_short_code" >
+                    <p><?php esc_html_e( 'You can use the shortcode [PSCW_SIZE_CHART ID=""] to display a size chart anywhere you want.', 'product-size-chart-for-woo' ) ?></p>
+                    <p><?php echo wp_kses_post(__( 'You can get the shortcode from <a href="'.admin_url( 'edit.php?post_type=pscw-size-chart').'" target="_blank">the “All Size Charts” page</a>.', 'product-size-chart-for-woo' )) ?></p>
+                </div>
                 <div class="vi-ui segment woo_sc_setting_form">
 					<?php wp_nonce_field( 'woo_sc_check_setting_nonce', 'woo_sc_setting_nonce' ); ?>
                     <table class="woo_sc_options_table form-table">
@@ -199,14 +201,14 @@ class Settings {
                             <td>
                                 <select name="woo_sc_button_type" class="vi-ui fluid dropdown selection setting_field"
                                         id="woo_sc_type_btn">
-                                    <option value="text" <?php selected( "text" === $get_option['button_type'] ); ?>><?php esc_html_e( 'Text', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="icon" <?php selected( "icon" === $get_option['button_type'] ); ?>>
-										<?php esc_html_e( 'Icon', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="icon_text"><?php esc_attr_e( 'Icon & Text', 'product-size-chart-for-woo' ); ?></option>
+                                    <option value="text" selected><?php esc_html_e( 'Text', 'product-size-chart-for-woo' ); ?></option>
+                                    <option value="icon" disabled>
+										<?php esc_html_e( 'Icon - Premium only', 'product-size-chart-for-woo' ); ?></option>
+                                    <option value="icon_text" disabled><?php esc_attr_e( 'Icon & Text - Premium only', 'product-size-chart-for-woo' ); ?></option>
                                 </select>
                             </td>
                         </tr>
-                        <tr class="woo_sc_sc_label" style="display: none">
+                        <tr class="woo_sc_sc_label" >
                             <th>
                                 <div>
 									<?php esc_html_e( 'Size chart label', 'product-size-chart-for-woo' ) ?>
@@ -220,16 +222,6 @@ class Settings {
                                     <?php esc_html_e( 'Label for size chart on front end', 'product-size-chart-for-woo' ); ?>
                                 </p>
                             </td>
-                        </tr>
-                        <tr class="woo_sc_sc_icon" style="display: none">
-                            <th>
-                                <div>
-		                            <?php esc_html_e( 'Size chart Icon', 'product-size-chart-for-woo'  ) ?>
-                                </div>
-                            </th>
-                           <td>
-                               <?php self::$setting::upgrade_button(); ?>
-                           </td>
                         </tr>
                         <tr class="woo_sc_btn_color" style="display: none">
                             <th>
@@ -273,10 +265,6 @@ class Settings {
                             </td>
                         </tr>
                     </table>
-                    <div class="get_short_code" style="display: none">
-                        <p><?php esc_html_e( 'Shortcode can be inserted to the content of page or post then converted to HTML on corresponding page or post', 'product-size-chart-for-woo' ) ?></p>
-                        <p><?php esc_html_e( 'You can take the shortcode in "All size charts" section.', 'product-size-chart-for-woo' ) ?></p>
-                    </div>
                 </div>
                 <p>
                     <button type="submit" name="woo_sc_save_setting" id="woo_sc_btn_save_setting"

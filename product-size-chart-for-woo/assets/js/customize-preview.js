@@ -406,9 +406,11 @@ jQuery(document).ready(function ($) {
                     case 'after_add_to_cart':
                     case 'pop-up':
                     case 'none': /* For the case using shortcode */
-                        $("#woo_sc_modal .woo_sc_scroll_content").append(ViPscwCusParams.shortCode);
-                        $("#woo_sc_modal").show();
-                        $(document.body).css({overflow: 'hidden'});
+                        if ($("#woo_sc_modal").length) {
+                            $("#woo_sc_modal .woo_sc_scroll_content").append(ViPscwCusParams.shortCode);
+                            $("#woo_sc_modal").show();
+                            $(document.body).css({overflow: 'hidden'});
+                        }
                         break;
                 }
 

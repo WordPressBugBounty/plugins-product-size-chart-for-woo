@@ -126,7 +126,7 @@ class Size_Chart {
 			'singular_name' => esc_html__( 'Size Chart', 'product-size-chart-for-woo' ),
 			'add_new'       => esc_html__( 'Add New', 'product-size-chart-for-woo' ),
 			'all_items'     => esc_html__( 'All Size Charts', 'product-size-chart-for-woo' ),
-			'add_new_item'  => esc_html__( 'Add Item', 'product-size-chart-for-woo' )
+			'add_new_item'  => esc_html__( 'Add new size chart', 'product-size-chart-for-woo' )
 		);
 		$args     = array(
 			'labels'              => $label,

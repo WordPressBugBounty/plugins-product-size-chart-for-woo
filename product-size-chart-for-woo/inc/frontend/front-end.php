@@ -178,35 +178,8 @@ class Front_End {
                 <div class="woo_sc_text_icon">
 					<?php
 					$size_chart_name = ! empty( $this->get_params( 'woo_sc_name' ) ) ? $this->get_params( 'woo_sc_name' ) : esc_html__( 'Size Chart', 'product-size-chart-for-woo' );
-					switch ( $this->get_params( 'button_type' ) ) {
-						case 'icon':
-							?>
-                            <span class="woo_sc_size_icon">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 viewBox="<?php echo esc_html( pscw_get_view_box( $this->get_params( 'pscw_icon' ) ) ); ?>"
-                                 width="30" height="30">
-
-                            <?php
-                            $response = wp_remote_get( PSCW_CONST_F['img_url'] . 'svg/' . $this->get_params( 'pscw_icon' ) . '.svg' );
-                            if ( is_wp_error( $response ) ) {
-	                            $file_content = '';
-                            } else {
-	                            $file_content = wp_remote_retrieve_body( $response );
-                            }
-                            echo wp_kses( $file_content, pscw_get_allow_svg() )
-                            ?>
-                            </svg>
-                            </span>
-							<?php
-							break;
-						case 'text':
-							?>
-                            <span class="woo_sc_text"><?php echo esc_html( $size_chart_name ); ?></span>
-							<?php
-							break;
-					}
-
 					?>
+                    <span class="woo_sc_text"><?php echo esc_html( $size_chart_name ); ?></span>
                 </div>
             </div>
         </div>
