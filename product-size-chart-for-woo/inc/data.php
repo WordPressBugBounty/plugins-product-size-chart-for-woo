@@ -78,6 +78,14 @@ class Data {
 				'placeholder' => __( 'Please enter the category name to search', 'product-size-chart-for-woo' ),
 				'all_data'    => self::get_all_data( 'product_cat' ),
 			],
+            'product_brand'        => [
+                'inc_title'   => __( 'Product brands', 'product-size-chart-for-woo' ),
+                'inc_des'     => __( 'This size chart will be applied to products with the selected brands.', 'product-size-chart-for-woo' ),
+                'exc_des'     => __( 'This size chart will not be applied to products with the selected brands.', 'product-size-chart-for-woo' ),
+                'exc_title'   => __( 'Exclude brands', 'product-size-chart-for-woo' ),
+                'all_data'    => '',
+                'is_pro'    => 1,
+            ],
 			'product_tag'        => [
 				'inc_title'   => __( 'Product tags', 'product-size-chart-for-woo' ),
 				'inc_des'     => __( 'This size chart will be applied to products with the selected tags.', 'product-size-chart-for-woo' ),

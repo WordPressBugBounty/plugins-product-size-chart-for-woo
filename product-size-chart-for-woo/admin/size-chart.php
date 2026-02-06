@@ -303,6 +303,7 @@ class Size_Chart {
 			'product_cat'        => esc_html__( 'Product Categories', 'product-size-chart-for-woo' ),
 			'combined'           => esc_html__( 'Combined (Premium)', 'product-size-chart-for-woo' ),
 			'product_type'       => esc_html__( 'Product Type (Premium)', 'product-size-chart-for-woo' ),
+            'product_brand'       => esc_html__( 'Product Brand (Premium)', 'product-size-chart-for-woo' ),
 			'product_visibility' => esc_html__( 'Product Visibility (Premium)', 'product-size-chart-for-woo' ),
 			'product_tag'        => esc_html__( 'Product Tags (Premium)', 'product-size-chart-for-woo' ),
 			'shipping_class'     => esc_html__( 'Product Shipping Class (Premium)', 'product-size-chart-for-woo' ),
@@ -347,6 +348,7 @@ class Size_Chart {
 										'combined',
 										'product_type',
 										'product_visibility',
+                                        'product_brand',
 										'product_tag',
 										'shipping_class'
 									] ) ) ?>><?php echo esc_html( $val ); ?></option>

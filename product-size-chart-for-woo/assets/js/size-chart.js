@@ -122,6 +122,9 @@
                 case 'product_cat':
                     $(element).select2(termOptions('Product categories...', 'product_cat'));
                     break;
+                case 'product_brand':
+                    $(element).select2(termOptions('Product brand...', 'product_brand'));
+                    break;
                 case 'product_tag':
                     $(element).select2(termOptions('Product tags...', 'product_tag'));
                     break;
