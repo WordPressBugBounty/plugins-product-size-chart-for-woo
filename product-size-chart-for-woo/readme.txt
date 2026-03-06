@@ -5,7 +5,7 @@ Tags: woocommerce, Size chart, woocommerce size chart,product size chart,product
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 6.9
-WC tested up to: 10.4.3
+WC tested up to: 10.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -210,7 +210,10 @@ And much more things are waiting for you discover
 4. Size chart on product tab
 
 == Changelog ==
-/**2025.01.13 – 2.1.2**/
+/**2026.03.06 – 2.1.3**/
+- Updated: VillaTheme support
+
+/**2026.01.13 – 2.1.2**/
 - Updated: VillaTheme support
 
 /**2025.09.08 – 2.1.1**/

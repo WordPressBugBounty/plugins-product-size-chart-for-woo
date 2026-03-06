@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Product Size Chart for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 08:19+0000\n"
+"POT-Creation-Date: 2026-03-06 07:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -89,7 +89,7 @@ msgid "Apply to all products"
 msgstr ""
 
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:164
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:341
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:342
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/i18n.php:15
 msgid "Assign"
 msgstr ""
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Button type"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:98
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:106
 msgid "Catalog visibility"
 msgstr ""
 
@@ -173,11 +173,11 @@ msgstr ""
 msgid "Combined (Premium)"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:578
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:580
 msgid "Copied"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:515
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:517
 msgid "Copy of "
 msgstr ""
 
@@ -202,8 +202,8 @@ msgid "Delete row"
 msgstr ""
 
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:162
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:320
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:555
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:321
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:557
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/customizer/customizer.php:58
 msgid "Design"
 msgstr ""
@@ -221,7 +221,7 @@ msgstr ""
 msgid "Dress Size Chart"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:553
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:555
 msgid "Duplicate"
 msgstr ""
 
@@ -241,7 +241,11 @@ msgstr ""
 msgid "Even Text"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:101
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:85
+msgid "Exclude brands"
+msgstr ""
+
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:109
 msgid "Exclude catalog visibility"
 msgstr ""
 
@@ -249,7 +253,7 @@ msgstr ""
 msgid "Exclude categories"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:109
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:117
 msgid "Exclude class"
 msgstr ""
 
@@ -257,11 +261,11 @@ msgstr ""
 msgid "Exclude products"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:85
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:93
 msgid "Exclude tags"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:93
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:101
 msgid "Exclude type"
 msgstr ""
 
@@ -282,7 +286,7 @@ msgid "Global"
 msgstr ""
 
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:182
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:327
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:328
 msgid "Go to design"
 msgstr ""
 
@@ -443,7 +447,7 @@ msgid "Please enter the product name to search"
 msgstr ""
 
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:186
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:329
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:330
 msgid "Please publish size chart to see url design"
 msgstr ""
 
@@ -473,6 +477,14 @@ msgstr ""
 msgid "Position Size Chart"
 msgstr ""
 
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:306
+msgid "Product Brand (Premium)"
+msgstr ""
+
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:82
+msgid "Product brands"
+msgstr ""
+
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:303
 msgid "Product Categories"
 msgstr ""
@@ -481,7 +493,7 @@ msgstr ""
 msgid "Product categories"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:308
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:309
 msgid "Product Shipping Class (Premium)"
 msgstr ""
 
@@ -506,15 +518,15 @@ msgstr ""
 msgid "Product tab"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:82
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:90
 msgid "Product tags"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:307
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:308
 msgid "Product Tags (Premium)"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:90
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:98
 msgid "Product type"
 msgstr ""
 
@@ -522,7 +534,7 @@ msgstr ""
 msgid "Product Type (Premium)"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:306
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:307
 msgid "Product Visibility (Premium)"
 msgstr ""
 
@@ -564,7 +576,7 @@ msgstr ""
 msgid "Select Component"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:334
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:335
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/i18n.php:10
 msgid "Select countries to show"
 msgstr ""
@@ -603,11 +615,11 @@ msgstr ""
 msgid "Setup Wizard"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:106
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:114
 msgid "Shipping class"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:563
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/admin/size-chart.php:565
 msgid "Shortcode"
 msgstr ""
 
@@ -676,34 +688,38 @@ msgstr ""
 msgid "Text Header"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:100
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:108
 msgid ""
 "This size chart does not apply to products of the selected catalog "
 "visibility."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:108
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:116
 msgid ""
 "This size chart does not apply to products of the selected shipping class."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:92
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:100
 msgid "This size chart does not apply to products of the selected type."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:99
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:107
 msgid ""
 "This size chart will be applied to products of the selected catalog "
 "visibility."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:107
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:115
 msgid ""
 "This size chart will be applied to products of the selected shipping class."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:91
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:99
 msgid "This size chart will be applied to products of the selected type."
+msgstr ""
+
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:83
+msgid "This size chart will be applied to products with the selected brands."
 msgstr ""
 
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:75
@@ -711,7 +727,7 @@ msgid ""
 "This size chart will be applied to products with the selected categories."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:83
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:91
 msgid "This size chart will be applied to products with the selected tags."
 msgstr ""
 
@@ -719,12 +735,17 @@ msgstr ""
 msgid "This size chart will be applied to the selected products."
 msgstr ""
 
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:84
+msgid ""
+"This size chart will not be applied to products with the selected brands."
+msgstr ""
+
 #: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:76
 msgid ""
 "This size chart will not be applied to products with the selected categories."
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:84
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:92
 msgid "This size chart will not be applied to products with the selected tags."
 msgstr ""
 
@@ -745,7 +766,7 @@ msgstr ""
 msgid "Top description - Premium version only"
 msgstr ""
 
-#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:176
+#: D:/git/free-version/product-size-chart-for-woo/product-size-chart-for-woo/inc/data.php:184
 msgid "Unlock This Feature"
 msgstr ""
 
