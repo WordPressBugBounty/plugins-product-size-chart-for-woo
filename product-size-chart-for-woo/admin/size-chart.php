@@ -334,8 +334,8 @@ class Size_Chart {
                 <tr>
                     <th><?php esc_html_e( 'Select countries to show', 'product-size-chart-for-woo' ); ?></th>
                     <td>
-                        <a class="vi-ui pink button" target="_blank" href="https://1.envato.market/zN1kJe">Upgrade This
-                            Feature</a>
+                        <a class="vi-ui pink button" target="_blank" href="https://villatheme.com/extensions/woocommerce-product-size-chart"><?php esc_html_e('Upgrade This
+                            Feature', 'product-size-chart-for-woo' );?></a>
                     </td>
                 </tr>
                 <tr>

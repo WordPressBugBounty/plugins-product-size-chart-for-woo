@@ -181,7 +181,7 @@ class Data {
 	public static function upgrade_button(){
 		?>
 		<a class="vi-ui button small pscw-upgrade-button" target="_blank"
-		     href="https://1.envato.market/zN1kJe"><?php esc_html_e( 'Unlock This Feature', 'product-size-chart-for-woo' ) ?></a>
+		     href="https://villatheme.com/extensions/woocommerce-product-size-chart"><?php esc_html_e( 'Unlock This Feature', 'product-size-chart-for-woo' ) ?></a>
 		<?php
 	}
 }
