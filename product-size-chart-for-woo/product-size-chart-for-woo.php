@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Product Size Chart for WooCommerce
+ * Plugin Name: Sizor Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
  * Version: 2.1.5
@@ -9,10 +9,10 @@
  * Copyright 2021-2026 VillaTheme.com. All rights reserved.
  * Text Domain: product-size-chart-for-woo
  * Requires Plugins: woocommerce
- * Tested up to: 7.0
+ * Tested up to: 7.1
  * WC requires at least: 7.0
  * WC tested up to: 11.0
- * Requires PHP: 7.0
+ * Requires PHP: 7.4
  **/
 
 namespace PSCWF;
@@ -46,7 +46,7 @@ if (!defined('PSCW_CONST_F')){
 	$plugin_dir = plugin_dir_path( __FILE__ );
 	define( 'PSCW_CONST_F', [
 		'version'     => '2.1.5',
-		'plugin_name' => 'Product Size Chart for WooCommerce',
+		'plugin_name' => 'Sizor Product Size Chart for WooCommerce',
 		'slug'        => 'pscw',
 		'assets_slug' => 'pscw-',
 		'file'        => __FILE__,
@@ -72,8 +72,8 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 
 		function check_environment($recent_activate = false) {
 			$environment = new \VillaTheme_Require_Environment( [
-					'plugin_name'     => 'Product Size Chart for WooCommerce',
-					'php_version'     => '7.0',
+					'plugin_name'     => 'Sizor Product Size Chart for WooCommerce',
+					'php_version'     => '7.4',
 					'wp_version'      => '5.0',
 					'wc_version'      => '7.0',
 					'require_plugins' => [

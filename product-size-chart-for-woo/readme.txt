@@ -1,11 +1,11 @@
-===Product Size Chart For WooCommerce===
+===Sizor Product Size Chart For WooCommerce===
 Contributors: villatheme,mrt3vn
 Donate link: https://www.villatheme.com/donate
 Tags: woocommerce, Size chart, woocommerce size chart,product size chart,product size chart for woo
 Requires at least: 5.0
-Requires PHP: 7.0
+Requires PHP: 7.4
 WC requires at least: 7.0
-Tested up to: 7.0
+Tested up to: 7.1
 WC tested up to: 11.0
 Stable tag: trunk
 License: GPLv2 or later
@@ -20,7 +20,7 @@ If you own an online fashion store, for example, you must be wondering how produ
 
 WooCommerce Size Chart helps you to customize and design the size chart of specific products or categories, you can choose the available templates of the size chart. WooCommerce Size Chart will create conveniences for customers when shopping in your WooCommerce Store and boost your sales.
 
->[Try demo](https://new2new.com/?item=woocommerce-product-size-chart "Product Size Chart for WooCommerce") | [Documents](https://docs.villatheme.com/?item=woocommerce-product-size-chart "Documents") | [Premium version](https://villatheme.com/extensions/woocommerce-product-size-chart "Premium version") | [Facebook group](https://www.facebook.com/groups/villatheme "VillaTheme")
+>[Try demo](https://new2new.com/?item=woocommerce-product-size-chart "Sizor Product Size Chart for WooCommerce") | [Documents](https://docs.villatheme.com/?item=woocommerce-product-size-chart "Documents") | [Premium version](https://villatheme.com/extensions/woocommerce-product-size-chart "Premium version") | [Facebook group](https://www.facebook.com/groups/villatheme "VillaTheme")
 
 ###Preview
 [youtube https://youtu.be/TKomj0zVDjc]
@@ -164,7 +164,7 @@ And much more things are waiting for you discover
 
 [Product Builder for WooCommerce - Custom PC Builder](https://wordpress.org/plugins/woo-product-builder/)
 
-[Product Size Chart For WooCommerce](https://wordpress.org/plugins/product-size-chart-for-woo/)
+[Sizor Product Size Chart For WooCommerce](https://wordpress.org/plugins/product-size-chart-for-woo/)
 
 [Product Variations Swatches for WooCommerce](https://wordpress.org/plugins/product-variations-swatches-for-woocommerce/)
 

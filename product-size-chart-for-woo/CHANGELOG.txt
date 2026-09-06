@@ -1,4 +1,4 @@
-*** Product Size Chart for WooCommerce Changelog ***
+*** Sizor Product Size Chart for WooCommerce Changelog ***
 
 2026.08.17 - version 2.1.5
 - Updated: Compatible WooCommerce 11.0
