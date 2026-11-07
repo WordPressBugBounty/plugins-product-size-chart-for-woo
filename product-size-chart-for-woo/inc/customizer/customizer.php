@@ -15,15 +15,17 @@ class Customizer {
 
 	private function __construct() {
 		$this->suffix = WP_DEBUG ? '' : '.min';
-		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_REQUEST['pscw_id'] ) ) {
-			//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			update_user_meta( get_current_user_id(), 'pscw_current_editing_sc', sanitize_text_field( wp_unslash( $_REQUEST['pscw_id'] ) ) );
-		}
-		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_REQUEST['pscw_sizechart_mode'] ) ) {
-			//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			update_user_meta( get_current_user_id(), 'pscw_sizechart_mode', sanitize_text_field( wp_unslash( $_REQUEST['pscw_sizechart_mode'] ) ) );
+		if ( current_user_can( 'customize' ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Customizer deep-link query args set editing context for the current admin.
+			if ( isset( $_REQUEST['pscw_id'] ) ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				update_user_meta( get_current_user_id(), 'pscw_current_editing_sc', absint( wp_unslash( $_REQUEST['pscw_id'] ) ) );
+			}
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( isset( $_REQUEST['pscw_sizechart_mode'] ) ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				update_user_meta( get_current_user_id(), 'pscw_sizechart_mode', sanitize_text_field( wp_unslash( $_REQUEST['pscw_sizechart_mode'] ) ) );
+			}
 		}
 		$this->setting = Data::get_instance();
 		add_action( 'customize_register', array( $this, 'pscw_customizer' ) );
@@ -354,21 +356,42 @@ class Customizer {
 	}
 
 	public function pscw_save_size_chart_data() {
-		if ( isset( $_POST['nonce'], $_POST['pscwId'], $_POST['value'], $_POST['pscwData'] ) && wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'pscw_nonce' ) ) {
-			$pscw_id   = sanitize_text_field( wp_unslash( $_POST['pscwId'] ) );
-			$pscw_data = json_decode( sanitize_text_field( wp_unslash( $_POST['pscwData'] ) ), true );
-			//phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			wp_update_post( array(
-				'ID'         => $pscw_id,
-				'post_title' => $pscw_data['title'],
-			) );
-			unset( $pscw_data['title'] );
-			update_post_meta( $pscw_id, 'pscw_data', $pscw_data );
-			update_post_meta( $pscw_id, 'pscw_interface', json_decode( wp_unslash( $_POST['value'] ), true ) );
+		check_ajax_referer( 'pscw_nonce', 'nonce' );
 
-			wp_send_json_success();
+		if ( ! isset( $_POST['pscwId'], $_POST['value'], $_POST['pscwData'] ) ) {
+			wp_send_json_error( null, 400 );
 		}
-		wp_die();
+
+		$pscw_id = absint( wp_unslash( $_POST['pscwId'] ) );
+		if ( ! $pscw_id || 'pscw-size-chart' !== get_post_type( $pscw_id ) || ! current_user_can( 'edit_post', $pscw_id ) ) {
+			wp_send_json_error( null, 403 );
+		}
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON decoded then sanitized with map_deep.
+		$raw_data  = json_decode( wp_unslash( $_POST['pscwData'] ), true );
+		$pscw_data = is_array( $raw_data ) ? map_deep( $raw_data, 'sanitize_text_field' ) : array();
+		if ( ! is_array( $pscw_data ) || empty( $pscw_data ) ) {
+			wp_send_json_error( null, 400 );
+		}
+
+		$title = isset( $pscw_data['title'] ) ? sanitize_text_field( $pscw_data['title'] ) : '';
+		wp_update_post(
+			array(
+				'ID'         => $pscw_id,
+				'post_title' => $title,
+			)
+		);
+		unset( $pscw_data['title'] );
+		update_post_meta( $pscw_id, 'pscw_data', $pscw_data );
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Decoded then sanitized via pscw_sanitize_interface().
+		$raw_interface = json_decode( wp_unslash( $_POST['value'] ), true );
+		if ( ! is_array( $raw_interface ) ) {
+			wp_send_json_error( null, 400 );
+		}
+		update_post_meta( $pscw_id, 'pscw_interface', pscw_sanitize_interface( $raw_interface ) );
+
+		wp_send_json_success();
 	}
 
 }

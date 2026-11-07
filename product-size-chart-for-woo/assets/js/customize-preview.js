@@ -733,7 +733,7 @@ jQuery(document).ready(function ($) {
                     if (data.columnsStyle) {
                         element.find('.woo_sc_view_table tbody tr td:nth-child(even)').css({'background': data.evenBackground});
                     } else {
-                        element.find('.woo_sc_view_table tbody tr:nth-child(odd) td').css({'background': data.evenBackground});
+                        element.find('.woo_sc_view_table tbody tr:nth-child(even) td').css({'background': data.evenBackground});
                     }
                     break;
             }
@@ -747,7 +747,7 @@ jQuery(document).ready(function ($) {
                     if (data.columnsStyle) {
                         element.find('.woo_sc_view_table tbody tr td:nth-child(even) input').css({'color': data.evenText});
                     } else {
-                        element.find('.woo_sc_view_table tbody tr:nth-child(odd) td input').css({'color': data.evenText});
+                        element.find('.woo_sc_view_table tbody tr:nth-child(even) td input').css({'color': data.evenText});
                     }
                     break;
             }
@@ -760,7 +760,7 @@ jQuery(document).ready(function ($) {
 
             switch (data.headerColumn) {
                 default:
-                    trOdd = element.find('.woo_sc_view_table tbody tr:nth-child(even) td');
+                    trOdd = element.find('.woo_sc_view_table tbody tr:nth-child(odd) td');
                     tdOdd = element.find('.woo_sc_view_table tbody tr td:nth-child(odd)');
                     if (data.columnsStyle) {
                         tdOdd.css({'background': data.oddBackground});
@@ -778,7 +778,7 @@ jQuery(document).ready(function ($) {
 
             switch (data.headerColumn) {
                 default:
-                    trOdd = element.find('.woo_sc_view_table tbody tr:nth-child(even) td input');
+                    trOdd = element.find('.woo_sc_view_table tbody tr:nth-child(odd) td input');
                     tdOdd = element.find('.woo_sc_view_table tbody tr td:nth-child(odd) input');
                     if (data.columnsStyle) {
                         tdOdd.css({'color': data.oddText});

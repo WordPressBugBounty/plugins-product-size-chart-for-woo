@@ -2,6 +2,8 @@
 
 namespace PSCWF\Admin;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Legacy $woopscw_settings and villatheme_support hook.
+
 use PSCWF\Inc\Data;
 
 defined( 'ABSPATH' ) || exit;
@@ -40,7 +42,7 @@ class Settings {
 
 	public function save_settings() {
 
-		if ( ! current_user_can( 'edit_posts' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
@@ -50,43 +52,46 @@ class Settings {
 		global $woopscw_settings;
 
 		if ( isset( $_POST['woo_sc_save_setting'] ) ) {
-			if ( ! empty( $_POST['enable'] ) ) {
-				$save_option['enable'] = "1";
-			} else {
-				$save_option['enable'] = "0";
+			$save_option             = array();
+			$save_option['enable']   = ! empty( $_POST['enable'] ) ? '1' : '0';
+			$save_option['multi_sc'] = ! empty( $_POST['woo_sc_multi_sc'] ) ? '1' : '0';
+
+			$allowed_horizontals = array( 'right', 'left' );
+
+			if ( isset( $_POST['woo_cs_select_position'] ) ) {
+				$save_option['position'] = pscw_sanitize_position( sanitize_text_field( wp_unslash( $_POST['woo_cs_select_position'] ) ) );
 			}
-			if ( ! empty( $_POST['woo_sc_multi_sc'] ) ) {
-				$save_option['multi_sc'] = "1";
-			} else {
-				$save_option['multi_sc'] = "0";
+			if ( isset( $_POST['woo_sc_btn_horizontal'] ) ) {
+				$btn_horizontal = sanitize_text_field( wp_unslash( $_POST['woo_sc_btn_horizontal'] ) );
+				if ( in_array( $btn_horizontal, $allowed_horizontals, true ) ) {
+					$save_option['btn_horizontal'] = $btn_horizontal;
+				}
 			}
-			if ( ! empty( $_POST['woo_cs_select_position'] ) ) {
-				$save_option['position'] = sanitize_text_field( wp_unslash( $_POST['woo_cs_select_position'] ) );
-			}
-			if ( ! empty( $_POST['woo_sc_btn_horizontal'] ) ) {
-				$save_option['btn_horizontal'] = sanitize_text_field( wp_unslash( $_POST['woo_sc_btn_horizontal'] ) );
-			}
-			if ( isset( $_POST['woo_sc_btn_vertical'] ) && $_POST['woo_sc_btn_vertical'] <= 95 && $_POST['woo_sc_btn_vertical'] >= 0 ) {
-				$save_option['btn_vertical'] = sanitize_text_field( wp_unslash( $_POST['woo_sc_btn_vertical'] ) );
+			if ( isset( $_POST['woo_sc_btn_vertical'] ) ) {
+				$btn_vertical = absint( wp_unslash( $_POST['woo_sc_btn_vertical'] ) );
+				if ( $btn_vertical <= 100 ) {
+					$save_option['btn_vertical'] = (string) $btn_vertical;
+				}
 			}
 			if ( isset( $_POST['woo_sc_name'] ) ) {
 				$save_option['woo_sc_name'] = sanitize_text_field( wp_unslash( $_POST['woo_sc_name'] ) );
 			}
-			$save_option['button_type']='text';
-			if ( ! empty( $_POST['woo_sc_btn_color'] ) ) {
-				$save_option['btn_color'] = sanitize_text_field( wp_unslash( $_POST['woo_sc_btn_color'] ) );
+			$save_option['button_type'] = 'text';
+			if ( isset( $_POST['woo_sc_btn_color'] ) ) {
+				$save_option['btn_color'] = pscw_sanitize_css_color( sanitize_text_field( wp_unslash( $_POST['woo_sc_btn_color'] ) ), '#2185d0' );
 			}
-			if ( ! empty( $_POST['woo_sc_text_color'] ) ) {
-				$save_option['text_color'] = sanitize_text_field( wp_unslash( $_POST['woo_sc_text_color'] ) );
+			if ( isset( $_POST['woo_sc_text_color'] ) ) {
+				$save_option['text_color'] = pscw_sanitize_css_color( sanitize_text_field( wp_unslash( $_POST['woo_sc_text_color'] ) ), '#ffffff' );
 			}
 			if ( isset( $_POST['woo_sc_textarea'] ) ) {
 				$save_option['custom_css'] = sanitize_textarea_field( wp_unslash( $_POST['woo_sc_textarea'] ) );
 			}
 			if ( ! empty( $_POST['pscw_icon'] ) ) {
-				$save_option['pscw_icon'] = sanitize_textarea_field( wp_unslash( $_POST['pscw_icon'] ) );
+				$icon                     = sanitize_file_name( wp_unslash( $_POST['pscw_icon'] ) );
+				$save_option['pscw_icon'] = in_array( $icon, pscw_get_allowed_icon_keys(), true ) ? $icon : 'ruler-icon-2';
 			}
 
-			$data_r = wp_parse_args( $save_option, self::$setting->get_params() );
+			$data_r           = wp_parse_args( $save_option, self::$setting->get_params() );
 			update_option( 'woo_sc_setting', $data_r );
 			$woopscw_settings = $data_r;
 			self::$setting    = Data::get_instance( true );
@@ -95,13 +100,24 @@ class Settings {
 
 	public function page_callback() {
 		$get_option = self::$setting->get_params();
+		$charts_url = admin_url( 'edit.php?post_type=pscw-size-chart' );
 		?>
         <div class="wrap woo_sc_space">
-            <h2><?php esc_html_e( 'General settings', 'product-size-chart-for-woo' ) ?></h2>
+            <h2><?php esc_html_e( 'General settings', 'product-size-chart-for-woo' ); ?></h2>
             <form method="post" class="vi-ui form">
-                <div class="get_short_code" >
-                    <p><?php esc_html_e( 'You can use the shortcode [PSCW_SIZE_CHART ID=""] to display a size chart anywhere you want.', 'product-size-chart-for-woo' ) ?></p>
-                    <p><?php echo wp_kses_post(__( 'You can get the shortcode from <a href="'.admin_url( 'edit.php?post_type=pscw-size-chart').'" target="_blank">the “All Size Charts” page</a>.', 'product-size-chart-for-woo' )) ?></p>
+                <div class="get_short_code">
+                    <p><?php esc_html_e( 'You can use the shortcode [PSCW_SIZE_CHART ID=""] to display a size chart anywhere you want.', 'product-size-chart-for-woo' ); ?></p>
+                    <p>
+						<?php
+						echo wp_kses_post(
+							sprintf(
+								/* translators: %s: All Size Charts admin URL */
+								__( 'You can get the shortcode from <a href="%s" target="_blank">the “All Size Charts” page</a>.', 'product-size-chart-for-woo' ),
+								esc_url( $charts_url )
+							)
+						);
+						?>
+                    </p>
                 </div>
                 <div class="vi-ui segment woo_sc_setting_form">
 					<?php wp_nonce_field( 'woo_sc_check_setting_nonce', 'woo_sc_setting_nonce' ); ?>
@@ -109,7 +125,7 @@ class Settings {
                         <tr>
                             <th>
                                 <div>
-									<?php esc_html_e( 'Enable', 'product-size-chart-for-woo' ) ?>
+									<?php esc_html_e( 'Enable', 'product-size-chart-for-woo' ); ?>
                                 </div>
                             </th>
                             <td>
@@ -122,17 +138,17 @@ class Settings {
                         <tr>
                             <th>
                                 <div>
-									<?php esc_html_e( 'Size chart type', 'product-size-chart-for-woo' ) ?>
+									<?php esc_html_e( 'Size chart type', 'product-size-chart-for-woo' ); ?>
                                 </div>
                             </th>
                             <td>
                                 <select name="woo_cs_select_position" id="woo_cs_select_position"
                                         class="vi-ui fluid dropdown setting_field">
-                                    <option value="none" <?php selected( 'none' === $get_option['position'] ); ?>><?php esc_html_e( 'None', 'product-size-chart-for-woo' ) ?></option>
+                                    <option value="none" <?php selected( 'none' === $get_option['position'] ); ?>><?php esc_html_e( 'None', 'product-size-chart-for-woo' ); ?></option>
                                     <option value="before_add_to_cart" <?php selected( $get_option['position'] == 'before_add_to_cart' ); ?>><?php esc_html_e( 'Before add to cart', 'product-size-chart-for-woo' ); ?></option>
                                     <option value="after_add_to_cart" <?php selected( 'after_add_to_cart' == $get_option['position'] ); ?> ><?php esc_html_e( 'After add to cart', 'product-size-chart-for-woo' ); ?></option>
-                                    <option value="pop-up" <?php selected( 'pop-up' == $get_option['position'] ); ?> ><?php esc_html_e( 'Pop-up', 'product-size-chart-for-woo' ) ?></option>
-                                    <option value="product_tabs" <?php selected( 'product_tabs' == $get_option['position'] ); ?>><?php esc_html_e( 'Product tab', 'product-size-chart-for-woo' ) ?></option>
+                                    <option value="pop-up" <?php selected( 'pop-up' == $get_option['position'] ); ?> ><?php esc_html_e( 'Pop-up', 'product-size-chart-for-woo' ); ?></option>
+                                    <option value="product_tabs" <?php selected( 'product_tabs' == $get_option['position'] ); ?>><?php esc_html_e( 'Product tab', 'product-size-chart-for-woo' ); ?></option>
                                     <option value="before_atc_after_variations" disabled><?php esc_html_e( 'Before add to cart after variations - Premium version only', 'product-size-chart-for-woo' ); ?></option>
                                     <option value="top_des" disabled><?php esc_html_e( 'Top description - Premium version only', 'product-size-chart-for-woo' ); ?></option>
                                     <option value="bottom_des" disabled><?php esc_html_e( 'Bottom description - Premium version only', 'product-size-chart-for-woo' ); ?></option>
@@ -143,7 +159,7 @@ class Settings {
                         </tr>
                         <tr class="woo_sc_multi" style="display: none">
                             <th>
-								<?php esc_html_e( 'Multi size charts', 'product-size-chart-for-woo' ) ?>
+								<?php esc_html_e( 'Multi size charts', 'product-size-chart-for-woo' ); ?>
                             </th>
                             <td>
                                 <div class="vi-ui toggle checkbox">
@@ -152,7 +168,7 @@ class Settings {
                                     <label></label>
                                 </div>
                                 <p class="description">
-	                                <?php esc_html_e( 'When enabled, all size charts assigned to a product will be shown. If disabled, only the first size chart appears.', 'product-size-chart-for-woo' ) ?>
+	                                <?php esc_html_e( 'When enabled, all size charts assigned to a product will be shown. If disabled, only the first size chart appears.', 'product-size-chart-for-woo' ); ?>
                                 </p>
                             </td>
                         </tr>
@@ -163,15 +179,14 @@ class Settings {
                             <td>
                                 <select name="woo_sc_btn_horizontal"
                                         class="vi-ui fluid dropdown selection setting_field ">
-                                    <option value="right" <?php selected( "right" === $get_option['btn_horizontal'] ); ?>>
-										<?php esc_html_e( 'Right', 'product-size-chart-for-woo' ) ?></option>
-                                    <option value="left" <?php selected( "left" === $get_option['btn_horizontal'] ); ?>>
-										<?php esc_html_e( 'Left', 'product-size-chart-for-woo' ) ?></option>
+                                    <option value="right" <?php selected( 'right' === $get_option['btn_horizontal'] ); ?>>
+										<?php esc_html_e( 'Right', 'product-size-chart-for-woo' ); ?></option>
+                                    <option value="left" <?php selected( 'left' === $get_option['btn_horizontal'] ); ?>>
+										<?php esc_html_e( 'Left', 'product-size-chart-for-woo' ); ?></option>
                                 </select>
                                 <p class="description">
                                     <?php esc_html_e( 'Popup button position in horizontal', 'product-size-chart-for-woo' ); ?>
                                 </p>
-
                             </td>
                         </tr>
                         <tr class="woo_sc_btn_popup_position" style="display: none">
@@ -211,7 +226,7 @@ class Settings {
                         <tr class="woo_sc_sc_label" >
                             <th>
                                 <div>
-									<?php esc_html_e( 'Size chart label', 'product-size-chart-for-woo' ) ?>
+									<?php esc_html_e( 'Size chart label', 'product-size-chart-for-woo' ); ?>
                                 </div>
                             </th>
                             <td>
@@ -233,35 +248,35 @@ class Settings {
                                 <input type="text" class="color-picker" id="woo_sc_btn_color"
                                        name="woo_sc_btn_color"
                                        autocomplete="off"
-                                       value="<?php echo esc_attr( $get_option['btn_color'] ) ?>"
+                                       value="<?php echo esc_attr( $get_option['btn_color'] ); ?>"
                                        style="background-color: <?php echo esc_attr( $get_option['btn_color'] ); ?>">
                             </td>
                         </tr>
                         <tr class="woo_sc_btn_color" style="display: none">
                             <th>
                                 <div>
-									<?php esc_html_e( 'Button color', 'product-size-chart-for-woo' ) ?>
+									<?php esc_html_e( 'Button color', 'product-size-chart-for-woo' ); ?>
                                 </div>
                             </th>
                             <td>
                                 <input type="text" class="color-picker" id="woo_sc_text_color"
                                        name="woo_sc_text_color"
                                        autocomplete="off"
-                                       value="<?php echo esc_attr( $get_option['text_color'] ) ?>"
-                                       style="background-color:<?php echo esc_attr( $get_option['text_color'] ) ?>">
+                                       value="<?php echo esc_attr( $get_option['text_color'] ); ?>"
+                                       style="background-color:<?php echo esc_attr( $get_option['text_color'] ); ?>">
                             </td>
                         </tr>
                         <tr>
                             <th>
-								<?php esc_html_e( 'Custom CSS', 'product-size-chart-for-woo' ) ?>
+								<?php esc_html_e( 'Custom CSS', 'product-size-chart-for-woo' ); ?>
                             </th>
                             <td>
                                     <textarea name="woo_sc_textarea" id="woo_sc_textarea" cols="30" rows="5"
-                                              placeholder="<?php esc_html_e( 'Insert custom css here...', 'product-size-chart-for-woo' ); ?>"><?php if ( ! empty( $get_option['custom_css'] ) ) {
-		                                    echo esc_attr( $get_option['custom_css'] );
-	                                    } ?></textarea>
-								<?php
-								?>
+                                              placeholder="<?php esc_html_e( 'Insert custom css here...', 'product-size-chart-for-woo' ); ?>"><?php
+												if ( ! empty( $get_option['custom_css'] ) ) {
+													echo esc_textarea( $get_option['custom_css'] );
+												}
+												?></textarea>
                             </td>
                         </tr>
                     </table>
@@ -269,7 +284,7 @@ class Settings {
                 <p>
                     <button type="submit" name="woo_sc_save_setting" id="woo_sc_btn_save_setting"
                             class="vi-ui primary button">
-                        <i class="icon send"></i><?php esc_attr_e( 'Save', 'product-size-chart-for-woo' ) ?>
+                        <i class="icon send"></i><?php esc_attr_e( 'Save', 'product-size-chart-for-woo' ); ?>
                     </button>
                 </p>
             </form>
@@ -279,7 +294,5 @@ class Settings {
 			?>
         </div>
 		<?php
-
-
 	}
 }

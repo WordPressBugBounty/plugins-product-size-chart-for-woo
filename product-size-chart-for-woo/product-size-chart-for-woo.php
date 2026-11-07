@@ -3,16 +3,19 @@
  * Plugin Name: Sizor Product Size Chart for WooCommerce
  * Plugin URI: https://villatheme.com/extensions/woo-product-size-chart/
  * Description: WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
- * Version: 2.1.5
+ * Version: 2.1.6
  * Author URI: https://villatheme.com
  * Author: VillaTheme
  * Copyright 2021-2026 VillaTheme.com. All rights reserved.
  * Text Domain: product-size-chart-for-woo
  * Requires Plugins: woocommerce
+ * Requires at least: 5.2
  * Tested up to: 7.1
  * WC requires at least: 7.0
- * WC tested up to: 11.0
+ * WC tested up to: 11.2
  * Requires PHP: 7.4
+ * License: GNU General Public License v3.0
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  **/
 
 namespace PSCWF;
@@ -42,10 +45,12 @@ if ( is_plugin_active( 'sizor-product-size-chart/sizor-product-size-chart.php' )
 	return;
 }
 if (!defined('PSCW_CONST_F')){
+	// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Local bootstrap vars immediately folded into PSCW_CONST_F.
 	$plugin_url = plugins_url( 'assets/', __FILE__ );
 	$plugin_dir = plugin_dir_path( __FILE__ );
+	// phpcs:enable
 	define( 'PSCW_CONST_F', [
-		'version'     => '2.1.5',
+		'version'     => '2.1.6',
 		'plugin_name' => 'Sizor Product Size Chart for WooCommerce',
 		'slug'        => 'pscw',
 		'assets_slug' => 'pscw-',
@@ -74,7 +79,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 			$environment = new \VillaTheme_Require_Environment( [
 					'plugin_name'     => 'Sizor Product Size Chart for WooCommerce',
 					'php_version'     => '7.4',
-					'wp_version'      => '5.0',
+					'wp_version'      => '5.2',
 					'wc_version'      => '7.0',
 					'require_plugins' => [
 						[
@@ -121,6 +126,7 @@ if ( ! class_exists( 'Product_Size_Chart_F' ) ) {
 			/**
 			 * load Language translate
 			 */
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core WordPress filter.
 			$locale = apply_filters( 'plugin_locale', get_locale(), 'product-size-chart-for-woo' );
 			load_textdomain( 'product-size-chart-for-woo', PSCW_CONST_F['languages'] . "product-size-chart-for-woo-$locale.mo" );
 		}

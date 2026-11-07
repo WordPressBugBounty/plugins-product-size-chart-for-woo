@@ -2,6 +2,8 @@
 
 namespace PSCWF\Inc;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Legacy woo_sc_ filter names.
+
 defined( 'ABSPATH' ) || exit;
 
 class Enqueue {
@@ -10,7 +12,7 @@ class Enqueue {
 	protected $slug;
 	protected $suffix = '';
 
-	protected $lib_styles = [
+	protected $lib_styles = array(
 		'button',
 		'tab',
 		'input',
@@ -31,24 +33,18 @@ class Enqueue {
 		'dropdown',
 		'checkbox',
 		'form',
-		'table',
-		'slider',
 		'icon',
 		'step',
-	];
+	);
 
-	protected $lib_scripts = [
+	protected $lib_scripts = array(
 		'tab',
 		'form',
 		'checkbox',
-		'slider',
-		'address-1.6',
 		'dropdown',
 		'transition',
 		'select2',
-		'iris' => [ 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ],
-
-	];
+	);
 
 	private function __construct() {
 		$this->slug    = PSCW_CONST_F['assets_slug'];
@@ -59,63 +55,61 @@ class Enqueue {
 	}
 
 	public static function instance() {
-		return null === self::$instance ? self::$instance = new self : self::$instance;
+		return null === self::$instance ? self::$instance = new self() : self::$instance;
 	}
 
 	public function register_common_scripts() {
-		//*************************************//
 		$lib_styles = $this->lib_styles;
 
 		foreach ( $lib_styles as $style ) {
 			wp_register_style( $this->slug . $style, PSCW_CONST_F['libs_url'] . $style . '.min.css', '', PSCW_CONST_F['version'] );
 		}
 
-		//*************************************//
 		$lib_scripts = $this->lib_scripts;
 
 		foreach ( $lib_scripts as $script => $depend ) {
 			if ( is_array( $depend ) ) {
 				wp_register_script( $this->slug . $script, PSCW_CONST_F['libs_url'] . $script . '.min.js', $depend, PSCW_CONST_F['version'], false );
 			} else {
-				wp_register_script( $this->slug . $depend, PSCW_CONST_F['libs_url'] . $depend . '.min.js', [ 'jquery' ], PSCW_CONST_F['version'], false );
+				wp_register_script( $this->slug . $depend, PSCW_CONST_F['libs_url'] . $depend . '.min.js', array( 'jquery' ), PSCW_CONST_F['version'], false );
 			}
 		}
 	}
 
 	public function register_admin_scripts() {
-
-		//*************************************//
-		$admin_styles = [ 'settings', 'size-chart', 'product', 'setup-wizard' ];
+		$admin_styles = array( 'settings', 'size-chart', 'product', 'setup-wizard' );
 
 		foreach ( $admin_styles as $style ) {
 			wp_register_style( $this->slug . $style, PSCW_CONST_F['css_url'] . $style . $this->suffix . '.css', '', PSCW_CONST_F['version'] );
 		}
 
-		//*************************************//
-		$admin_scripts = [
-			'settings'       => [ 'jquery' ],
-			'size-chart'     => [ 'jquery' ],
-			'all-size-chart' => [ 'jquery' ],
-			'product'        => [ 'jquery' ],
-			'setup-wizard'   => [ 'jquery' ],
-		];
+		$admin_scripts = array(
+			'settings'       => array( 'jquery', 'wp-color-picker' ),
+			'size-chart'     => array( 'jquery' ),
+			'all-size-chart' => array( 'jquery' ),
+			'product'        => array( 'jquery' ),
+			'setup-wizard'   => array( 'jquery' ),
+		);
 
 		foreach ( $admin_scripts as $script => $depend ) {
 			wp_register_script( $this->slug . $script, PSCW_CONST_F['js_url'] . $script . $this->suffix . '.js', $depend, PSCW_CONST_F['version'], true );
 		}
-
 	}
 
 	public function admin_enqueue_scripts() {
-		$screen_id = get_current_screen()->id;
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( ! $screen ) {
+			return;
+		}
+		$screen_id = $screen->id;
 
 		$this->register_common_scripts();
 		$this->register_admin_scripts();
 
-		$enqueue_scripts = $enqueue_styles = [];
+		$enqueue_scripts = $enqueue_styles = array();
 		switch ( $screen_id ) {
 			case 'pscw-size-chart_page_pscw-size-chart-setting':
-				$enqueue_styles  = [
+				$enqueue_styles  = array(
 					'icon',
 					'segment',
 					'button',
@@ -126,20 +120,20 @@ class Enqueue {
 					'transition',
 					'label',
 					'input',
-					'settings'
-				];
-				$enqueue_scripts = [
+					'settings',
+				);
+				$enqueue_scripts = array(
 					'tab',
 					'checkbox',
 					'form',
 					'dropdown',
 					'transition',
-					'iris',
-					'settings'
-				];
+					'settings',
+				);
+				wp_enqueue_style( 'wp-color-picker' );
 				break;
 			case 'pscw-size-chart':
-				$enqueue_styles  = [
+				$enqueue_styles  = array(
 					'form',
 					'icon',
 					'checkbox',
@@ -147,49 +141,48 @@ class Enqueue {
 					'segment',
 					'menu',
 					'select2',
-					'size-chart'
-				];
-				$enqueue_scripts = [
+					'size-chart',
+				);
+				$enqueue_scripts = array(
 					'form',
 					'checkbox',
 					'transition',
 					'select2',
 					'size-chart',
-				];
+				);
 				break;
 			case 'edit-pscw-size-chart':
 				wp_register_style( 'pscw-dummy-handle', false, array(), PSCW_CONST_F['version'], false );
 				wp_enqueue_style( 'pscw-dummy-handle' );
 				wp_add_inline_style( 'pscw-dummy-handle', 'table.wp-list-table tr td .woo_sc_short_code {cursor: pointer;}.icon.input .woo_sc_copied {background-color: black;color: #fff;width: 120px;text-align: center;border-radius: 6px;padding: 5px 0;list-style: none;position: absolute;z-index: 9;top: 100%;left: 50%;margin-left: -60px;opacity: 0.7;visibility: hidden;} table.wp-list-table tr td .vi-ui.input{min-width:269px}' );
-				$enqueue_styles  = [
+				$enqueue_styles  = array(
 					'input',
 					'icon',
-					'size-chart'
-				];
-				$enqueue_scripts = [
-					'all-size-chart'
-				];
+					'size-chart',
+				);
+				$enqueue_scripts = array(
+					'all-size-chart',
+				);
 				break;
 			case 'product':
-				$enqueue_styles  = [
+				$enqueue_styles  = array(
 					'select2',
-					'product'
-				];
-				$enqueue_scripts = [
+					'product',
+				);
+				$enqueue_scripts = array(
 					'select2',
-					'product'
-				];
+					'product',
+				);
 				break;
 			case 'dashboard_page_pscw-setup':
-				$enqueue_styles  = [ 'button', 'header', 'transition', 'dropdown', 'segment', 'step', 'checkbox', 'setup-wizard' ];
-				$enqueue_scripts  = [ 'dropdown', 'transition', 'checkbox', 'setup-wizard' ];
+				$enqueue_styles  = array( 'button', 'header', 'transition', 'dropdown', 'segment', 'step', 'checkbox', 'setup-wizard' );
+				$enqueue_scripts = array( 'dropdown', 'transition', 'checkbox', 'setup-wizard' );
 				break;
 		}
 
 		foreach ( $enqueue_styles as $style ) {
 			wp_enqueue_style( $this->slug . $style );
 		}
-
 
 		foreach ( $enqueue_scripts as $script ) {
 			wp_enqueue_script( $this->slug . $script );
@@ -203,18 +196,16 @@ class Enqueue {
 		wp_localize_script( $this->slug . 'product', 'VicPscwParams', $params );
 		wp_localize_script( $this->slug . 'setup-wizard', 'VicPscwParams', $params );
 		wp_localize_script( $this->slug . 'all-size-chart', 'VicPscwParams', $params );
-
 	}
 
 	public function register_client_scripts() {
-		$client_styles = [ 'frontend' ];
+		$client_styles = array( 'frontend' );
 
 		foreach ( $client_styles as $style ) {
 			wp_register_style( $this->slug . $style, PSCW_CONST_F['css_url'] . $style . $this->suffix . '.css', '', PSCW_CONST_F['version'] );
 		}
 
-		//*************************************//
-		$scripts = [ 'frontend' => [ 'jquery' ] ];
+		$scripts = array( 'frontend' => array( 'jquery' ) );
 
 		foreach ( $scripts as $script => $depend ) {
 			wp_register_script( $this->slug . $script, PSCW_CONST_F['js_url'] . $script . $this->suffix . '.js', $depend, PSCW_CONST_F['version'], true );
@@ -222,11 +213,9 @@ class Enqueue {
 	}
 
 	public function client_enqueue_scripts() {
-		global $post;
-
 		$this->register_client_scripts();
-		$enqueue_styles  = [ 'frontend' ];
-		$enqueue_scripts = [ 'frontend' ];
+		$enqueue_styles  = array( 'frontend' );
+		$enqueue_scripts = array( 'frontend' );
 		$inline_style    = 'frontend';
 		$css             = '';
 
@@ -240,30 +229,40 @@ class Enqueue {
 				wp_enqueue_script( $this->slug . $script );
 			}
 
-			$button_css  = "";
-			$button_icon = "";
-			if ( $this->get_prams( 'position' ) === 'pop-up' ) {
-				$button_css = ".woo_sc_price_btn_popup.woo_sc_btn_popup {
+			$button_css  = '';
+			$button_icon = '';
+			$position    = pscw_sanitize_position( $this->get_prams( 'position' ) );
+			if ( 'pop-up' === $position ) {
+				$button_css = '.woo_sc_price_btn_popup.woo_sc_btn_popup {
 				  position: fixed;
 				  z-index: 999998;
-				}";
+				}';
 			}
 
-			$css .= "#woo_sc_show_popup{top:{$this->get_prams( 'btn_vertical' )}%;{$this->get_prams( 'btn_horizontal' )}:0%}
+			$btn_horizontal = $this->get_prams( 'btn_horizontal' );
+			$btn_horizontal = in_array( $btn_horizontal, array( 'left', 'right' ), true ) ? $btn_horizontal : 'right';
+			$btn_vertical   = absint( $this->get_prams( 'btn_vertical' ) );
+			$btn_color      = pscw_sanitize_css_color( $this->get_prams( 'btn_color' ), '#2185d0' );
+			$text_color     = pscw_sanitize_css_color( $this->get_prams( 'text_color' ), '#ffffff' );
+
+			$css .= '#woo_sc_show_popup{top:' . esc_attr( (string) $btn_vertical ) . '%;' . esc_attr( $btn_horizontal ) . ':0%}
 			    .woo_sc_data_content{clear:both; margin:15px auto;}
-				{$button_icon}
-				.woo_sc_call_popup{background-color:{$this->get_prams( 'btn_color' )};color:{$this->get_prams( 'text_color' )}
-				}{$button_css}.woo_sc_size_icon svg {vertical-align: unset;fill: {$this->get_prams( 'text_color' )}}";
+				' . $button_icon . '
+				.woo_sc_call_popup{background-color:' . esc_attr( $btn_color ) . ';color:' . esc_attr( $text_color ) . '
+				}' . $button_css . '.woo_sc_size_icon svg {vertical-align: unset;fill: ' . esc_attr( $text_color ) . '}';
 
 			$css .= self::$setting->get_params( 'custom_css' );
-			$css = apply_filters( 'woo_sc_filter_style', $css );
+			$css  = apply_filters( 'woo_sc_filter_style', $css );
 			wp_add_inline_style( $this->slug . $inline_style, esc_html( $css ) );
 
-			wp_localize_script( $this->slug . 'frontend', 'ViPscwFontParams', array(
-				'isCustomize' => is_customize_preview(),
-				'pscwSizeChartMode' => get_user_meta( get_current_user_id(), 'pscw_sizechart_mode', true ),
-			) );
-
+			wp_localize_script(
+				$this->slug . 'frontend',
+				'ViPscwFontParams',
+				array(
+					'isCustomize'       => is_customize_preview(),
+					'pscwSizeChartMode' => get_user_meta( get_current_user_id(), 'pscw_sizechart_mode', true ),
+				)
+			);
 		}
 	}
 

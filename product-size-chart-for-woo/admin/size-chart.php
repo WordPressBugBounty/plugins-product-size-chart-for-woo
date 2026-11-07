@@ -39,17 +39,25 @@ class Size_Chart {
 
 	public function migrate_size_chart() {
 		if (isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'pscw_nonce' )) {
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
+				wp_send_json_error( null, 403 );
+			}
 			/* Filter query size chart to migrate */
-			$size_charts = get_posts(apply_filters('pscw_migrate_size_chart_query', array(
-					'post_type'  => 'pscw-size-chart',
-					'numberposts' => - 1,
-					'meta_query' => array(
-						array(
-							'key'     => 'woo_sc_size_chart_data',
-							'compare' => 'EXISTS',
+			$size_charts = get_posts(
+				apply_filters(
+					'pscw_migrate_size_chart_query',
+					array(
+						'post_type'   => 'pscw-size-chart',
+						'numberposts' => -1,
+						// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- One-time migration admin AJAX.
+						'meta_query'  => array(
+							array(
+								'key'     => 'woo_sc_size_chart_data',
+								'compare' => 'EXISTS',
+							),
 						),
 					)
-				))
+				)
 			);
 
 			foreach( $size_charts as $size_chart ) {
@@ -67,14 +75,15 @@ class Size_Chart {
 		if ( $screen->id === 'edit-pscw-size-chart' && get_option('pscw_maybe_re_migrate') ) {
 			?>
             <div class="notice notice-info">
-                <p><?php _e( 'We’ve added a new option to easily re-migrate your Size Chart table from version 1.x to 2.x, improving data accuracy and consistency', 'product-size-chart-for-woo' ); ?></p>
+                <p><?php esc_html_e( 'We’ve added a new option to easily re-migrate your Size Chart table from version 1.x to 2.x, improving data accuracy and consistency', 'product-size-chart-for-woo' ); ?></p>
             </div>
 			<?php
 		}
 	}
 	public function add_new_size_chart() {
-		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : '';
-		if ( $post_type === 'pscw-size-chart' ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		if ( 'pscw-size-chart' === $post_type ) {
 			$user_id  = get_current_user_id();
 			$new_post = array(
 				'post_title'   => 'Size chart untitled',
@@ -146,7 +155,7 @@ class Size_Chart {
 			'menu_icon'           => $icon_url,
 			'can_export'          => true,
 			'has_archive'         => false,
-			'exclude_from_search' => false,
+			'exclude_from_search' => true,
 			'publicly_queryable'  => false,
 			'capability_type'     => 'post'
 
@@ -160,16 +169,9 @@ class Size_Chart {
 
 	public function pscw_meta_box() {
 		add_meta_box( 'design_size_chart', __( 'Design', 'product-size-chart-for-woo' ),
-			[ $this, 'pscw_design' ], 'pscw-size-chart', 'normal' );
+			array( $this, 'pscw_design' ), 'pscw-size-chart', 'normal' );
 		add_meta_box( 'assign_size_chart', __( 'Assign', 'product-size-chart-for-woo' ),
-			[ $this, 'pscw_assign' ], 'pscw-size-chart', 'normal' );
-//		$screen_id = get_current_screen()->id;
-//		if ( $screen_id === 'pscw-size-chart' ) {
-//			add_meta_box( 'configure_size_chart', esc_html__( 'Configure for the size chart', 'product-size-chart-for-woo' ), array(
-//				$this,
-//				'pscw_configure'
-//			), 'pscw-size-chart', 'normal', 'high' );
-//		}
+			array( $this, 'pscw_assign' ), 'pscw-size-chart', 'normal' );
 	}
 	public function pscw_design( $post ) {
 		?>
@@ -280,7 +282,7 @@ class Size_Chart {
 					<?php
 				}
 				?>
-                <tr>
+                <tr class="pscw-assign-all-product-class">
                     <th><?php esc_html_e( 'Countries', 'product-size-chart-for-woo' ); ?></th>
                     <td>
 			            <?php Data::upgrade_button(); ?>
@@ -294,116 +296,12 @@ class Size_Chart {
 		<?php
 	}
 
-	public function pscw_configure( $post_id ) {
-		wp_nonce_field( 'woo_sc_check_nonce', 'woo_sc_nonce' );
-		$assign_options = array(
-			'none'               => esc_html__( 'None', 'product-size-chart-for-woo' ),
-			'all'                => esc_html__( 'All Products', 'product-size-chart-for-woo' ),
-			'products'           => esc_html__( 'Products', 'product-size-chart-for-woo' ),
-			'product_cat'        => esc_html__( 'Product Categories', 'product-size-chart-for-woo' ),
-			'combined'           => esc_html__( 'Combined (Premium)', 'product-size-chart-for-woo' ),
-			'product_type'       => esc_html__( 'Product Type (Premium)', 'product-size-chart-for-woo' ),
-            'product_brand'       => esc_html__( 'Product Brand (Premium)', 'product-size-chart-for-woo' ),
-			'product_visibility' => esc_html__( 'Product Visibility (Premium)', 'product-size-chart-for-woo' ),
-			'product_tag'        => esc_html__( 'Product Tags (Premium)', 'product-size-chart-for-woo' ),
-			'shipping_class'     => esc_html__( 'Product Shipping Class (Premium)', 'product-size-chart-for-woo' ),
-		);
-		$random_product = $this->get_random_product();
-		$pscw_data      = get_post_meta( $post_id->ID, 'pscw_data', true );
-		$pscw_assign    = $pscw_data['assign'] ?? 'none';
-		$pscw_condition = $pscw_data['condition'] ?? [];
-		?>
-        <input type="hidden" name="prevent_delete_meta_movetotrash" id="prevent_delete_meta_movetotrash"
-               value="<?php echo esc_attr( wp_create_nonce( plugin_basename( __FILE__ ) . $post_id->ID ) ); ?>">
-        <div class="vi-ui segment" id="pscw_configure">
-            <table class="form-table">
-                <tr>
-                    <th><?php esc_html_e( 'Design', 'product-size-chart-for-woo' ); ?></th>
-                    <td>
-						<?php if ( $post_id->post_status !== 'auto-draft' ) : ?>
-							<?php
-							$url = admin_url( 'customize.php' ) . '?url=' . esc_url( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $post_id->ID . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
-							?>
-                            <a target="_blank"
-                               href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Go to design', 'product-size-chart-for-woo' ) ?></a>
-						<?php else: ?>
-							<?php esc_html_e( 'Please publish size chart to see url design', 'product-size-chart-for-woo' ); ?>
-						<?php endif; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th><?php esc_html_e( 'Select countries to show', 'product-size-chart-for-woo' ); ?></th>
-                    <td>
-                        <a class="vi-ui pink button" target="_blank" href="https://villatheme.com/extensions/woocommerce-product-size-chart"><?php esc_html_e('Upgrade This
-                            Feature', 'product-size-chart-for-woo' );?></a>
-                    </td>
-                </tr>
-                <tr>
-                    <th><?php esc_html_e( 'Assign', 'product-size-chart-for-woo' ); ?></th>
-                    <td>
-                        <div class="pscw_assign_wrap">
-                            <select name="pscw_assign" id="pscw_assign" class="pscw_assign">
-								<?php foreach ( $assign_options as $key => $val ) : ?>
-                                    <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key == $pscw_assign ); ?> <?php disabled( in_array( $key, [
-										'combined',
-										'product_type',
-										'product_visibility',
-                                        'product_brand',
-										'product_tag',
-										'shipping_class'
-									] ) ) ?>><?php echo esc_html( $val ); ?></option>
-								<?php endforeach; ?>
-
-                            </select>
-                            <div class="pscw_assign_pane <?php echo 'products' === $pscw_assign ? 'active' : '' ?>"
-                                 data-option="products">
-                                <select name="pscw_assign_products[]" id="pscw_assign_products" multiple>
-									<?php
-									if ( 'products' === $pscw_assign ) {
-										foreach ( $pscw_condition as $val ) {
-											$value = pscw_get_value_combined( 'products', $val );
-											if ( count( $value ) === 2 ) {
-												?>
-                                                <option selected
-                                                        value="<?php echo esc_attr( $value[0] ); ?>"><?php echo esc_html( $value[1] ); ?></option>
-												<?php
-											}
-										}
-									}
-
-									?>
-                                </select>
-                            </div>
-                            <div class="pscw_assign_pane <?php echo 'product_cat' === $pscw_assign ? 'active' : '' ?>"
-                                 data-option="product_cat">
-                                <select name="pscw_assign_product_cat[]" id="pscw_assign_product_cat"
-                                        multiple>
-									<?php
-									if ( 'product_cat' === $pscw_assign ) {
-										foreach ( $pscw_condition as $val ) {
-											$value = pscw_get_value_combined( 'product_cat', $val );
-											if ( count( $value ) === 2 ) {
-												?>
-                                                <option value="<?php echo esc_attr( $value[0] ); ?>"
-                                                        selected><?php echo esc_html( $value[1] ); ?></option>
-												<?php
-											}
-										}
-									}
-									?>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-		<?php
-	}
-
 	public function pscw_ajax_search_product() {
 		if ( ! check_ajax_referer( 'woo_sc_check_nonce', 'nonce', false ) && ! check_ajax_referer( 'pscw_nonce', 'nonce', false )  ) {
 			die();
+		}
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( null, 403 );
 		}
 		$keyword = isset( $_REQUEST['key_search'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['key_search'] ) ) : '';
 		if ( empty( $keyword ) ) {
@@ -433,6 +331,9 @@ class Size_Chart {
 
 	function pscw_ajax_search_term() {
 		if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'pscw_nonce' ) ) {
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
+				wp_send_json_error( null, 403 );
+			}
 			$search_key = isset( $_POST['key_search'] ) ? sanitize_text_field( wp_unslash( $_POST['key_search'] ) ) : '';
 			$taxonomy   = isset( $_POST['taxonomy'] ) ? sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) ) : '';
 			$return     = [];
@@ -460,10 +361,13 @@ class Size_Chart {
 	}
 
 	public function pscw_save_data_meta_box( $post_id ) {
-		if ( ! current_user_can( "edit_post", $post_id ) ) {
+		if ( 'pscw-size-chart' !== get_post_type( $post_id ) ) {
 			return $post_id;
 		}
-		if ( defined( "DOING_AUTOSAVE" ) && DOING_AUTOSAVE ) {
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return $post_id;
+		}
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return $post_id;
 		}
 
@@ -472,34 +376,9 @@ class Size_Chart {
 			return $post_id;
 		}
 
-//		$pscw_assign          = isset( $_POST['pscw_assign'] ) ? sanitize_text_field( wp_unslash( $_POST['pscw_assign'] ) ) : 'none';
-//		$pscw_allow_countries = isset( $_POST['pscw_allow_countries'] ) ? wc_clean( wp_unslash( $_POST['pscw_allow_countries'] ) ) : [];
-//		$pscw_condition       = [];
-//
-//		switch ( $pscw_assign ) {
-//			case 'all':
-//				break;
-//			case 'products':
-//				$pscw_condition   = isset( $_POST['pscw_assign_products'] ) ? wc_clean( wp_unslash( $_POST['pscw_assign_products'] ) ) : [];
-//				break;
-//			case 'product_cat':
-//				$pscw_condition   = isset( $_POST['pscw_assign_product_cat'] ) ? wc_clean( wp_unslash( $_POST['pscw_assign_product_cat'] ) ) : [];
-//				break;
-//		}
-//
-//		$pscw_data = array(
-//			'assign'          => $pscw_assign,
-//			'allow_countries' => $pscw_allow_countries,
-//			'condition'       => $pscw_condition,
-//		);
-//
-//		if ( empty( get_post_meta( $post_id, 'pscw_interface', true ) ) ) {
-//			update_post_meta( $post_id, 'pscw_interface', $this->default_size_chart_interface() );
-//		}
-//		update_post_meta( $post_id, "pscw_data", $pscw_data );
+		$pscw_data = isset( $_POST['pscw_data'] ) ? map_deep( wp_unslash( $_POST['pscw_data'] ), 'sanitize_text_field' ) : array();
+		update_post_meta( $post_id, 'pscw_data', $pscw_data );
 
-		$pscw_data= isset($_POST['pscw_data'])? wc_clean( wp_unslash( $_POST['pscw_data'] ) ) : [];
-		update_post_meta( $post_id, "pscw_data", $pscw_data );
 		return $post_id;
 	}
 
@@ -508,24 +387,36 @@ class Size_Chart {
 			return;
 		}
 
-		if ( isset( $_GET['pscw_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_GET['pscw_nonce'] ) ), 'pscw_nonce' ) ) {
-			$dup_id = ! empty( $_GET['id'] ) ? sanitize_text_field( wp_unslash( $_GET['id'] ) ) : '';
-			if ( $dup_id ) {
-				$current_post = get_post( $dup_id );
-
-				$args             = [
-					'post_title' => esc_html__( 'Copy of ', 'product-size-chart-for-woo' ) . $current_post->post_title,
-					'post_type'  => $current_post->post_type,
-				];
-				$new_id           = wp_insert_post( $args );
-				$dup_post_meta    = get_post_meta( $dup_id, 'pscw_data', true );
-				$dub_interface    = get_post_meta( $dup_id, 'pscw_interface', true );
-				update_post_meta( $new_id, 'pscw_data', $dup_post_meta );
-				update_post_meta( $new_id, 'pscw_interface', $dub_interface );
-				wp_safe_redirect( admin_url( "post.php?post={$new_id}&action=edit" ) );
-				exit;
-			}
+		if ( ! isset( $_GET['pscw_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['pscw_nonce'] ) ), 'pscw_nonce' ) ) {
+			return;
 		}
+
+		$dup_id = ! empty( $_GET['id'] ) ? absint( $_GET['id'] ) : 0;
+		if ( ! $dup_id || 'pscw-size-chart' !== get_post_type( $dup_id ) ) {
+			return;
+		}
+
+		$current_post = get_post( $dup_id );
+		if ( ! $current_post ) {
+			return;
+		}
+
+		$new_id = wp_insert_post(
+			array(
+				'post_title'  => __( 'Copy of ', 'product-size-chart-for-woo' ) . $current_post->post_title,
+				'post_type'   => 'pscw-size-chart',
+				'post_status' => $current_post->post_status ? $current_post->post_status : 'publish',
+			)
+		);
+
+		if ( is_wp_error( $new_id ) || ! $new_id ) {
+			return;
+		}
+
+		update_post_meta( $new_id, 'pscw_data', get_post_meta( $dup_id, 'pscw_data', true ) );
+		update_post_meta( $new_id, 'pscw_interface', get_post_meta( $dup_id, 'pscw_interface', true ) );
+		wp_safe_redirect( admin_url( "post.php?post={$new_id}&action=edit" ) );
+		exit;
 	}
 
 	public function pscw_go_design() {
@@ -533,18 +424,20 @@ class Size_Chart {
 			return;
 		}
 
-		if ( isset( $_GET['pscw_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_GET['pscw_nonce'] ) ), 'pscw_nonce' ) ) {
-			$sc_id = ! empty( $_GET['id'] ) ? sanitize_text_field( wp_unslash( $_GET['id'] ) ) : '';
-			if ( $sc_id ) {
-				$random_product = $this->get_random_product();
-
-				$url = admin_url( 'customize.php' ) . '?url=' . esc_url( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $sc_id . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
-
-				wp_safe_redirect( $url );
-
-				exit;
-			}
+		if ( ! isset( $_GET['pscw_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['pscw_nonce'] ) ), 'pscw_nonce' ) ) {
+			return;
 		}
+
+		$sc_id = ! empty( $_GET['id'] ) ? absint( $_GET['id'] ) : 0;
+		if ( ! $sc_id || 'pscw-size-chart' !== get_post_type( $sc_id ) ) {
+			return;
+		}
+
+		$random_product = $this->get_random_product();
+		$url            = admin_url( 'customize.php' ) . '?url=' . esc_url( get_permalink( $random_product[0] ) ) . '&pscw_id=' . $sc_id . '&autofocus[panel]=pscw_size_chart_customizer&autofocus[section]=pscw_customizer_design&pscw_sizechart_mode=1';
+
+		wp_safe_redirect( $url );
+		exit;
 	}
 
 	public function post_add_action( $actions, $post ) {

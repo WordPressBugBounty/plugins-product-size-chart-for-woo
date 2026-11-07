@@ -1,15 +1,15 @@
-===Sizor Product Size Chart For WooCommerce===
+===Sizor Product Size Chart for WooCommerce===
 Contributors: villatheme,mrt3vn
 Donate link: https://www.villatheme.com/donate
 Tags: woocommerce, Size chart, woocommerce size chart,product size chart,product size chart for woo
-Requires at least: 5.0
+Requires at least: 5.2
 Requires PHP: 7.4
 WC requires at least: 7.0
 Tested up to: 7.1
-WC tested up to: 11.0
+WC tested up to: 11.2
 Stable tag: trunk
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: GNU General Public License v3.0
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 WooCommerce Size Chart lets customize and design size charts for specific products or categories, enhancing customer convenience and boosting sales.
 
@@ -211,6 +211,15 @@ And much more things are waiting for you discover
 4. Size chart on product tab
 
 == Changelog ==
+
+2026.11.07 - version 2.1.6
+- Fixed: Shortcode only renders published charts (or for users who can edit)
+- Fixed: Size chart CPT excluded from site search
+- Fixed: Unique storefront container ids; keep #pscw-container in customizer
+- Fixed: AJAX handlers require manage_woocommerce; settings save requires manage_options
+- Fixed: Countries row hides with All products; setup wizard document title
+- Updated: Compatible WooCommerce 11.2
+- Improved: Request-level cache for size chart product resolve
 
 2026.08.17 - version 2.1.5
 - Updated: Compatible WooCommerce 11.0

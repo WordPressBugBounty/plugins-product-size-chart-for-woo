@@ -2,6 +2,8 @@
 
 namespace PSCWF\Inc;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Legacy $woopscw_settings cache and woo_sc_setting_* filter names.
+
 defined( 'ABSPATH' ) || exit;
 
 class Data {

@@ -9,8 +9,6 @@ class Setup_Wizard {
 	protected $default_template_posts_title;
 
 	public function __construct() {
-		global $title;
-		$title                              = ''; // Fix PHP Deprecated:  strip_tags(): Passing null to parameter #1 ($string) of type string is deprecated
 		add_action( 'admin_head', [ $this, 'setup_wizard' ] );
 		add_action( 'wp_ajax_pscw_setup_wizard', array( $this, 'pscw_ajax_setup_wizard' ) );
 	}
@@ -33,10 +31,13 @@ class Setup_Wizard {
 	}
 
 	public function setup_wizard() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Admin page router; display only, no state change.
 		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
 		if ( $page !== 'pscw-setup' ) {
 			return;
 		}
+		global $title;
+		$title = esc_html__( 'Setup Wizard', 'product-size-chart-for-woo' );
 		delete_option( 'pscw_setup_wizard' );
 		$size_charts = $this->get_template_posts_title();
 //		$size_charts = $this->default_template_posts_title;
@@ -112,16 +113,35 @@ class Setup_Wizard {
 
 	public function pscw_ajax_setup_wizard() {
 		if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'pscw_nonce' ) ) {
-			$selected_position    = isset( $_POST['selected_position'] ) ? sanitize_text_field( wp_unslash( $_POST['selected_position'] ) ) : 'product_tabs';
-			$selected_size_charts = isset( $_POST['selected_size_charts'] ) ? wc_clean( wp_unslash( $_POST['selected_size_charts'] ) ) : [];
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
+				wp_send_json_error( null, 403 );
+			}
+			$selected_position = isset( $_POST['selected_position'] ) ? pscw_sanitize_position( sanitize_text_field( wp_unslash( $_POST['selected_position'] ) ) ) : 'product_tabs';
 
-			$sc_option = get_option( 'woo_sc_setting', array() );
+			$selected_size_charts = array();
+			if ( isset( $_POST['selected_size_charts'] ) ) {
+				$raw_charts = wp_unslash( $_POST['selected_size_charts'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized via sanitize_key + allowlist below.
+				if ( is_array( $raw_charts ) ) {
+					$selected_size_charts = array_map( 'sanitize_key', $raw_charts );
+				} elseif ( is_string( $raw_charts ) ) {
+					$selected_size_charts = array_map( 'sanitize_key', array_filter( explode( ',', $raw_charts ) ) );
+				}
+			}
+			// Template keys (hoodie, t_shirt, …) — allowlist against known templates.
+			$selected_size_charts = array_values(
+				array_intersect(
+					array_keys( $this->get_template_posts_title() ),
+					$selected_size_charts
+				)
+			);
+
+			$sc_option             = get_option( 'woo_sc_setting', array() );
 			$sc_option['position'] = $selected_position;
 			$sc_option['multi_sc'] = '1';
 			update_option( 'woo_sc_setting', $sc_option );
 
 			$this->default_template( $selected_size_charts );
-			$data['productLink'] = admin_url('edit.php?post_type=pscw-size-chart');
+			$data['productLink'] = admin_url( 'edit.php?post_type=pscw-size-chart' );
 			wp_send_json_success( $data );
 		}
 		wp_die();

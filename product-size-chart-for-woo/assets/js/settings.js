@@ -50,25 +50,16 @@ jQuery( document ).ready( function( $ ) {
     });
 
 
-    /*Color picker*/
+    /*Color picker — WordPress core wp-color-picker (includes Iris)*/
     const colorPicker = $('.color-picker');
-    if (colorPicker.length !== 0) {
-        colorPicker.iris({
+    if (colorPicker.length !== 0 && typeof $.fn.wpColorPicker === 'function') {
+        colorPicker.wpColorPicker({
             change: function (event, ui) {
-                $(this).parent().find('.color-picker').css({backgroundColor: ui.color.toString()});
+                $(this).css({backgroundColor: ui.color.toString()});
             },
-            hide: true,
-            border: true
-        }).on( 'click', function () {
-            $('.iris-picker').hide();
-            $(this).closest('td').find('.iris-picker').show();
-        });
-
-        $('body').on( 'click', function () {
-            $('.iris-picker').hide();
-        });
-        colorPicker.on( 'click', function (event) {
-            event.stopPropagation();
+            clear: function () {
+                $(this).css({backgroundColor: ''});
+            }
         });
     }
 

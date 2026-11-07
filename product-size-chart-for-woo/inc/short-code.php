@@ -11,14 +11,37 @@ class Short_Code {
 
 	private function __construct() {
 		$this->setting = Data::get_instance();
-		$this->suffix = WP_DEBUG ? '' : '.min';
-		if ( $this->setting->get_params( 'enable' ) === "1" ) {
-			add_shortcode( 'PSCW_SIZE_CHART', [ $this, 'short_code_content' ] );
+		$this->suffix  = WP_DEBUG ? '' : '.min';
+		if ( $this->setting->get_params( 'enable' ) === '1' ) {
+			add_shortcode( 'PSCW_SIZE_CHART', array( $this, 'short_code_content' ) );
 		}
 	}
 
 	public static function instance() {
 		return null === self::$instance ? self::$instance = new self() : self::$instance;
+	}
+
+	/**
+	 * Allowed HTML for shortcode output.
+	 *
+	 * @return array
+	 */
+	protected function get_allowed_html() {
+		$allowed_html = wp_kses_allowed_html( 'post' );
+
+		if ( is_customize_preview() ) {
+			$allowed_html['input'] = array(
+				'class'       => true,
+				'id'          => true,
+				'name'        => true,
+				'value'       => true,
+				'type'        => true,
+				'placeholder' => true,
+				'style'       => true,
+			);
+		}
+
+		return $allowed_html;
 	}
 
 	public function short_code_content( $atts ) {
@@ -27,26 +50,22 @@ class Short_Code {
 			return '';
 		}
 
+		$chart_id = absint( $atts['id'] );
+		$chart    = $chart_id ? get_post( $chart_id ) : null;
+		if ( ! $chart || 'pscw-size-chart' !== $chart->post_type ) {
+			return '';
+		}
+		if ( 'publish' !== $chart->post_status && ! current_user_can( 'edit_post', $chart_id ) ) {
+			return '';
+		}
+
 		/* To determine size chart from customize */
-		$signature = isset( $atts['signature'] ) ? esc_attr($atts['signature']) : '';
-
-		$allowed_html = wp_kses_allowed_html( 'post' );
-
-		$allowed_html['input']  = array(
-			'class'       => array(),
-			'id'          => array(),
-			'name'        => array(),
-			'value'       => array(),
-			'type'        => array(),
-			'placeholder' => array(),
-			'style'       => array(),
-		);
-
+		$signature = isset( $atts['signature'] ) ? sanitize_html_class( $atts['signature'] ) : '';
 
 		wp_enqueue_style( 'pscw-shortcode', PSCW_CONST_F['css_url'] . 'shortcode' . $this->suffix . '.css', array(), PSCW_CONST_F['version'] );
 
-		$interface = get_post_meta( $atts['id'], 'pscw_interface', true );
-		if ( empty( $interface ) ) {
+		$interface = get_post_meta( $chart_id, 'pscw_interface', true );
+		if ( empty( $interface ) || empty( $interface['elementsById'] ) || empty( $interface['layout'] ) ) {
 			return '';
 		}
 
@@ -55,12 +74,24 @@ class Short_Code {
 		}
 		$layout = $interface['layout'];
 		$html   = '';
-		foreach ( $layout['children'] as $child_id ) {
-			$html .= $this->pscw_render_interface( $child_id, $interface['elementsById'] );
+		if ( ! empty( $layout['children'] ) && is_array( $layout['children'] ) ) {
+			foreach ( $layout['children'] as $child_id ) {
+				$html .= $this->pscw_render_interface( $child_id, $interface['elementsById'] );
+			}
 		}
 		ob_start();
-		echo is_customize_preview() ? '<div class="pscw-container pscw-customizing '. $signature .' " id="pscw-container">' : '<div class="pscw-container" id="pscw-container">';
-		echo wp_kses( $html, $allowed_html );
+		if ( is_customize_preview() ) {
+			printf(
+				'<div class="pscw-container pscw-customizing %s" id="pscw-container">',
+				esc_attr( $signature )
+			);
+		} else {
+			printf(
+				'<div class="pscw-container" id="%s">',
+				esc_attr( 'pscw-container-' . $chart_id )
+			);
+		}
+		echo wp_kses( $html, $this->get_allowed_html() );
 		echo is_customize_preview() ? '<ul id="pscw-preview-table-menu">
                 <li data-action="add-row-below">' . esc_html__( 'Add row below', 'product-size-chart-for-woo' ) . '</li>
                 <li data-action="add-col-right">' . esc_html__( 'Add col right', 'product-size-chart-for-woo' ) . '</li>
@@ -68,8 +99,7 @@ class Short_Code {
                 <li data-action="delete-row">' . esc_html__( 'Delete row', 'product-size-chart-for-woo' ) . '</li>
             </ul>' : '';
 		echo '</div>';
-		?>
-		<?php
+
 		return ob_get_clean();
 	}
 
@@ -104,7 +134,7 @@ class Short_Code {
 				$html .= '<thead class="woo_sc_table100-head "><tr class="woo_sc_row100 head">';
 				foreach ( $element['columns'] as $column ) {
 					if ( is_customize_preview() ) {
-						$html .= '<th class="woo_sc_cell100"><input type="text" placeholder="..." style="width: ' . esc_attr( ( strlen( $column ) === 0 ? 3 : strlen( $column ) + 1 ) ) . 'ch;" value="' . esc_attr( esc_html( $column ) ) . '"></th>';
+						$html .= '<th class="woo_sc_cell100"><input type="text" placeholder="..." style="width: ' . esc_attr( ( strlen( $column ) === 0 ? 3 : strlen( $column ) + 1 ) ) . 'ch;" value="' . esc_attr( $column ) . '"></th>';
 					} else {
 						$html .= '<th class="woo_sc_cell100">' . esc_html( $column ) . '</th>';
 					}
@@ -116,11 +146,11 @@ class Short_Code {
 					$i    = 0;
 					foreach ( $row as $cell ) {
 						if ( is_customize_preview() ) {
-							$html .= '<td class="' . esc_attr( ( $i === 0 ) ? 'pscw-first-child' : '' ) . '"><input type="text" placeholder="..." style="width: ' . esc_attr( strlen( $cell ) === 0 ? 3 : strlen( $cell ) + 1 ) . 'ch;" value="' . esc_attr( $cell ) . '"></td>';
+							$html .= '<td class="' . esc_attr( ( 0 === $i ) ? 'pscw-first-child' : '' ) . '"><input type="text" placeholder="..." style="width: ' . esc_attr( strlen( $cell ) === 0 ? 3 : strlen( $cell ) + 1 ) . 'ch;" value="' . esc_attr( $cell ) . '"></td>';
 						} else {
 							$html .= '<td>' . esc_html( $cell ) . '</td>';
 						}
-						$i ++;
+						$i++;
 					}
 					$html .= '</tr>';
 				}
@@ -155,83 +185,108 @@ class Short_Code {
 	}
 
 	public function pscw_generate_style( $elements ) {
-		$css = [];
+		$css = array();
 		foreach ( $elements as $element ) {
+			if ( empty( $element['type'] ) || empty( $element['id'] ) ) {
+				continue;
+			}
+			$id = sanitize_html_class( (string) $element['id'] );
+			if ( '' === $id ) {
+				continue;
+			}
+			$margin     = pscw_sanitize_spacing_array( $element['margin'] ?? array( 0, 0, 0, 0 ) );
+			$margin_css = implode(
+				' ',
+				array_map(
+					static function ( $item ) {
+						return pscw_sanitize_css_number( $item ) . 'px';
+					},
+					$margin
+				)
+			);
+
 			switch ( $element['type'] ) {
 				case 'table':
-					$headerTextBold = $element['headerTextBold'] == 1 ? 'bold' : '400';
-					switch ( $element['headerColumn'] ) {
-						default:
-							$css[] = '#' . $element['id'] . ' table.woo_sc_view_table th.woo_sc_cell100 {background: ' . $element['headerBackground'] . ';color: ' . $element['textHeader'] . ';font-weight: ' . $headerTextBold . ';font-size: ' . $element['headerTextSize'] . 'px}';
-							if ( $element['columnsStyle'] ) {
-								$css[] = '#' . $element['id'] . ' table.woo_sc_view_table tbody tr td:nth-child(even) {background: ' . $element['evenBackground'] . ';color: ' . $element['evenText'] . '}';
-								$css[] = '#' . $element['id'] . ' table.woo_sc_view_table tbody tr td:nth-child(odd) {background: ' . $element['oddBackground'] . ';color: ' . $element['oddText'] . '}';
-							} else {
-								$css[] = '#' . $element['id'] . ' table.woo_sc_view_table tbody tr:nth-child(odd) td {background: ' . $element['evenBackground'] . ';color: ' . $element['evenText'] . '}';
-								$css[] = '#' . $element['id'] . ' table.woo_sc_view_table tbody tr:nth-child(even) td {background: ' . $element['oddBackground'] . ';color: ' . $element['oddText'] . '}';
-							}
-							break;
+					$header_text_bold = ! empty( $element['headerTextBold'] ) ? 'bold' : '400';
+					$header_bg        = pscw_sanitize_css_color( $element['headerBackground'] ?? '#ffffff', '#ffffff' );
+					$text_header      = pscw_sanitize_css_color( $element['textHeader'] ?? '#000000' );
+					$header_text_size = pscw_sanitize_css_number( $element['headerTextSize'] ?? 14, 14 );
+					$even_bg          = pscw_sanitize_css_color( $element['evenBackground'] ?? '#ffffff', '#ffffff' );
+					$even_text        = pscw_sanitize_css_color( $element['evenText'] ?? '#494949', '#494949' );
+					$odd_bg           = pscw_sanitize_css_color( $element['oddBackground'] ?? '#ffffff', '#ffffff' );
+					$odd_text         = pscw_sanitize_css_color( $element['oddText'] ?? '#494949', '#494949' );
+					$cell_text_size   = pscw_sanitize_css_number( $element['cellTextSize'] ?? 14, 14 );
+					$border_color     = pscw_sanitize_css_color( $element['borderColor'] ?? '#9D9D9D', '#9D9D9D' );
+					$h_border_w       = pscw_sanitize_css_number( $element['horizontalBorderWidth'] ?? 1, 1 );
+					$v_border_w       = pscw_sanitize_css_number( $element['verticalBorderWidth'] ?? 1, 1 );
+					$h_border_s       = pscw_sanitize_border_style( $element['horizontalBorderStyle'] ?? 'solid' );
+					$v_border_s       = pscw_sanitize_border_style( $element['verticalBorderStyle'] ?? 'solid' );
+					$columns_style    = ! empty( $element['columnsStyle'] );
+
+					$css[] = '#' . $id . ' table.woo_sc_view_table th.woo_sc_cell100 {background: ' . $header_bg . ';color: ' . $text_header . ';font-weight: ' . $header_text_bold . ';font-size: ' . $header_text_size . 'px}';
+					if ( $columns_style ) {
+						$css[] = '#' . $id . ' table.woo_sc_view_table tbody tr td:nth-child(even) {background: ' . $even_bg . ';color: ' . $even_text . '}';
+						$css[] = '#' . $id . ' table.woo_sc_view_table tbody tr td:nth-child(odd) {background: ' . $odd_bg . ';color: ' . $odd_text . '}';
+					} else {
+						$css[] = '#' . $id . ' table.woo_sc_view_table tbody tr:nth-child(odd) td {background: ' . $odd_bg . ';color: ' . $odd_text . '}';
+						$css[] = '#' . $id . ' table.woo_sc_view_table tbody tr:nth-child(even) td {background: ' . $even_bg . ';color: ' . $even_text . '}';
 					}
 
-					$css[] = '#' . $element['id'] . ' table.woo_sc_view_table th.woo_sc_cell100, ' . '#' . $element['id'] . ' .woo_sc_view_table tbody td {border-color: ' . $element['borderColor'] . '; border-width: ' . $element['horizontalBorderWidth'] . 'px ' . $element['verticalBorderWidth'] . 'px; border-style: ' . $element['horizontalBorderStyle'] . ' ' . $element['verticalBorderStyle'] . ';}';
-					$css[] = '#' . $element['id'] . ' table.woo_sc_view_table tbody td {font-size: ' . $element['cellTextSize'] . 'px}';
+					$css[] = '#' . $id . ' table.woo_sc_view_table th.woo_sc_cell100, #' . $id . ' .woo_sc_view_table tbody td {border-color: ' . $border_color . '; border-width: ' . $h_border_w . 'px ' . $v_border_w . 'px; border-style: ' . $h_border_s . ' ' . $v_border_s . ';}';
+					$css[] = '#' . $id . ' table.woo_sc_view_table tbody td {font-size: ' . $cell_text_size . 'px}';
 
-					$tableMargin = array_map( function ( $item ) {
-						return $item . "px";
-					}, $element['margin'] );
-
-					$tableMargin = implode( " ", $tableMargin );
-
-					$tableBorderRadius = array_map( function ( $item ) {
-						return $item . "px";
-					}, $element['borderRadius'] );
-
-					$tableBorderRadiusText = implode( " ", $tableBorderRadius );
-
-					$css[]                 = '#' . $element['id'] . ' {margin: ' . $tableMargin . '; border-radius: ' . $tableBorderRadiusText . ';}';
+					$radius     = pscw_sanitize_spacing_array( $element['borderRadius'] ?? array( 0, 0, 0, 0 ) );
+					$radius_css = array_map(
+						static function ( $item ) {
+							return pscw_sanitize_css_number( $item ) . 'px';
+						},
+						$radius
+					);
+					$css[]      = '#' . $id . ' {margin: ' . $margin_css . '; border-radius: ' . implode( ' ', $radius_css ) . ';}';
 
 					if ( is_rtl() ) {
-						$css[]                 = '#' . $element['id'] . ' table.woo_sc_view_table thead tr th:fist-child{ border-top-right-radius: ' . $tableBorderRadius[0] . '}';
-						$css[]                 = '#' . $element['id'] . ' table.woo_sc_view_table thead tr th:last-child{ border-top-left-radius: ' . $tableBorderRadius[1] . '}';
-						$css[]                 = '#' . $element['id'] . ' table.woo_sc_view_table tbody tr:last-child td:first-child{ border-bottom-right-radius: ' . $tableBorderRadius[2] . '}';
-						$css[]                 = '#' . $element['id'] . ' table.woo_sc_view_table tbody tr:last-child td:last-child{ border-bottom-left-radius: ' . $tableBorderRadius[3] . ' }';
-					}else {
-						$css[]                 = '#' . $element['id'] . ' table.woo_sc_view_table thead tr th:fist-child{ border-top-left-radius: ' . $tableBorderRadius[0] . '}';
-						$css[]                 = '#' . $element['id'] . ' table.woo_sc_view_table thead tr th:last-child{ border-top-right-radius: ' . $tableBorderRadius[1] . '}';
-						$css[]                 = '#' . $element['id'] . ' table.woo_sc_view_table tbody tr:last-child td:first-child{ border-bottom-left-radius: ' . $tableBorderRadius[2] . '}';
-						$css[]                 = '#' . $element['id'] . ' table.woo_sc_view_table tbody tr:last-child td:last-child{ border-bottom-right-radius: ' . $tableBorderRadius[3] . ' }';
+						$css[] = '#' . $id . ' table.woo_sc_view_table thead tr th:first-child{ border-top-right-radius: ' . $radius_css[0] . '}';
+						$css[] = '#' . $id . ' table.woo_sc_view_table thead tr th:last-child{ border-top-left-radius: ' . $radius_css[1] . '}';
+						$css[] = '#' . $id . ' table.woo_sc_view_table tbody tr:last-child td:first-child{ border-bottom-right-radius: ' . $radius_css[2] . '}';
+						$css[] = '#' . $id . ' table.woo_sc_view_table tbody tr:last-child td:last-child{ border-bottom-left-radius: ' . $radius_css[3] . ' }';
+					} else {
+						$css[] = '#' . $id . ' table.woo_sc_view_table thead tr th:first-child{ border-top-left-radius: ' . $radius_css[0] . '}';
+						$css[] = '#' . $id . ' table.woo_sc_view_table thead tr th:last-child{ border-top-right-radius: ' . $radius_css[1] . '}';
+						$css[] = '#' . $id . ' table.woo_sc_view_table tbody tr:last-child td:first-child{ border-bottom-left-radius: ' . $radius_css[2] . '}';
+						$css[] = '#' . $id . ' table.woo_sc_view_table tbody tr:last-child td:last-child{ border-bottom-right-radius: ' . $radius_css[3] . ' }';
 					}
-					$tableMaxHeight = 535;
-					$css[]                 = '#' . $element['id'] . ' .woo_sc_table100-body {max-height: ' . $tableMaxHeight . 'px;}';
+					$table_max_height = pscw_sanitize_css_number( $element['tableMaxHeight'] ?? 535, 535 );
+					$css[]            = '#' . $id . ' .woo_sc_table100-body {max-height: ' . $table_max_height . 'px;}';
 					break;
 				case 'image':
-					$imageMargin = array_map( function ( $item ) {
-						return $item . "px";
-					}, $element['margin'] );
-
-					$imageMargin = implode( " ", $imageMargin );
-
-					$imagePadding = array_map( function ( $item ) {
-						return $item . "px";
-					}, $element['padding'] );
-
-					$imagePadding = implode( " ", $imagePadding );
-					$css[]        = '#' . $element['id'] . ' img {width: ' . $element['width'] . $element['widthUnit'] . '; height: ' . $element['height'] . $element['heightUnit'] . '; border-width: ' . $element['borderWidth'] . 'px; border-color: ' . $element['borderColor'] . '; border-style: ' . $element['borderStyle'] . '}';
-					$css[]        = '#' . $element['id'] . ' {padding: ' . $imagePadding . '; margin: ' . $imageMargin . ';}';
-					$css[]        = '#' . $element['id'] . ' img {object-fit: ' . $element['objectFit'] . ';}';
+					$padding     = pscw_sanitize_spacing_array( $element['padding'] ?? array( 0, 0, 0, 0 ) );
+					$padding_css = implode(
+						' ',
+						array_map(
+							static function ( $item ) {
+								return pscw_sanitize_css_number( $item ) . 'px';
+							},
+							$padding
+						)
+					);
+					$width        = pscw_sanitize_css_number( $element['width'] ?? 100, 100 );
+					$width_unit   = pscw_sanitize_css_unit( $element['widthUnit'] ?? '%', '%' );
+					$height       = pscw_sanitize_css_number( $element['height'] ?? 100, 100 );
+					$height_unit  = pscw_sanitize_css_unit( $element['heightUnit'] ?? '%', '%' );
+					$border_width = pscw_sanitize_css_number( $element['borderWidth'] ?? 0 );
+					$border_color = pscw_sanitize_css_color( $element['borderColor'] ?? '#000000' );
+					$border_style = pscw_sanitize_border_style( $element['borderStyle'] ?? 'solid' );
+					$object_fit   = pscw_sanitize_object_fit( $element['objectFit'] ?? 'unset' );
+					$css[]        = '#' . $id . ' img {width: ' . $width . $width_unit . '; height: ' . $height . $height_unit . '; border-width: ' . $border_width . 'px; border-color: ' . $border_color . '; border-style: ' . $border_style . '}';
+					$css[]        = '#' . $id . ' {padding: ' . $padding_css . '; margin: ' . $margin_css . ';}';
+					$css[]        = '#' . $id . ' img {object-fit: ' . $object_fit . ';}';
 					break;
 				case 'text':
-					$textMargin = array_map( function ( $item ) {
-						return $item . "px";
-					}, $element['margin'] );
-
-					$textMargin = implode( " ", $textMargin );
-					$css[]      = '#' . $element['id'] . ' {margin: ' . $textMargin . ';}';
+					$css[] = '#' . $id . ' {margin: ' . $margin_css . ';}';
 					break;
 			}
 		}
-		$css = implode( '', $css );
 
-		return $css;
+		return implode( '', $css );
 	}
 }

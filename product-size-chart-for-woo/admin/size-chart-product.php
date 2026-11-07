@@ -84,10 +84,12 @@ class Size_Chart_Product {
 
 	public function pscw_save_product_data( $product ) {
 		if ( isset( $_POST['pscw_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['pscw_nonce'] ) ), 'pscw_search_nonce' ) ) {
-			$pscw_mode     = isset( $_POST['pscw_mode'] ) ? wc_clean( wp_unslash( $_POST['pscw_mode'] ) ) : 'global';
-			$pscw_override = isset( $_POST['pscw_override'] ) ? wc_clean( wp_unslash( $_POST['pscw_override'] ) ) : array();
+			$allowed_modes = array( 'global', 'disable', 'override' );
+			$pscw_mode     = isset( $_POST['pscw_mode'] ) ? sanitize_text_field( wp_unslash( $_POST['pscw_mode'] ) ) : 'global';
+			$pscw_mode     = in_array( $pscw_mode, $allowed_modes, true ) ? $pscw_mode : 'global';
+			$pscw_override = isset( $_POST['pscw_override'] ) ? map_deep( wp_unslash( $_POST['pscw_override'] ), 'absint' ) : array();
 			update_post_meta( $product->get_id(), 'pscw_mode', $pscw_mode );
-			if ( $pscw_mode === 'override' ) {
+			if ( 'override' === $pscw_mode ) {
 				update_post_meta( $product->get_id(), 'pscw_override', $pscw_override );
 			}
 		}
@@ -95,6 +97,9 @@ class Size_Chart_Product {
 
 	public function pscw_ajax_search_size_chart() {
 		if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'pscw_nonce' ) ) {
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
+				wp_send_json_error( null, 403 );
+			}
 			$search_key = isset( $_POST['key_search'] ) ? sanitize_text_field( wp_unslash( $_POST['key_search'] ) ) : '';
 			pscw_search_post( 'pscw-size-chart', $search_key );
 		}

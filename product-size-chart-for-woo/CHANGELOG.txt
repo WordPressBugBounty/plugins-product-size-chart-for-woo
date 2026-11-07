@@ -1,5 +1,14 @@
 *** Sizor Product Size Chart for WooCommerce Changelog ***
 
+2026.11.07 - version 2.1.6
+- Fixed: Shortcode only renders published charts (or for users who can edit)
+- Fixed: Size chart CPT excluded from site search
+- Fixed: Unique storefront container ids; keep #pscw-container in customizer
+- Fixed: AJAX handlers require manage_woocommerce; settings save requires manage_options
+- Fixed: Countries row hides with All products; setup wizard document title
+- Updated: Compatible WooCommerce 11.2
+- Improved: Request-level cache for size chart product resolve
+
 2026.08.17 - version 2.1.5
 - Updated: Compatible WooCommerce 11.0
 

@@ -154,7 +154,7 @@ jQuery(document).ready( function ( $ ) {
             let selectBox = $(`<select id="customize-input-${this.id || ''}" multiple class="hidden" ></select>`);
             if (this.value?.defaultValues) {
                 this.value.defaultValues.forEach((value) => {
-                    let selected = this.value.assignValues.includes(value[0]) ? 'selected' : '';
+                    let selected = this.value.assignValues.map(String).includes(String(value[0])) ? 'selected' : '';
                     let option = $(`<option value="${value[0]}" ${selected}>${value[1]}</option>`);
                     selectBox.append(option);
                 })
